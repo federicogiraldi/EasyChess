@@ -6,7 +6,13 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 - **Sistema Londra** (col Bianco): 14 linee, corso di 7 lezioni.
 - **Attacco Indiano di Re** (col Bianco, 1.Nf3 o da 1.e4 con d3): 13 linee, corso di 7 lezioni.
 
-## Avvio
+## Online
+
+**https://federicogiraldi.github.io/EasyChess/** — funziona da qualsiasi dispositivo (PC, telefono, tablet), si può installare come app e dopo la prima visita funziona offline. Ogni merge su `main` viene testato e pubblicato automaticamente (`.github/workflows/deploy.yml`).
+
+I progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **💾 Esporta progressi** e **📂 Ripristina progressi** in home.
+
+## Avvio in locale
 
 Doppio clic sul collegamento **EasyChess** sul desktop: l'app si apre in una **finestra dedicata** (modalità app di Chrome/Edge, senza barra degli indirizzi), senza finestre nere.
 

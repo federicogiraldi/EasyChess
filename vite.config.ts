@@ -3,20 +3,24 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  // Percorsi relativi: la stessa build funziona in locale (/) e su GitHub Pages (/EasyChess/).
+  base: './',
   plugins: [
     react(),
     VitePWA({
       // Una nuova build si installa da sola: i progressi sono in localStorage e non vengono toccati.
       registerType: 'autoUpdate',
+      base: './',
+      scope: './',
       includeManifestIcons: false,
       manifest: {
-        id: '/',
+        id: './',
         name: 'EasyChess',
         short_name: 'EasyChess',
         description: 'Impara le aperture di scacchi: corso guidato, allenamento, ripasso e Stockfish.',
         lang: 'it',
-        start_url: '/',
-        scope: '/',
+        start_url: './',
+        scope: './',
         display: 'standalone',
         background_color: '#1d1b18',
         theme_color: '#272420',

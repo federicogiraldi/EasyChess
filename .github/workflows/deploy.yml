@@ -1,0 +1,54 @@
+name: Test e pubblicazione
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      # postinstall copia Stockfish in public/engine
+      - run: npm ci
+      - run: npm run typecheck
+      # include la validazione delle aperture e dei corsi
+      - run: npm test
+      - run: npm run build
+      - name: Controllo dei file della PWA
+        run: |
+          for f in index.html sw.js manifest.webmanifest engine/stockfish.js engine/stockfish.wasm icons/icon-192.png icons/icon-512.png icons/maskable-512.png; do
+            test -s "dist/$f" || { echo "::error::manca dist/$f"; exit 1; }
+          done
+          grep -q 'href="./manifest.webmanifest"' dist/index.html || { echo "::error::il manifest deve avere un percorso relativo"; exit 1; }
+          grep -q 'stockfish.wasm' dist/sw.js || { echo "::error::Stockfish non è nella cache offline"; exit 1; }
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
