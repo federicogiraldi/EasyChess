@@ -12,17 +12,19 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 
 I progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **💾 Esporta progressi** e **📂 Ripristina progressi** in home.
 
-## Avvio in locale
+## Avvio dal desktop
 
-Doppio clic sul collegamento **EasyChess** sul desktop: l'app si apre in una **finestra dedicata** (modalità app di Chrome/Edge, senza barra degli indirizzi), senza finestre nere.
+Doppio clic sul collegamento **EasyChess** sul desktop: apre la versione online in una **finestra dedicata** (modalità app di Chrome/Edge) in meno di un secondo. Non servono Node né un server, e dopo la prima apertura funziona anche **offline** grazie al service worker.
 
-Il collegamento lancia `EasyChess.vbs` → `scripts/avvia.ps1`, che:
+Per ricreare il collegamento (nuovo PC, collegamento cancellato): tasto destro su `scripts/crea-collegamento.ps1` → *Esegui con PowerShell*. In alternativa apri il sito in Chrome/Edge e scegli *Installa EasyChess* dal menu.
+
+### Versione locale (per lo sviluppo)
+
+Per provare aperture nuove prima di pubblicarle: `scripts/crea-collegamento.ps1 -Locale` crea **EasyChess (locale)**, che lancia `EasyChess.vbs` → `scripts/avvia.ps1`:
 1. installa le dipendenze la prima volta (serve [Node.js](https://nodejs.org));
-2. ricompila da solo se hai aggiunto o modificato un'apertura;
-3. avvia in background un piccolo server locale su `http://localhost:5317` (resta attivo, è leggerissimo; per fermarlo: `scripts/ferma.ps1`);
-4. apre la finestra con il tuo browser predefinito se è Chrome, altrimenti con Edge.
-
-Per ricreare il collegamento (nuovo PC, collegamento cancellato): tasto destro su `scripts/crea-collegamento.ps1` → *Esegui con PowerShell*. Le icone si rigenerano con `scripts/genera-icone.ps1`.
+2. ricompila se hai aggiunto o modificato un'apertura (in questo caso l'avvio richiede 10-20 secondi);
+3. avvia in background un server locale su `http://localhost:5317` (per fermarlo: `scripts/ferma.ps1`);
+4. apre la finestra dedicata.
 
 ### App installabile e offline
 

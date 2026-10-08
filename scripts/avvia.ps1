@@ -87,9 +87,15 @@ try {
     $dist = Join-Path $root 'dist\index.html'
     $needBuild = -not (Test-Path $dist)
     if (-not $needBuild) {
-        $built = (Get-Item $dist).LastWriteTime
-        $sources = @('src', 'public', 'index.html', 'vite.config.ts', 'package.json') | ForEach-Object { Join-Path $root $_ }
-        $needBuild = [bool](Get-ChildItem $sources -Recurse -File | Where-Object { $_.LastWriteTime -gt $built } | Select-Object -First 1)
+        # Enumerazione .NET diretta: Get-ChildItem è molto lento nelle cartelle di OneDrive.
+        $built = [System.IO.File]::GetLastWriteTime($dist)
+        foreach ($p in @('src', 'public', 'index.html', 'vite.config.ts', 'package.json') | ForEach-Object { Join-Path $root $_ }) {
+            $files = if ([System.IO.Directory]::Exists($p)) { [System.IO.Directory]::EnumerateFiles($p, '*', 'AllDirectories') } else { @($p) }
+            foreach ($f in $files) {
+                if ([System.IO.File]::GetLastWriteTime($f) -gt $built) { $needBuild = $true; break }
+            }
+            if ($needBuild) { break }
+        }
     }
     if ($needBuild) {
         Show-Splash 'Preparo l''app…'
