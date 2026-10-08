@@ -1,0 +1,65 @@
+[Opening "Caro-Kann"]
+[Id "caro-kann"]
+[Color "black"]
+[Description "Difesa solida contro 1.e4: il Nero contesta subito il centro con ...c6 e ...d5 senza chiudere l'alfiere camposcuro, che esce in f5 o g4 prima di ...e6."]
+
+{ La Caro-Kann prepara ...d5 con ...c6. A differenza della Francese (1...e6), l'alfiere c8 non resta chiuso: di solito esce in f5 o g4 e solo dopo arriva ...e6. Le strutture sono solide, i finali spesso favorevoli al Nero: perfetta se ti senti a tuo agio nel mediogioco e nei finali. }
+1. e4 c6 { [%line Caro-Kann] Prepara ...d5 sostenendolo con il pedone c. [%key Contestare e4 con ...d5 subito] [%key Sviluppare l'alfiere c8 PRIMA di ...e6] [%cal Gd7d5,Gc6d5] }
+2. d4 d5 { Il Nero attacca e4. Il Bianco deve decidere: spingere (e5), cambiare (exd5) o difendere (Nc3/Nd2). [%cal Gd5e4] } *
+
+; ===================== VARIANTE D'AVANZATA =====================
+1. e4 c6 2. d4 d5 3. e5 { [%line Variante d'Avanzata] Il Bianco guadagna spazio e chiude il centro. } 3... Bf5 { Il punto chiave della Caro-Kann: l'alfiere esce PRIMA di ...e6. Poi arrivano ...e6, ...c5 e lo sviluppo dei cavalli. [%key L'alfiere esce in f5 prima di chiudere la catena con ...e6] [%key Spinta di rottura ...c5 contro la base d4] [%cal Gc8f5,Gc6c5] }
+4. Nf3 { [%line Sistema Short (4.Nf3)] Sviluppo tranquillo: il Bianco punta su vantaggio di spazio e arrocco veloce. } 4... e6 { Ora la struttura è da Francese, ma con l'alfiere "buono" già fuori. }
+5. Be2 c5 { La rottura tematica: attacca d4, la base della catena. [%cal Gc5d4] }
+6. O-O ( 6. Be3 { Il Bianco difende d4 e prepara c4 o il cambio in d4. } 6... cxd4 7. Nxd4 Ne7 { Il cavallo va in c6 o in f5 a sfidare quello in d4; il Nero non ha problemi di sviluppo. [%cal Ge7c6,Ge7f5] } ) 6... Nc6 7. c3 cxd4 8. cxd4 Nge7 { Piano del Nero: ...Nc8-b6 o ...Nf5 per pressare d4, poi ...Be7 e arrocco. Il pedone d4 è isolato dal resto: è il bersaglio. [%key Pressione su d4 con ...Nc6, ...Nf5, ...Qb6] [%cal Ge7f5,Gd8b6] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nc3 { [%line Avanzata con 4.Nc3 e 5.g4] Sistema aggressivo: il Bianco vuole cacciare l'alfiere con g4. } 4... e6
+5. g4 { Attacca l'alfiere f5. } 5... Bg6 6. Nge2 c5 { Sempre lo stesso contro-colpo: si attacca il centro mentre il Bianco spinge sull'ala. }
+7. h4 h5 { Ferma h5 del Bianco che intrappolerebbe l'alfiere. }
+8. Nf4 Bh7 9. Nxh5 cxd4 10. Qxd4 Nc6 { Sviluppo con guadagno di tempo sulla donna. Il Nero ha dato un pedone ma ha ottimo gioco: il re bianco non ha un posto sicuro e la struttura è sbilanciata. [%key Contro gli attacchi sull'ala, colpisci il centro (...c5)] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. h4 { [%line Avanzata con 4.h4] Minaccia h5 e g4 per catturare l'alfiere. } 4... h5 { Obbligatorio: blocca il pedone h. La casa g4 ora è una buona casa per l'alfiere del Nero. [%cal Gh7h5] }
+5. c4 ( 5. Bd3 Bxd3 6. Qxd3 e6 { Gli alfieri camposcuro sono stati cambiati: il Nero non ha più il "pezzo cattivo" e gioca ...c5, ...Qb6, ...Nc6 contro d4. [%key Cambiato l'alfiere, la struttura nera è eccellente] } ) 5... e6 6. Nc3 Ne7 { Il cavallo va in f5 o g6 (la casa h5 è protetta): pressione su d4. } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Bd3 { [%line Avanzata con 4.Bd3] Il Bianco propone il cambio degli alfieri. } 4... Bxd3 5. Qxd3 e6 { Il Nero ha cambiato il suo pezzo peggiore. Piano: ...c5, ...Qb6, ...Nc6, ...Ne7-f5. [%cal Gc6c5,Gd8b6] } *
+
+; ===================== VARIANTE CLASSICA =====================
+1. e4 c6 2. d4 d5 3. Nc3 { [%line Variante Classica] Il Bianco difende e4 col cavallo. } ( 3. Nd2 { Ordine di mosse alternativo: dopo ...dxe4 Nxe4 si arriva alla stessa posizione. } 3... dxe4 4. Nxe4 ) 3... dxe4 { Il Nero cede il centro ma ottiene sviluppo facile. }
+4. Nxe4 Bf5 { La linea classica: sviluppa l'alfiere con tempo sul cavallo. [%key ...Bf5 con tempo sul cavallo e4] [%cal Gc8f5] }
+5. Ng3 Bg6 6. h4 { Minaccia h5 che intrappolerebbe l'alfiere. } 6... h6 { Crea la casa di ritirata h7 per l'alfiere. }
+7. Nf3 ( 7. h5 Bh7 8. Nf3 Nd7 { Stesse idee: ...Ngf6, ...e6, ...Bd6/...Be7. } ) 7... Nd7 { Controlla e5 ed evita Ne5 molesti. }
+8. h5 Bh7 9. Bd3 Bxd3 10. Qxd3 e6 11. Bd2 Ngf6 12. O-O-O Be7 { La posizione principale della Classica. Il Nero arrocca corto (o lungo!), gioca ...c5 o ...Qc7 e ...O-O-O. Il pedone h5 bianco può diventare debole in finale. [%key Struttura solidissima: niente debolezze nel campo nero] [%key In finale il pedone h5 può diventare un bersaglio] } *
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. Nf3 { [%line Classica con 6.Nf3] } 6... Nd7 7. h4 h6 8. h5 Bh7 { Traspone nella linea principale. } *
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. N1e2 { [%line Classica con 6.N1e2] Il Bianco vuole Nf4 per prendere l'alfiere. } 6... Nf6 7. Nf4 e5! { Colpo tematico: il Nero libera il gioco al centro. [%cal Ge7e5] }
+8. Nxg6 hxg6 9. dxe5 Qa5+ { Scacco doppio-funzione: dopo c3 la donna riprende e5. } 10. c3 Qxe5+ { Pedone recuperato e la colonna h aperta per la torre: il Nero sta benissimo. [%key Contro Nf4 rispondi ...e5!] } *
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nd7 { [%line Classica: Sistema Karpov (4...Nd7)] Alternativa a 4...Bf5: prepara ...Ngf6 senza permettere la rottura della struttura dopo Nxf6. [%key ...Nd7 prima di ...Ngf6 così da riprendere di cavallo] }
+5. Ng5 { Minaccia trappole su f7 e e6. } ( 5. Qe2?! { Attenzione alla trappola! } 5... Ndf6 { Unica mossa sicura. Su 5...Ngf6?? c'è 6.Nd6 matto: il pedone e7 non può catturare perché inchiodato. [%cal Re4d6] } ) 5... Ngf6 6. Bd3 e6 7. N1f3 Bd6 { Non 7...h6?? 8.Nxe6! (Deep Blue - Kasparov 1997). Prima si sviluppa, poi si caccia il cavallo. }
+8. Qe2 h6 9. Ne4 Nxe4 10. Qxe4 { Il Nero gioca ...Nf6 con tempo sulla donna, poi ...c5 o ...b6/...Bb7. [%key Non giocare ...h6 finché il cavallo g5 può sacrificarsi in e6] [%cal Gd7f6] } *
+
+; ===================== VARIANTE DI CAMBIO =====================
+1. e4 c6 2. d4 d5 3. exd5 { [%line Variante di Cambio] } 3... cxd5 4. Bd3 { Struttura "Carlsbad" rovesciata. } 4... Nc6 { Pressione su d4. } 5. c3 Nf6 6. Bf4 Bg4 { Fuori l'alfiere prima di ...e6, come sempre. Minaccia ...Bxf3 rovinando il controllo di e5. [%key L'alfiere esce in g4 prima di ...e6] }
+7. Qb3 { Attacca b7. } 7... Qd7 { Difende b7 e prepara ...e6. } 8. Nd2 e6 9. Ngf3 Bd6 10. Bxd6 Qxd6 11. O-O O-O { Il Nero sta bene. Piano: attacco di minoranza con ...b5-b4 per creare un pedone debole in c3. [%key Attacco di minoranza: ...Rab8, ...b5, ...b4] [%cal Gb7b5,Gb5b4] } *
+
+; ===================== PANOV-BOTVINNIK =====================
+1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 { [%line Attacco Panov-Botvinnik] Il Bianco accetta il pedone d isolato (IQP) in cambio di gioco attivo. } 4... Nf6 5. Nc3 e6 { Solido: il Nero blocca d5 e sviluppa l'alfiere in e7. }
+6. Nf3 Be7 7. cxd5 Nxd5 { Ora il Bianco ha il pedone d4 isolato. } 8. Bd3 Nc6 9. O-O O-O 10. Re1 Bf6 { Pressione su d4. Piano: bloccare d5 con un cavallo e cambiare pezzi: più si va verso il finale, più il pedone isolato è debole. [%key Contro il pedone isolato: blocca la casa davanti (d5) e cambia pezzi] [%csl Gd5,Rd4] } *
+
+; ===================== VARIANTE FANTASY =====================
+1. e4 c6 2. d4 d5 3. f3 { [%line Variante Fantasy (3.f3)] Il Bianco difende e4 col pedone, a costo di indebolire il re. } 3... e6 { Risposta solida: l'alfiere va in b4 a inchiodare il cavallo. }
+4. Nc3 Bb4 5. Bf4 Nf6 { Pressione su e4. } 6. e5 Nfd7 7. a3 Bxc3+ 8. bxc3 c5 { Struttura da Francese, ma con f3 che toglie al cavallo bianco la sua casa naturale e indebolisce e3. [%key ...c5 contro la catena di pedoni] } *
+
+; ===================== DUE CAVALLI =====================
+1. e4 c6 2. Nc3 { [%line Variante dei Due Cavalli] } 2... d5 3. Nf3 Bg4 { L'alfiere esce e inchioda il cavallo. } 4. h3 Bxf3 5. Qxf3 e6 { Il Nero ha la coppia di alfieri in meno ma una struttura sanissima: ...Nf6, ...Nbd7, ...Bd6/...Be7. [%key Struttura solida, il Bianco ha la coppia degli alfieri ma poco centro] }
+6. d3 ( 6. Be2 Nf6 7. O-O Nbd7 ) 6... Nf6 7. Bd2 Nbd7 { Piano: ...Bb4 o ...Bd6, poi ...Qb6 o la spinta ...d4. } *
+
+1. e4 c6 2. Nc3 d5 3. d4 { Traspone nella Classica. } *
+
+; ===================== DEVIAZIONI AL 2° TRATTO =====================
+1. e4 c6 2. Nf3 { [%line 2.Nf3] } 2... d5 3. Nc3 { Traspone nei Due Cavalli. } ( 3. e5 Bf5 4. d4 e6 { Traspone nel Sistema Short. } ) *
+
+1. e4 c6 2. c4 { [%line Panov anticipata (2.c4)] } 2... d5 3. exd5 cxd5 4. cxd5 ( 4. d4 Nf6 5. Nc3 e6 { Traspone nella Panov-Botvinnik. } ) 4... Nf6 { Il Nero recupera il pedone d5. } 5. Nc3 Nxd5 6. Nf3 Nc6 7. d4 e6 { Struttura da Panov con il pedone isolato bianco: blocca d5 e cambia i pezzi. } *
+
+1. e4 c6 2. d3 { [%line Attacco Indiano di Re (2.d3)] Il Bianco evita le linee teoriche. } 2... d5 3. Nd2 e5 { Il Nero prende il centro con entrambi i pedoni. } 4. Ngf3 Bd6 5. g3 Nf6 6. Bg2 O-O 7. O-O Re8 { Il Nero ha un bel centro: e5 ben difeso, ...Nbd7, ...a5 per spazio sull'ala di donna. [%key Contro il sistema chiuso: prendi il centro con ...d5 e ...e5] } *
