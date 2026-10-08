@@ -1,6 +1,9 @@
 # ♞ EasyChess
 
-App locale per imparare le aperture di scacchi linea per linea. Si parte dalla **Caro-Kann** (col Nero).
+App locale per imparare le aperture di scacchi linea per linea. Repertorio incluso:
+
+- **Caro-Kann** (col Nero): 24 linee, corso di 9 lezioni;
+- **Sistema Londra** (col Bianco): 14 linee, corso di 7 lezioni.
 
 ## Avvio
 

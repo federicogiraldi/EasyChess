@@ -1,0 +1,44 @@
+[Opening "Sistema Londra"]
+[Id "london"]
+[Color "white"]
+[Description "Un sistema per il Bianco: d4, Bf4, e3, Nf3, c3, Bd3, Nbd2 quasi contro tutto. Poche cose da ricordare, piani chiari: attacco con Ne5 e Qf3/f4, o la spinta e4."]
+
+{ Il Sistema Londra è un "sistema": il Bianco costruisce quasi sempre lo stesso schieramento, qualunque cosa giochi il Nero. Pedoni a piramide d4-e3-c3, alfiere in f4 fuori dalla catena (proprio come l'alfiere c8 nella tua Caro-Kann!), cavalli in f3 e d2, alfiere in d3, arrocco corto. }
+1. d4 { [%line Sistema Londra] Occupa il centro. [%key Lo schieramento: d4, Bf4, e3, Nf3, c3, Bd3, Nbd2, O-O] [%cal Gc1f4,Ge2e3,Gc2c3,Gg1f3,Gb1d2,Gf1d3] } *
+
+; ===================== CONTRO 1...d5 =====================
+1. d4 d5 2. Bf4 { [%line Contro 1...d5] La mossa del Londra: l'alfiere esce SUBITO, prima di e3. [%key L'alfiere esce in f4 prima di e3] [%cal Gc1f4] }
+2... Nf6 3. e3 { La piramide comincia: e3 sostiene d4 e apre l'alfiere f1. } 3... e6 4. Nf3 c5 { [%line Linea principale: ...e6 e ...c5] Il piano più comune del Nero: attaccare d4. }
+5. c3 { Completa la piramide: d4 è solidissimo. Ora il Nero non ha bersagli. [%cal Gc3d4,Ge3d4] } 5... Nc6 6. Nbd2 { Il cavallo va in d2, non in c3: lascia c3 al pedone e sostiene e4 e f3. } 6... Bd6
+7. Bg3 { Non cambiare il tuo alfiere migliore: ritiralo in g3. Se ...Bxg3, riprendi hxg3 e la colonna h si apre per la tua torre. [%key Contro ...Bd6 rispondi Bg3: non cambiare gli alfieri] [%cal Gf4g3] } 7... O-O
+8. Bd3 { Tutti i pezzi sono nelle loro case. Ora si sceglie il piano. } 8... b6 9. Ne5 { [%key Piano d'attacco: Ne5, poi f4 e Qf3 contro il re nero] Il cavallo in e5 è un avamposto: punta su f7, c6 e d7, e prepara f4 e Qf3/Qh5. [%cal Gf3e5,Gf2f4,Gd1f3] }
+9... Bb7 10. f4 { Struttura "Stonewall": il cavallo e5 è sostenuto per sempre e il Bianco può attaccare sul lato di re con Rf3-h3 o Qf3. [%cal Gf1f3,Gf3h3] } *
+
+1. d4 d5 2. Bf4 Nf6 3. e3 e6 4. Nf3 Bd6 { [%line ...Bd6 subito] Il Nero vuole cambiare il tuo alfiere. } 5. Bg3 { Sempre Bg3. } 5... O-O 6. Nbd2 c5 7. c3 Nc6 8. Bd3 { Traspone nella linea principale. } *
+
+1. d4 d5 2. Bf4 Nf6 3. e3 c5 { [%line Contro 3...c5 e ...Qb6] } 4. c3 Nc6 5. Nd2 Qb6 { La donna attacca b2. } 6. Qb3 { La risposta tematica: offri il cambio delle donne. Se ...Qxb3 axb3, la colonna a si apre per la tua torre e il pedone b3 controlla c4. [%key Contro ...Qb6 rispondi Qb3 (o Qc1): b2 è difeso] [%cal Gd1b3] } *
+
+1. d4 d5 2. Bf4 Nf6 3. e3 c5 4. c3 Nc6 5. Nd2 e6 6. Ngf3 Bd6 7. Bg3 O-O 8. Bd3 { Traspone nella linea principale. } *
+
+1. d4 d5 2. Bf4 c5 { [%line Contro 2...c5] Il Nero attacca subito d4. } 3. e3 { Sostieni d4: dopo ...cxd4 riprendi exd4 e l'alfiere f4 resta fuori dalla catena. } 3... Qb6 { La donna attacca b2: l'alfiere c1 non lo difende più. }
+( 3... Nc6 4. c3 Nf6 5. Nd2 e6 6. Ngf3 Bd6 7. Bg3 O-O 8. Bd3 { Traspone nella linea principale. } )
+4. Qc1 { Il modo più semplice: b2 è difeso e la donna resta pronta a tornare in gioco. [%key Contro ...Qb6: Qc1 o Qb3] } 4... Nc6 5. c3 Bf5 6. Nd2 e6 7. Ngf3 { Lo schieramento è completo: Be2 (o Bb5) e O-O. Più avanti la donna torna in gioco da c1. } *
+
+1. d4 d5 2. Bf4 Bf5 { [%line Contro 2...Bf5 (simmetrica)] Il Nero copia la tua idea. } 3. e3 e6 4. Bd3 { Sfida l'alfiere: il Bianco è più veloce a svilupparsi. } 4... Bxd3 5. Qxd3 Nf6 6. Nf3 c5 7. c3 Nc6 8. Nbd2 { Schieramento normale. Con la donna in d3 il Bianco prepara e4 per aprire il centro. [%key Piano alternativo: preparare la spinta e3-e4] [%cal Ge3e4] } *
+
+; ===================== CONTRO 1...Nf6 =====================
+1. d4 Nf6 2. Bf4 { [%line Contro 1...Nf6] Stesso schieramento anche contro le difese indiane. } 2... g6 { [%line Contro il fianchetto (...g6)] Schieramento da Est-Indiana. }
+3. e3 Bg7 4. Nf3 O-O 5. Be2 { Contro il fianchetto l'alfiere va in e2: in d3 sbatterebbe contro la diagonale chiusa. } 5... d6 6. h3 { Una casa di ritirata per l'alfiere f4: se ...Nh5, Bh2. [%key Contro ...g6: h3 e Be2, poi O-O e c3] [%cal Gh2h3,Gf4h2] } 6... c5 7. c3 Nc6 8. O-O { Il Bianco è solido e pronto a reagire al centro. Se ...e5, dxe5 dxe5 e Bh2 / Qxd8 a seconda della posizione. } *
+
+1. d4 Nf6 2. Bf4 e6 { [%line Contro ...e6 e ...b6 (Ovest-Indiana)] } 3. e3 c5 4. Nf3 b6 5. Nbd2 Bb7 6. h3 { Ritirata per l'alfiere. } 6... Be7 7. c3 O-O 8. Bd3 { Schieramento classico. Piano: O-O, Qe2, e3-e4 per guadagnare spazio. [%cal Ge3e4] } *
+
+1. d4 Nf6 2. Bf4 c5 { [%line Contro 2...c5 dopo 1...Nf6] } 3. c3 { Rinforza d4 subito. } 3... d5 4. e3 Nc6 5. Nd2 e6 6. Ngf3 Bd6 7. Bg3 O-O 8. Bd3 { Traspone nella linea principale. } *
+
+1. d4 Nf6 2. Bf4 d5 3. e3 { Traspone nelle linee con 1...d5. } *
+
+; ===================== ALTRE DIFESE =====================
+1. d4 g6 { [%line Contro 1...g6] } 2. Bf4 Bg7 3. e3 d6 4. Nf3 Nf6 5. Be2 O-O { Traspone nella linea contro il fianchetto. } *
+
+1. d4 f5 { [%line Contro l'Olandese (1...f5)] } 2. Bf4 Nf6 3. e3 e6 4. Nf3 b6 5. h3 Bb7 6. Nbd2 Be7 7. c3 O-O 8. Bd3 { Anche qui lo stesso schieramento. L'alfiere d3 punta f5 e la casa e4: il piano è preparare e4 con Qe2/Qc2. [%key Contro l'Olandese: Bd3 e preparare e4] [%cal Ge3e4] } *
+
+1. d4 e6 { [%line Contro 1...e6] } 2. Bf4 d5 3. e3 Nf6 4. Nf3 c5 5. c3 Nc6 6. Nbd2 Bd6 7. Bg3 O-O 8. Bd3 { Traspone nella linea principale. } *
