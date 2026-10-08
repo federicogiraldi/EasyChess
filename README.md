@@ -3,6 +3,7 @@
 App locale per imparare le aperture di scacchi linea per linea. Repertorio incluso:
 
 - **Caro-Kann** (col Nero): 24 linee, corso di 9 lezioni;
+- **Difesa Slava** (col Nero, contro 1.d4 e i sistemi come Londra e Colle): 15 linee, corso di 8 lezioni;
 - **Sistema Londra** (col Bianco): 14 linee, corso di 7 lezioni.
 - **Attacco Indiano di Re** (col Bianco, 1.Nf3 o da 1.e4 con d3): 13 linee, corso di 7 lezioni.
 

@@ -1,0 +1,39 @@
+[Opening "Difesa Slava"]
+[Id "slav"]
+[Color "black"]
+[Description "La Caro-Kann contro 1.d4: ...d5 e ...c6, l'alfiere c8 esce in f5 prima di ...e6. Struttura solidissima e piani che conosci già. Contro i sistemi (Londra, Colle) stesse idee."]
+
+{ La Difesa Slava è la sorella della tua Caro-Kann: il pedone c6 sostiene d5, e l'alfiere c8 esce in f5 PRIMA di ...e6. Contro 1.d4 il Nero ottiene una struttura solida senza chiudere il suo pezzo peggiore. }
+1. d4 d5 { [%line Difesa Slava] Occupa il centro: il Bianco non può prendere e5 o d5 a cuor leggero. [%key Le stesse regole della Caro-Kann: ...c6, ...d5 e alfiere fuori prima di ...e6] } *
+
+; ===================== 2.c4 c6: LA SLAVA =====================
+1. d4 d5 2. c4 { [%line Gambetto di Donna (2.c4)] Il Bianco attacca d5 con il pedone c. } 2... c6 { [%line Slava: 2...c6] Sostiene d5 con un pedone, come nella Caro-Kann. L'alfiere c8 resta libero. [%key ...c6 sostiene d5 senza chiudere l'alfiere c8] [%cal Gc6d5] }
+3. Nf3 Nf6 4. Nc3 { [%line Linea principale: 4...dxc4] } 4... dxc4 { Il Nero prende il pedone c4: ora il Bianco deve spendere tempo per riprenderlo. }
+5. a4 { Impedisce ...b5, che difenderebbe il pedone. } 5... Bf5 { L'alfiere esce: è il momento giusto, prima di ...e6. [%key Contro 5.a4: ...Bf5, poi ...e6 e ...Bb4] [%cal Gc8f5] }
+6. e3 ( 6. Ne5 { [%line Contro 6.Ne5] Il cavallo vuole riprendere in c4 e preparare f3–e4. } 6... Nbd7 7. Nxc4 Qc7 { La donna controlla e5: il Nero prepara la spinta ...e5. } 8. g3 e5 { La rottura centrale libera tutti i pezzi neri. } 9. dxe5 Nxe5 10. Bf4 Nfd7 { Il cavallo e5 è ben protetto; il Nero ha pareggiato il gioco al centro. [%key Contro Ne5: ...Nbd7, ...Qc7 ed ...e5] } ) 6... e6 7. Bxc4 Bb4 { L'alfiere di re si sviluppa attivamente, inchiodando il cavallo c3 (che controlla e4). [%cal Gf8b4,Rb4e1] }
+8. O-O O-O 9. Qe2 Nbd7 10. e4 Bg6 { Il Bianco ha spinto e4; l'alfiere si ritira in g6, dove resta attivo. Piano: ...Re8, ...e5 o ...Bh5 per pressare il cavallo f3. Posizione solida ed equilibrata. [%key Struttura solida: il Nero ha sviluppato tutti i pezzi senza debolezze] } *
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 dxc4 5. e3 { [%line Contro 5.e3] Il Bianco non gioca a4: allora il pedone c4 si può tenere. } 5... b5 { Difende c4. Ora il Bianco deve lavorare per recuperarlo. [%cal Gb5c4] } 6. a4 b4 { Il cavallo c3 viene cacciato. } 7. Na2 e6 8. Bxc4 Be7 9. O-O O-O { Il Bianco ha recuperato il pedone, ma il cavallo in a2 è fuori gioco. Piano: ...c5 e ...Bb7. [%cal Gc6c5,Gc8b7] } *
+
+1. d4 d5 2. c4 c6 3. Nc3 { [%line Contro 3.Nc3] } 3... Nf6 4. Nf3 { Traspone nella linea principale. } *
+
+1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. e3 { [%line Contro 3.Nc3 e 4.e3] Il Bianco vuole evitare ...dxc4 con tempo. } 4... Bf5 { Sempre lo stesso principio: alfiere fuori. } 5. cxd5 cxd5 6. Qb3 { Attacca b7, rimasto senza la difesa dell'alfiere c8. [%cal Rb3b7] } 6... Nc6 { Contrattacco: il pedone b7 si può dare. } 7. Qxb7 Bd7 { La donna bianca è lontana dal gioco e rischia di essere intrappolata. Il Nero minaccia ...Rb8 con tempo e ha uno sviluppo molto migliore: ottimo compenso per il pedone. [%key Contro Qb3: difendi b7 con ...Qb6/...Qc7, oppure sacrificalo con ...Nc6] [%cal Ga8b8,Gc6b4] } *
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3 { [%line Sistema lento (4.e3)] } 4... Bf5 { Senza Nc3 il Bianco non minaccia e4: l'alfiere esce tranquillo. } 5. Nc3 e6 6. Nh4 { Il cavallo dà la caccia all'alfiere. } ( 6. Bd3 { Offre il cambio degli alfieri. } 6... Bxd3 7. Qxd3 Nbd7 8. O-O Bd6 { Sviluppo normale: piano ...O-O ed ...e5 per liberare il gioco. [%cal Ge6e5] } ) 6... Bg4 { L'alfiere va dove attacca la donna d1. } 7. Qb3 Qb6 { Difende b7 e offre il cambio. } 8. h3 Bh5 9. g4 Bg6 10. Nxg6 hxg6 { Il Bianco ha la coppia degli alfieri, ma la colonna h è aperta per la tua torre e i pedoni g4/h3 hanno indebolito il lato di re bianco. [%key Contro Nh4: ...Bg4, ...Qb6, poi ...Bg6] [%cal Gh8h3] } *
+
+1. d4 d5 2. c4 c6 3. e3 { [%line Contro 3.e3] } 3... Nf6 4. Nf3 Bf5 { Traspone nel sistema lento. } *
+
+1. d4 d5 2. c4 c6 3. cxd5 { [%line Variante di Cambio] Struttura simmetrica: il Bianco spera in una partita tranquilla. } 3... cxd5 4. Nc3 Nf6 5. Bf4 Nc6 6. e3 Bf5 { Simmetria completa: alfiere fuori prima di ...e6. } 7. Nf3 e6 8. Qb3 { Attacca b7. } 8... Bb4 { Contrattacca: inchioda il cavallo e prepara ...O-O. Se Qxb7, ...Qa5 o ...Rb8 con gioco. } 9. Bb5 O-O { Posizione simmetrica e pari. Piano: ...Qa5, ...Rc8 e la colonna c. [%key Nel Cambio copia lo schieramento e sviluppa prima del Bianco] } *
+
+; ===================== CONTRO I SISTEMI (SENZA c4) =====================
+1. d4 d5 2. Bf4 { [%line Contro il Londra (2.Bf4)] Lo conosci dal lato del Bianco: sai cosa lo infastidisce. } 2... c5 { Attacca d4 subito, prima che arrivi c3. [%key Contro il Londra: ...c5, ...Nc6 e ...Qb6 contro b2] [%cal Gc5d4] } 3. e3 Nc6 4. c3 Qb6 { b2 non è più difeso dall'alfiere c1. [%cal Rb6b2] } 5. Qb3 c4 { Allontana la donna e guadagna spazio sul lato di donna. } 6. Qc2 Bf5 { Con tempo sulla donna. } 7. Qc1 e6 8. Nd2 Nf6 { Il Nero si è sviluppato bene e ha spazio sul lato di donna: piano ...b5–b4. [%cal Gb7b5,Gb5b4] } *
+
+1. d4 d5 2. Nf3 { [%line Contro 2.Nf3] } 2... Nf6 3. c4 c6 { Traspone nella Slava. } *
+
+1. d4 d5 2. Nf3 Nf6 3. e3 { [%line Contro il Colle (2.Nf3 e 3.e3)] Il Bianco prepara Bd3 ed e4. } 3... Bf5 { Impedisce Bd3 senza cambi e controlla e4. } 4. Bd3 Bxd3 5. Qxd3 e6 6. O-O Nbd7 7. c4 c6 8. Nc3 Be7 { Struttura Slava solidissima. Il Bianco ha rinunciato al suo piano con e4. [%key Contro il Colle: ...Bf5 e cambio degli alfieri camposcuro] } *
+
+1. d4 d5 2. Nf3 Nf6 3. Bf4 { [%line Contro 2.Nf3 e 3.Bf4] Il Londra con un altro ordine di mosse. } 3... c5 4. e3 Nc6 { Stesse idee: ...Qb6 e pressione su d4. [%cal Gd8b6] } *
+
+1. d4 d5 2. Nc3 { [%line Contro 2.Nc3 (Veresov)] } 2... Nf6 3. Bg5 Nbd7 { Prepara ...h6 senza permettere Bxf6 con pedoni doppiati. } 4. Nf3 h6 5. Bh4 e6 6. e3 Be7 { Sviluppo solido; piano ...c5 o ...c6 e ...b5. } *
+
+1. d4 d5 2. e4 { [%line Contro il Gambetto Blackmar-Diemer (2.e4)] } 2... dxe4 3. Nc3 Nf6 4. f3 exf3 { Accetta: il pedone in più è tuo. } 5. Nxf3 Bg4 { L'alfiere esce e attacca il cavallo che difende d4. } 6. h3 Bxf3 7. Qxf3 c6 { Struttura solida e un pedone in più: ora sviluppo con ...e6, ...Nbd7 e arrocco. [%key Contro il Blackmar-Diemer: prendi il pedone e sviluppati con calma] } *
