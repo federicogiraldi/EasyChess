@@ -48,9 +48,13 @@ function Run-Hidden([string]$file, [string[]]$arguments) {
 
 function Test-Server {
     # true solo se risponde il server della build (vite preview), non quello di sviluppo di EasyChess.bat.
+    # Controlla anche lo script principale: un server avviato prima di una nuova build non lo trova più.
     try {
         $r = Invoke-WebRequest -UseBasicParsing $url -TimeoutSec 2
-        return $r.StatusCode -eq 200 -and $r.Content -notmatch '@vite/client'
+        if ($r.StatusCode -ne 200 -or $r.Content -match '@vite/client') { return $false }
+        $js = [regex]::Match($r.Content, 'src="\.?/?(assets/[^"]+\.js)"').Groups[1].Value
+        if (-not $js) { return $false }
+        return (Invoke-WebRequest -UseBasicParsing ($url + $js) -Method Head -TimeoutSec 2).StatusCode -eq 200
     } catch { return $false }
 }
 
