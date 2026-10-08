@@ -8,10 +8,21 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 
 ## Avvio
 
-Doppio clic su **`EasyChess.bat`**: la prima volta installa le dipendenze (serve [Node.js](https://nodejs.org)), poi apre l'app nel browser su `http://localhost:5317`.
-Lascia aperta la finestra nera finché usi l'app; chiudila per spegnerla.
+Doppio clic sul collegamento **EasyChess** sul desktop: l'app si apre in una **finestra dedicata** (modalità app di Chrome/Edge, senza barra degli indirizzi), senza finestre nere.
 
-Da terminale si può fare lo stesso con `npm start`.
+Il collegamento lancia `EasyChess.vbs` → `scripts/avvia.ps1`, che:
+1. installa le dipendenze la prima volta (serve [Node.js](https://nodejs.org));
+2. ricompila da solo se hai aggiunto o modificato un'apertura;
+3. avvia in background un piccolo server locale su `http://localhost:5317` (resta attivo, è leggerissimo; per fermarlo: `scripts/ferma.ps1`);
+4. apre la finestra con il tuo browser predefinito se è Chrome, altrimenti con Edge.
+
+Per ricreare il collegamento (nuovo PC, collegamento cancellato): tasto destro su `scripts/crea-collegamento.ps1` → *Esegui con PowerShell*. Le icone si rigenerano con `scripts/genera-icone.ps1`.
+
+### App installabile e offline
+
+EasyChess è una **PWA** (`vite-plugin-pwa`), come LearnWeb: un service worker mette in cache l'app e Stockfish (~7,5 MB), quindi funziona anche senza internet. Se vuoi, dalla finestra puoi anche installarla (menu del browser → *Installa EasyChess*) per averla nel menu Start con la sua icona.
+
+**Modalità sviluppo:** `EasyChess.bat` (o `npm start`) avvia il server di sviluppo con ricaricamento automatico, nel browser normale.
 
 ## Modalità
 
