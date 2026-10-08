@@ -1,0 +1,45 @@
+[Opening "Attacco Indiano di Re"]
+[Id "kia"]
+[Color "white"]
+[Description "Un sistema per il Bianco con fianchetto: Nf3, g3, Bg2, O-O, d3, Nbd2, e4. Contro le strutture alla Francese spingi e5 e attacchi il re; contro ...e5 giochi c3, a4 e Nc4."]
+
+{ L'Attacco Indiano di Re (KIA) è un sistema: il Bianco si schiera con Nf3, g3, Bg2, O-O, d3, Nbd2 ed e4 quasi contro qualsiasi cosa. È una Est-Indiana "a colori invertiti", con un tempo in più. Il piano dipende dalla struttura del Nero: contro ...d5/...e6 spingi e5 e attacchi il re; contro ...e5 giochi sul lato di donna e al centro. }
+1. Nf3 { [%line Attacco Indiano di Re] Mossa flessibile: controlla e5 e d4 senza impegnare i pedoni. [%key Lo schieramento: Nf3, g3, Bg2, O-O, d3, Nbd2, e4] [%cal Gg2g3,Gf1g2,Ge1g1,Gd2d3,Gb1d2,Ge2e4] } *
+
+; ===================== STRUTTURA ALLA FRANCESE =====================
+1. Nf3 d5 2. g3 { [%line Contro 1...d5] Prepara il fianchetto. } 2... Nf6 3. Bg2 e6 { [%line Struttura alla Francese (...e6 e ...c5)] Il Nero costruisce una struttura solida con ...e6 e ...c5. }
+4. O-O Be7 5. d3 O-O 6. Nbd2 c5 7. e4 { La spinta caratteristica: il Bianco sfida d5 e prepara e5. [%key Prima completa lo schieramento, poi e4] [%cal Ge2e4] }
+7... Nc6 8. Re1 { La torre sostiene e4 e prepara e5. [%cal Gf1e1,Ge4e5] } 8... b5 { Il Nero attacca sul lato di donna: è una corsa fra due attacchi. }
+9. e5 { Il cuneo in e5: toglie al Nero la casa f6 e "taglia" la sua posizione in due. [%key Contro ...e6/...d5: spingi e5 e attacca sul lato di re] [%csl Ge5] } 9... Nd7 10. Nf1 { Il cavallo cambia strada: Nf1–h2–g4 oppure Nf1–e3. } 10... a5 11. h4 { Spazio sul lato di re e appoggio per Ng4/Bh3. } 11... b4 12. Bf4 { L'alfiere sostiene e5. } 12... a4 13. N1h2 { Il cavallo punta a g4: da lì attacca h6 e f6. Piano: Ng4, h5, Qd2 / Bh6, poi l'attacco sul re. [%key Manovra tipica: Nf1–h2–g4 e la spinta h4–h5] [%cal Gh2g4,Gh4h5] } *
+
+1. Nf3 e6 { [%line Contro 1...e6] } 2. g3 d5 3. Bg2 Nf6 { Traspone nella struttura alla Francese. } *
+
+1. Nf3 d5 2. g3 c5 { [%line Contro 2...c5] } 3. Bg2 Nc6 4. O-O e6 5. d3 Nf6 6. Nbd2 Be7 7. e4 O-O 8. Re1 b5 { Traspone nella linea con ...e6 e ...c5. } *
+
+; ===================== ALFIERE ATTIVO DEL NERO =====================
+1. Nf3 d5 2. g3 Bf5 { [%line Contro ...Bf5] L'alfiere nero esce prima di ...e6, come nella Caro-Kann. } 3. Bg2 e6 4. O-O Nf6 5. d3 Be7 6. Nbd2 O-O
+7. Nh4 { Attacca l'alfiere: il Bianco vuole la coppia degli alfieri e la spinta e4 con tempo. [%key Contro ...Bf5: Nh4 caccia l'alfiere] [%cal Gf3h4,Rh4f5] } 7... Bg6 8. Nxg6 hxg6 9. e4 { Il Bianco ha la coppia degli alfieri e apre il centro, dove gli alfieri sono più forti. } *
+
+1. Nf3 d5 2. g3 Bg4 { [%line Contro ...Bg4] L'alfiere inchioda il cavallo. } 3. Bg2 Nd7 4. O-O Ngf6 5. d3 e6 6. Nbd2 Be7 7. e4 O-O 8. h3 { Chiedi all'alfiere cosa vuole fare. Se ...Bxf3, riprendi con il cavallo e hai la coppia degli alfieri. [%key Contro ...Bg4: h3 al momento giusto] [%cal Gh2h3] } 8... Bh5 9. Re1 { Il solito schieramento, con e5 in vista. [%cal Ge4e5] } *
+
+1. Nf3 d5 2. g3 Nf6 3. Bg2 c6 { [%line Contro ...c6 e ...e5] Il Nero sceglie uno schieramento con ...c6, ...Bg4 ed ...e5. } 4. O-O Bg4 5. d3 Nbd7 6. Nbd2 e5 { Il Nero prende il centro: niente cuneo in e5 stavolta. }
+7. e4 { Sfida il centro. Piano: c3, Qc2/Qe1 e Nc4 o Nh4–f5, a seconda di cosa fa il Nero. [%key Contro ...e5: c3, Re1, Nc4 e gioco al centro] [%cal Gc2c3,Gd2c4] } 7... dxe4 8. dxe4 Bc5 9. c3 { Controlla d4 e prepara Qc2 e Nc4. } 9... O-O 10. h3 { Chiede all'alfiere g4 di decidere. } *
+
+; ===================== CONTRO LE INDIANE =====================
+1. Nf3 Nf6 { [%line Contro 1...Nf6] } 2. g3 g6 { [%line Contro il fianchetto (...g6 ed ...e5)] Il Nero fa lo stesso schieramento. } 3. Bg2 Bg7 4. O-O O-O 5. d3 d6 6. e4 e5
+7. Nbd2 { Lo schieramento è simmetrico: tocca al Bianco, e questo tempo in più conta. } 7... Nc6 8. c3 { Prepara d4 o b4 per guadagnare spazio sul lato di donna. } 8... a5 9. a4 { Ferma ...a4 e prepara Na3/Nc4. Piano: Re1, Nc4 e una spinta al centro con d4. [%key Contro ...g6 ed ...e5: c3, a4 e Nc4] [%cal Gd2c4,Gd3d4] } *
+
+1. Nf3 Nf6 2. g3 d5 3. Bg2 { Traspone nelle linee con 1...d5. } *
+
+1. Nf3 g6 { [%line Contro 1...g6] } 2. g3 Bg7 3. Bg2 Nf6 4. O-O O-O 5. d3 d6 6. e4 e5 { Traspone nella linea contro il fianchetto. } *
+
+; ===================== CONTRO ...c5 =====================
+1. Nf3 c5 { [%line Contro 1...c5 (struttura siciliana)] } 2. g3 Nc6 3. Bg2 g6 4. O-O Bg7 5. d3 Nf6 6. e4 O-O 7. c3 { Prepara d4 per sfidare il centro. } 7... d6 8. Re1 { Sostiene e4. Piano: d4 al momento giusto, oppure Nbd2–f1–e3 e un attacco con h3/g4 se il Nero gioca passivo. [%key Contro ...c5 e ...g6: c3 e la spinta d4] [%cal Gd3d4] } *
+
+; ===================== OLANDESE =====================
+1. Nf3 f5 { [%line Contro l'Olandese (1...f5)] } 2. g3 Nf6 3. Bg2 g6 4. O-O Bg7 5. d3 { Prepara e4: il pedone d3 la sostiene. } 5... O-O 6. e4 { Rompe subito il controllo nero di e4: è la spinta tematica contro l'Olandese. [%key Contro l'Olandese: d3 ed e4 subito] [%cal Ge2e4,Ge4f5] } *
+
+; ===================== ARRIVARCI DA 1.e4 =====================
+1. e4 { [%line Da 1.e4 (Francese e Siciliana)] Se apri con 1.e4 puoi arrivare al KIA contro la Francese e la Siciliana con ...e6. Contro 1...e5 continui a giocare le tue aperture abituali. } 1... e6 { [%line Da 1.e4: contro la Francese] } 2. d3 { Niente teoria della Francese: d3 e lo schieramento del KIA. } 2... d5 3. Nd2 Nf6 4. Ngf3 c5 5. g3 Nc6 6. Bg2 Be7 7. O-O O-O 8. Re1 b5 { Traspone nella linea principale contro la struttura alla Francese. } *
+
+1. e4 c5 { [%line Da 1.e4: contro la Siciliana con ...e6] } 2. Nf3 e6 3. d3 { Evita la Siciliana aperta: si gioca il KIA. } 3... Nc6 4. g3 d5 5. Nbd2 Nf6 6. Bg2 Be7 7. O-O O-O 8. Re1 b5 { Traspone nella linea principale contro la struttura alla Francese. } *
