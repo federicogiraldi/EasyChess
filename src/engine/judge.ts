@@ -28,7 +28,11 @@ export function qualityFromLoss(loss: number, isBest: boolean): Quality {
 
 export interface Verdict {
   quality: Quality;
+  /** Posizione prima della mossa: da qui partono le varianti da mostrare sulla scacchiera. */
+  fen: string;
   playedSan: string;
+  /** Variante di Stockfish dopo la mossa giocata (UCI, inizia con la mossa stessa). */
+  playedPv: string[];
   /** Valutazioni in centipedoni dal punto di vista di chi ha mosso. */
   playedScore: number;
   /** Mossa con cui confrontare: quella del repertorio se esiste, altrimenti la migliore dell'engine. */
@@ -36,6 +40,8 @@ export interface Verdict {
     san: string;
     score: number;
     line: string;
+    /** Variante della mossa migliore (UCI, inizia con la mossa stessa). */
+    pv: string[];
     source: 'repertorio' | 'engine';
     node?: OpeningNode;
     reasons: string[];
@@ -94,7 +100,9 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
   return {
     quality,
+    fen,
     playedSan,
+    playedPv: played.pv,
     playedScore: played.score,
     inRepertoire,
     // Anche quando l'engine la considera giocabile, se devii dal repertorio ti dico cosa perdi rispetto al piano.
@@ -103,6 +111,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
       san: betterNode?.san ?? new Chess(fen).move({ from: betterLine.move.slice(0, 2), to: betterLine.move.slice(2, 4), promotion: betterLine.move[4] ?? 'q' }).san,
       score: betterLine.score,
       line: sanLine(fen, betterLine.pv, 6),
+      pv: betterLine.pv,
       source: betterNode ? 'repertorio' : 'engine',
       node: betterNode,
       reasons: reasonsFor(fen, betterLine.pv),

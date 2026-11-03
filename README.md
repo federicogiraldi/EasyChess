@@ -57,6 +57,8 @@ EasyChess è una **PWA** (`vite-plugin-pwa`), come LearnWeb: un service worker m
 
 In Allenamento, Ripasso, Quiz e Corso, quando sbagli compare il pulsante **🔬 Perché … è peggio?** con la stessa analisi.
 
+Nella spiegazione, **♟ Mostra … sulla scacchiera** gioca sulla scacchiera tutta la variante consigliata (e **♟ Cosa succede dopo …** quella della tua mossa): la sequenza parte da sola, poi la scorri con ◀ ▶ (o le frecce della tastiera, o cliccando le mosse) e con **↩ Torna alla posizione** (o Esc) ritrovi la partita dove l'avevi lasciata. Funziona in tutte le modalità.
+
 ### Come nascono le spiegazioni
 
 Tutto gira offline. Nel Simulatore l'avversario usa un secondo Stockfish con la forza limitata (`UCI_Elo` da 1320 in su; sotto, Skill Level 0 e ogni tanto una mossa più debole scelta apposta), separato da quello che analizza a piena forza. La precisione usa la stessa formula di Lichess (perdita di probabilità di vittoria a ogni mossa). Stockfish 17 (versione "lite", dentro il browser) valuta le mosse; le spiegazioni sono ricavate da regole scacchistiche: materiale perso lungo la variante, pezzi lasciati in presa o minacce ignorate, arrocco perso, donna uscita troppo presto, pezzo mosso due volte, alfiere chiuso dai propri pedoni, spinte che indeboliscono il re, attacco al centro e alla base della catena. A questo si aggiunge il commento del repertorio sulla mossa giusta.
