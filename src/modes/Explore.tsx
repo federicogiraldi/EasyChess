@@ -5,11 +5,19 @@ import { Board, sanOf } from '../components/Board';
 import { MoveList } from '../components/MoveList';
 import { CommentPanel } from '../components/CommentPanel';
 import { LineTree } from '../components/LineTree';
+import { EngineTips } from '../components/EngineTips';
 
 const MY_ARROW = 'rgba(21, 128, 61, 0.55)';
 const THEIR_ARROW = 'rgba(234, 120, 20, 0.55)';
 
-export function Explore({ opening, onOpenLab }: { opening: Opening; onOpenLab: (moves: string[]) => void }) {
+interface Props {
+  opening: Opening;
+  onOpenLab: (moves: string[]) => void;
+  /** Apre il Simulatore partendo da questa posizione. */
+  onSimulate: (moves: string[]) => void;
+}
+
+export function Explore({ opening, onOpenLab, onSimulate }: Props) {
   // Il percorso è quello effettivamente seguito: resta corretto anche attraverso le trasposizioni.
   const [path, setPath] = useState<OpeningNode[]>([opening.root]);
   const [hints, setHints] = useState(true);
@@ -67,6 +75,9 @@ export function Explore({ opening, onOpenLab }: { opening: Opening; onOpenLab: (
           <button onClick={() => onOpenLab(path.slice(1).map((n) => n.san))} title="Prova mosse diverse da questa posizione con Stockfish">
             🔬 Prova altre mosse da qui
           </button>
+          <button onClick={() => onSimulate(path.slice(1).map((n) => n.san))} title="Gioca una partita contro Stockfish da questa posizione">
+            🎮 Gioca da qui
+          </button>
         </div>
       </div>
 
@@ -87,6 +98,7 @@ export function Explore({ opening, onOpenLab }: { opening: Opening; onOpenLab: (
           ))}
           {current.transposesTo && <p className="muted small">↪ Traspone in un'altra linea dell'albero.</p>}
         </div>
+        {candidates.length === 0 && <EngineTips fen={current.fen} onSimulate={() => onSimulate(path.slice(1).map((n) => n.san))} />}
       </div>
     </div>
   );

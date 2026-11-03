@@ -58,6 +58,7 @@ export function OpeningPicker({ openings, errors, onOpen, onRemoveImported }: Pr
                 🔁 Ripasso{toReview > 0 ? ` (${toReview})` : ''}
               </button>
               <button onClick={() => onOpen(op.id, 'quiz')}>❓ Quiz</button>
+              <button onClick={() => onOpen(op.id, 'sim')}>🎮 Simulatore</button>
               <button onClick={() => onOpen(op.id, 'lab')}>🔬 Laboratorio</button>
             </div>
             <footer className="card-footer">

@@ -10,8 +10,9 @@ import { Review } from './modes/Review';
 import { Quiz } from './modes/Quiz';
 import { Lab } from './modes/Lab';
 import { Course } from './modes/Course';
+import { Simulator } from './modes/Simulator';
 
-export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab';
+export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
 
 const MODES: { id: Mode; label: string }[] = [
   { id: 'course', label: '🎓 Corso' },
@@ -19,6 +20,7 @@ const MODES: { id: Mode; label: string }[] = [
   { id: 'drill', label: '♟ Allenamento' },
   { id: 'review', label: '🔁 Ripasso' },
   { id: 'quiz', label: '❓ Quiz' },
+  { id: 'sim', label: '🎮 Simulatore' },
   { id: 'lab', label: '🔬 Laboratorio' },
 ];
 
@@ -26,7 +28,7 @@ const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, '')
 
 export default function App() {
   const [imported, setImported] = useState<PgnSource[]>(() => load('imported', []));
-  const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string } | null>(null);
+  const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
@@ -105,7 +107,11 @@ export default function App() {
         {opening && route ? (
           <div key={`${opening.id}-${route.mode}`}>
             {route.mode === 'explore' && (
-              <Explore opening={opening} onOpenLab={(labMoves) => setRoute({ openingId: opening.id, mode: 'lab', labMoves })} />
+              <Explore
+                opening={opening}
+                onOpenLab={(labMoves) => setRoute({ openingId: opening.id, mode: 'lab', labMoves })}
+                onSimulate={(simMoves) => setRoute({ openingId: opening.id, mode: 'sim', simMoves })}
+              />
             )}
             {route.mode === 'drill' && <Drill opening={opening} initialLine={route.drillLine} />}
             {route.mode === 'course' && opening.course && (
@@ -117,6 +123,7 @@ export default function App() {
             {route.mode === 'review' && <Review opening={opening} />}
             {route.mode === 'quiz' && <Quiz opening={opening} />}
             {route.mode === 'lab' && <Lab opening={opening} initialMoves={route.labMoves} />}
+            {route.mode === 'sim' && <Simulator opening={opening} initialMoves={route.simMoves} />}
           </div>
         ) : (
           <>
