@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
 import type { Arrow, Highlight, Side } from '../model/types';
+import { useVariationPreview, VariationBar } from './VariationPreview';
 
 type ChessboardProps = Parameters<typeof Chessboard>[0];
 
@@ -17,7 +18,28 @@ interface Props {
   marks?: Record<string, string>;
 }
 
-export function Board({ fen, orientation, onMove, arrows = [], highlights = [], lastMove, marks = {} }: Props) {
+const PREVIEW_ARROW = { good: 'rgba(21, 128, 61, 0.7)', bad: 'rgba(185, 28, 28, 0.7)' };
+
+export function Board(props: Props) {
+  // Durante l'anteprima di una variante la scacchiera mostra quella al posto della partita (solo da guardare).
+  const preview = useVariationPreview()?.state;
+  let { fen, onMove, arrows = [], highlights = [], lastMove, marks = {} } = props;
+  const { orientation } = props;
+  if (preview) {
+    const { variation, index, req } = preview;
+    const cur = index > 0 ? variation.steps[index - 1] : undefined;
+    const next = variation.steps[index];
+    fen = cur?.fen ?? variation.startFen;
+    onMove = undefined;
+    lastMove = cur ? { from: cur.from, to: cur.to } : undefined;
+    arrows = next ? [{ from: next.from, to: next.to, color: PREVIEW_ARROW[req.tone] }] : [];
+    highlights = [];
+    marks = {};
+  }
+  return <BoardView fen={fen} orientation={orientation} onMove={onMove} arrows={arrows} highlights={highlights} lastMove={lastMove} marks={marks} previewing={!!preview} />;
+}
+
+function BoardView({ fen, orientation, onMove, arrows = [], highlights = [], lastMove, marks = {}, previewing }: Props & { previewing: boolean }) {
   const [selected, setSelected] = useState<string | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(480);
@@ -76,9 +98,12 @@ export function Board({ fen, orientation, onMove, arrows = [], highlights = [], 
   };
 
   return (
-    <div ref={wrapRef} className="board">
-      <Chessboard {...props} />
-    </div>
+    <>
+      <div ref={wrapRef} className={`board ${previewing ? 'previewing' : ''}`}>
+        <Chessboard {...props} />
+      </div>
+      {previewing && <VariationBar />}
+    </>
   );
 }
 

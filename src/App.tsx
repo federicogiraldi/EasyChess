@@ -13,6 +13,7 @@ import { Quiz } from './modes/Quiz';
 import { Lab } from './modes/Lab';
 import { Course } from './modes/Course';
 import { Simulator } from './modes/Simulator';
+import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
 
@@ -87,90 +88,92 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      <header className="topbar">
-        <button className="brand" onClick={() => setRoute(null)}>
-          <span className="logo">♞</span> EasyChess
-        </button>
-        {opening && route && (
-          <>
-            <span className="crumb">{opening.name}</span>
-            <nav className="tabs">
-              {MODES.filter((m) => m.id !== 'course' || opening.course).map((m) => (
-                <button
-                  key={m.id}
-                  className={m.id === route.mode ? 'active' : ''}
-                  onClick={() => setRoute({ openingId: route.openingId, mode: m.id })}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </nav>
-          </>
-        )}
-      </header>
+    <VariationPreviewProvider>
+      <div className="app">
+        <header className="topbar">
+          <button className="brand" onClick={() => setRoute(null)}>
+            <span className="logo">♞</span> EasyChess
+          </button>
+          {opening && route && (
+            <>
+              <span className="crumb">{opening.name}</span>
+              <nav className="tabs">
+                {MODES.filter((m) => m.id !== 'course' || opening.course).map((m) => (
+                  <button
+                    key={m.id}
+                    className={m.id === route.mode ? 'active' : ''}
+                    onClick={() => setRoute({ openingId: route.openingId, mode: m.id })}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </nav>
+            </>
+          )}
+        </header>
 
-      <main>
-        {opening && route ? (
-          <div key={`${opening.id}-${route.mode}`}>
-            {route.mode === 'explore' && (
-              <Explore
-                opening={opening}
-                onOpenLab={(labMoves) => setRoute({ openingId: opening.id, mode: 'lab', labMoves })}
-                onSimulate={(simMoves) => setRoute({ openingId: opening.id, mode: 'sim', simMoves })}
+        <main>
+          {opening && route ? (
+            <div key={`${opening.id}-${route.mode}`}>
+              {route.mode === 'explore' && (
+                <Explore
+                  opening={opening}
+                  onOpenLab={(labMoves) => setRoute({ openingId: opening.id, mode: 'lab', labMoves })}
+                  onSimulate={(simMoves) => setRoute({ openingId: opening.id, mode: 'sim', simMoves })}
+                />
+              )}
+              {route.mode === 'drill' && <Drill opening={opening} initialLine={route.drillLine} />}
+              {route.mode === 'course' && opening.course && (
+                <Course
+                  opening={{ ...opening, course: opening.course }}
+                  onDrillLine={(drillLine) => setRoute({ openingId: opening.id, mode: 'drill', drillLine })}
+                />
+              )}
+              {route.mode === 'review' && <Review opening={opening} />}
+              {route.mode === 'quiz' && <Quiz opening={opening} />}
+              {route.mode === 'lab' && <Lab opening={opening} initialMoves={route.labMoves} />}
+              {route.mode === 'sim' && <Simulator opening={opening} initialMoves={route.simMoves} />}
+            </div>
+          ) : (
+            <>
+              <section className="hero">
+                <h1>Le tue aperture</h1>
+                <p className="muted">
+                  Esplora le linee, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
+                </p>
+              </section>
+              <InstallHint />
+              {message && (
+                <div className="toast" onClick={() => setMessage(null)}>
+                  {message}
+                </div>
+              )}
+              <OpeningPicker
+                openings={openings}
+                errors={errors}
+                onOpen={(openingId, mode) => setRoute({ openingId, mode })}
+                onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
               />
-            )}
-            {route.mode === 'drill' && <Drill opening={opening} initialLine={route.drillLine} />}
-            {route.mode === 'course' && opening.course && (
-              <Course
-                opening={{ ...opening, course: opening.course }}
-                onDrillLine={(drillLine) => setRoute({ openingId: opening.id, mode: 'drill', drillLine })}
-              />
-            )}
-            {route.mode === 'review' && <Review opening={opening} />}
-            {route.mode === 'quiz' && <Quiz opening={opening} />}
-            {route.mode === 'lab' && <Lab opening={opening} initialMoves={route.labMoves} />}
-            {route.mode === 'sim' && <Simulator opening={opening} initialMoves={route.simMoves} />}
-          </div>
-        ) : (
-          <>
-            <section className="hero">
-              <h1>Le tue aperture</h1>
-              <p className="muted">
-                Esplora le linee, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
+              <section className="tools">
+                <label className="button">
+                  ➕ Importa apertura (.pgn)
+                  {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
+                  <input type="file" onChange={importPgn} hidden />
+                </label>
+                <button onClick={exportProgress}>💾 Esporta progressi</button>
+                <label className="button">
+                  📂 Ripristina progressi
+                  <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
+                </label>
+              </section>
+              <p className="muted small hint">
+                Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
+                header <code>[Opening]</code>, <code>[Color]</code> e <code>[Description]</code>. Istruzioni complete nel README.
               </p>
-            </section>
-            <InstallHint />
-            {message && (
-              <div className="toast" onClick={() => setMessage(null)}>
-                {message}
-              </div>
-            )}
-            <OpeningPicker
-              openings={openings}
-              errors={errors}
-              onOpen={(openingId, mode) => setRoute({ openingId, mode })}
-              onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
-            />
-            <section className="tools">
-              <label className="button">
-                ➕ Importa apertura (.pgn)
-                {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
-                <input type="file" onChange={importPgn} hidden />
-              </label>
-              <button onClick={exportProgress}>💾 Esporta progressi</button>
-              <label className="button">
-                📂 Ripristina progressi
-                <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
-              </label>
-            </section>
-            <p className="muted small hint">
-              Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
-              header <code>[Opening]</code>, <code>[Color]</code> e <code>[Description]</code>. Istruzioni complete nel README.
-            </p>
-          </>
-        )}
-      </main>
-    </div>
+            </>
+          )}
+        </main>
+      </div>
+    </VariationPreviewProvider>
   );
 }
