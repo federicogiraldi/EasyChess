@@ -1,8 +1,10 @@
-import { useMemo, useState, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent } from 'react';
 import { builtinSources, loadOpenings, type PgnSource } from './openings';
 import { parseOpening } from './core/pgnToTree';
 import { exportCards, replaceCards } from './core/progress';
 import { load, save } from './core/storage';
+import { saveFile } from './core/device';
+import { InstallHint } from './components/InstallHint';
 import { OpeningPicker } from './components/OpeningPicker';
 import { Explore } from './modes/Explore';
 import { Drill } from './modes/Drill';
@@ -34,6 +36,12 @@ export default function App() {
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
 
+  // Sul telefono le schede scorrono in orizzontale: porta in vista quella attiva (es. Esplora → Laboratorio).
+  useEffect(() => {
+    document.querySelector('.tabs .active')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    window.scrollTo({ top: 0 });
+  }, [route?.mode, route?.openingId]);
+
   const updateImported = (next: PgnSource[]) => {
     setImported(next);
     save('imported', next);
@@ -56,12 +64,11 @@ export default function App() {
 
   const exportProgress = () => {
     const data = { version: 1, cards: exportCards(), imported };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `easychess-progressi-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    void saveFile(
+      `easychess-progressi-${new Date().toISOString().slice(0, 10)}.json`,
+      JSON.stringify(data, null, 2),
+      'application/json',
+    );
   };
 
   const importProgress = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -133,6 +140,7 @@ export default function App() {
                 Esplora le linee, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
               </p>
             </section>
+            <InstallHint />
             {message && (
               <div className="toast" onClick={() => setMessage(null)}>
                 {message}
@@ -147,7 +155,8 @@ export default function App() {
             <section className="tools">
               <label className="button">
                 ➕ Importa apertura (.pgn)
-                <input type="file" accept=".pgn,text/plain" onChange={importPgn} hidden />
+                {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
+                <input type="file" onChange={importPgn} hidden />
               </label>
               <button onClick={exportProgress}>💾 Esporta progressi</button>
               <label className="button">

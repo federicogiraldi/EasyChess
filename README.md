@@ -11,6 +11,16 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 
 **https://federicogiraldi.github.io/EasyChess/** — funziona da qualsiasi dispositivo (PC, telefono, tablet), si può installare come app e dopo la prima visita funziona offline. Ogni merge su `main` viene testato e pubblicato automaticamente (`.github/workflows/deploy.yml`).
 
+### Su iPhone e iPad
+
+1. Apri **https://federicogiraldi.github.io/EasyChess/** in **Safari**.
+2. Tocca **Condividi** (il quadrato con la freccia) → **Aggiungi alla schermata Home**.
+3. Apri EasyChess dall'icona: è a schermo intero come un'app, e dopo la prima apertura funziona anche **offline** (Stockfish compreso).
+
+L'interfaccia è adattata al touch: tocca un pezzo e poi la casa (oppure trascinalo), schede scorrevoli su iPhone, scacchiera che sta sempre nello schermo anche in orizzontale, margini per notch e barra Home. Su iPhone Stockfish analizza un po' meno in profondità per rispondere più in fretta e consumare meno batteria.
+
+Per portare i progressi dal PC: **💾 Esporta progressi** sul PC → manda il file all'iPhone (AirDrop, iCloud Drive, mail) → **📂 Ripristina progressi** nell'app. Sull'iPhone/iPad "Esporta" apre il foglio di condivisione (Salva su File, AirDrop…). Nota: Safari e l'app sulla schermata Home hanno progressi separati, usa sempre l'icona.
+
 I progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **💾 Esporta progressi** e **📂 Ripristina progressi** in home.
 
 ## Avvio dal desktop
