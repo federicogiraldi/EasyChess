@@ -5,8 +5,11 @@
 .text-input { font: inherit; font-size: 16px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); flex: 1; min-width: 180px; }
 .pgn-input { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 16px; min-height: 140px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); resize: vertical; }
 .error-text { color: var(--wrong); margin: 0; }
-.game-list { display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow: auto; }
-.game-row { width: 100%; justify-content: flex-start; text-align: left; gap: 10px; }
+.game-list { display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+/* In una lista che scorre le righe non devono mai schiacciarsi: ognuna tiene l'altezza del suo testo. */
+.game-list > * { flex-shrink: 0; }
+.game-row { width: 100%; height: auto; justify-content: flex-start; align-items: center; text-align: left; gap: 10px; white-space: normal; }
+.game-main > * { overflow-wrap: anywhere; }
 .game-result { flex: none; width: 26px; height: 26px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; background: var(--panel-2); color: var(--muted); }
 .game-result.vinta { background: #5c9b2f; color: #fff; }
 .game-result.persa { background: #d43a2f; color: #fff; }
