@@ -13,6 +13,7 @@ import { Quiz } from './modes/Quiz';
 import { Lab } from './modes/Lab';
 import { Course } from './modes/Course';
 import { Simulator } from './modes/Simulator';
+import { Analysis } from './modes/Analysis';
 import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
@@ -33,6 +34,7 @@ export default function App() {
   const [imported, setImported] = useState<PgnSource[]>(() => load('imported', []));
   const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState(false);
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
@@ -91,9 +93,16 @@ export default function App() {
     <VariationPreviewProvider>
       <div className="app">
         <header className="topbar">
-          <button className="brand" onClick={() => setRoute(null)}>
+          <button
+            className="brand"
+            onClick={() => {
+              setRoute(null);
+              setAnalysis(false);
+            }}
+          >
             <span className="logo">♞</span> EasyChess
           </button>
+          {analysis && !route && <span className="crumb">📊 Analisi partite</span>}
           {opening && route && (
             <>
               <span className="crumb">{opening.name}</span>
@@ -113,7 +122,15 @@ export default function App() {
         </header>
 
         <main>
-          {opening && route ? (
+          {analysis && !route ? (
+            <Analysis
+              openings={openings}
+              onOpenMode={(openingId, mode, moves) => {
+                setAnalysis(false);
+                setRoute(mode === 'lab' ? { openingId, mode, labMoves: moves } : { openingId, mode, simMoves: moves });
+              }}
+            />
+          ) : opening && route ? (
             <div key={`${opening.id}-${route.mode}`}>
               {route.mode === 'explore' && (
                 <Explore
@@ -154,6 +171,15 @@ export default function App() {
                 onOpen={(openingId, mode) => setRoute({ openingId, mode })}
                 onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
               />
+              <section className="sim-card home-analysis">
+                <div>
+                  <h3>📊 Analisi delle tue partite</h3>
+                  <p className="muted small">Carica le partite da chess.com (o un PGN) e Stockfish le analizza, confrontandole con il tuo repertorio.</p>
+                </div>
+                <button className="primary" onClick={() => setAnalysis(true)}>
+                  Analizza le mie partite
+                </button>
+              </section>
               <section className="tools">
                 <label className="button">
                   ➕ Importa apertura (.pgn)
