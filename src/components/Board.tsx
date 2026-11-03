@@ -3,6 +3,8 @@ import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
 import type { Arrow, Highlight, Side } from '../model/types';
 import { useVariationPreview, VariationBar } from './VariationPreview';
+import { QualityIcon } from './QualityIcon';
+import type { SimQuality } from '../core/simulation';
 
 type ChessboardProps = Parameters<typeof Chessboard>[0];
 
@@ -16,6 +18,8 @@ interface Props {
   lastMove?: { from: string; to: string };
   /** Case da colorare per un feedback (es. errore in rosso). */
   marks?: Record<string, string>;
+  /** Icona della qualità della mossa sulla casa d'arrivo (come nelle revisioni di chess.com). */
+  badge?: { square: string; quality: SimQuality };
 }
 
 const PREVIEW_ARROW = { good: 'rgba(21, 128, 61, 0.7)', bad: 'rgba(185, 28, 28, 0.7)' };
@@ -23,7 +27,7 @@ const PREVIEW_ARROW = { good: 'rgba(21, 128, 61, 0.7)', bad: 'rgba(185, 28, 28, 
 export function Board(props: Props) {
   // Durante l'anteprima di una variante la scacchiera mostra quella al posto della partita (solo da guardare).
   const preview = useVariationPreview()?.state;
-  let { fen, onMove, arrows = [], highlights = [], lastMove, marks = {} } = props;
+  let { fen, onMove, arrows = [], highlights = [], lastMove, marks = {}, badge } = props;
   const { orientation } = props;
   if (preview) {
     const { variation, index, req } = preview;
@@ -35,11 +39,12 @@ export function Board(props: Props) {
     arrows = next ? [{ from: next.from, to: next.to, color: PREVIEW_ARROW[req.tone] }] : [];
     highlights = [];
     marks = {};
+    badge = undefined;
   }
-  return <BoardView fen={fen} orientation={orientation} onMove={onMove} arrows={arrows} highlights={highlights} lastMove={lastMove} marks={marks} previewing={!!preview} />;
+  return <BoardView fen={fen} orientation={orientation} onMove={onMove} arrows={arrows} highlights={highlights} lastMove={lastMove} marks={marks} badge={badge} previewing={!!preview} />;
 }
 
-function BoardView({ fen, orientation, onMove, arrows = [], highlights = [], lastMove, marks = {}, previewing }: Props & { previewing: boolean }) {
+function BoardView({ fen, orientation, onMove, arrows = [], highlights = [], lastMove, marks = {}, badge, previewing }: Props & { previewing: boolean }) {
   const [selected, setSelected] = useState<string | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(480);
@@ -101,6 +106,7 @@ function BoardView({ fen, orientation, onMove, arrows = [], highlights = [], las
     <>
       <div ref={wrapRef} className={`board ${previewing ? 'previewing' : ''}`}>
         <Chessboard {...props} />
+        {badge && <SquareBadge key={`${badge.square}-${badge.quality}-${fen}`} {...badge} width={width} orientation={orientation} />}
       </div>
       {previewing && <VariationBar />}
     </>
@@ -114,4 +120,21 @@ export function sanOf(fen: string, from: string, to: string): string | null {
   } catch {
     return null;
   }
+}
+
+/** Posizione dell'icona: angolo in alto a destra della casa, un po' sporgente, sempre dentro la scacchiera. */
+function SquareBadge({ square, quality, width, orientation }: { square: string; quality: SimQuality; width: number; orientation: Side }) {
+  const sq = width / 8;
+  const file = square.charCodeAt(0) - 97;
+  const rank = Number(square[1]) - 1;
+  const col = orientation === 'white' ? file : 7 - file;
+  const row = orientation === 'white' ? 7 - rank : rank;
+  const size = Math.round(Math.max(18, Math.min(34, sq * 0.42)));
+  const left = Math.min(width - size, (col + 1) * sq - size * 0.7);
+  const top = Math.max(0, row * sq - size * 0.3);
+  return (
+    <div className="square-badge" style={{ left, top, width: size, height: size }}>
+      <QualityIcon q={quality} size={size} />
+    </div>
+  );
 }
