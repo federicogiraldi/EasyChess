@@ -32,7 +32,7 @@ import { engine, formatScore, opponentEngine } from '../engine/stockfish';
 import { Board, sanOf } from '../components/Board';
 import { EvalBar, WhyButton } from '../components/Explanation';
 import { EvalGraph } from '../components/EvalGraph';
-import { CoachPanel } from '../components/CoachPanel';
+import { BOOK_ARROW_COLOR, CoachPanel, ENGINE_ARROW_COLORS } from '../components/CoachPanel';
 import './simulator.css';
 
 interface Props {
@@ -68,6 +68,7 @@ export function Simulator({ opening, initialMoves }: Props) {
   const [coach, setCoach] = useState<{ fen: string; lines: CoachLine[] } | null>(null);
   const [history, setHistory] = useState<SimGame[]>(loadHistory);
   const [copied, setCopied] = useState(false);
+  const [focusUci, setFocusUci] = useState<string | null>(null);
   const pending = useRef(new Set<string>());
 
   const setSettings = (s: SimSettings) => {
@@ -204,6 +205,7 @@ export function Simulator({ opening, initialMoves }: Props) {
   const play = (san: string) => {
     setMoves((m) => [...m, san]);
     setHintStage(0);
+    setFocusUci(null);
   };
 
   const onMove = (from: string, to: string) => {
@@ -330,6 +332,10 @@ export function Simulator({ opening, initialMoves }: Props) {
             <input type="checkbox" checked={settings.evalBar} onChange={(e) => setSettings({ ...settings, evalBar: e.target.checked })} /> Mostra la barra di
             valutazione durante la partita
           </label>
+          <label className="toggle-inline">
+            <input type="checkbox" checked={settings.arrows} onChange={(e) => setSettings({ ...settings, arrows: e.target.checked })} /> Frecce sulla
+            scacchiera per le mosse consigliate (come l'engine di chess.com)
+          </label>
 
           <button className="primary sim-start" onClick={() => start()}>
             ▶ Inizia la partita
@@ -390,6 +396,23 @@ export function Simulator({ opening, initialMoves }: Props) {
   if (suggestion && hintStage >= 1) highlights.push({ square: suggestion.uci.slice(0, 2), color: HINT_SQUARE });
   if (suggestion && hintStage >= 2) arrows.push({ from: suggestion.uci.slice(0, 2), to: suggestion.uci.slice(2, 4), color: suggestion.book ? BOOK_ARROW : HINT_ARROW });
 
+  // Frecce dell'engine (come su chess.com): le 3 migliori di Stockfish e le mosse del repertorio,
+  // ogni volta che il coach è visibile. La mossa sotto il dito/mouse resta piena, le altre si attenuano.
+  const coachVisible = !reviewing && myTurn && !outcome.over && (settings.hints === 'always' || hintStage >= 2);
+  if (coachVisible && settings.arrows) {
+    arrows.length = 0;
+    const seen = new Set<string>();
+    const add = (uci: string, color: string) => {
+      const key = uci.slice(0, 4);
+      if (seen.has(key)) return;
+      seen.add(key);
+      const dim = focusUci && focusUci.slice(0, 4) !== key;
+      arrows.push({ from: uci.slice(0, 2), to: uci.slice(2, 4), color: dim ? 'rgba(120, 120, 120, 0.25)' : color });
+    };
+    bookMovesHere.filter((n) => n.isUserMove).forEach((n) => add(n.from + n.to, BOOK_ARROW_COLOR));
+    coachHere?.forEach((l, i) => add(l.uci, ENGINE_ARROW_COLORS[i] ?? ENGINE_ARROW_COLORS[2]));
+  }
+
   // In revisione: freccia blu con la mossa migliore quando quella giocata non lo era.
   if (reviewing && lastPly && lastQ && lastQ !== 'libro' && lastQ !== 'migliore') {
     const best = evals[fens[shown - 1]]?.best;
@@ -436,6 +459,12 @@ export function Simulator({ opening, initialMoves }: Props) {
               ↶ Annulla mossa
             </button>
             <button onClick={() => finish()}>{outcome.over ? '📊 Revisione partita' : '🏁 Termina e analizza'}</button>
+            {settings.hints !== 'off' && (
+              <label className="toggle-inline">
+                <input type="checkbox" checked={settings.arrows} onChange={(e) => setSettings({ ...settings, arrows: e.target.checked })} /> Frecce
+                delle mosse migliori
+              </label>
+            )}
           </div>
         )}
       </div>
@@ -475,8 +504,14 @@ export function Simulator({ opening, initialMoves }: Props) {
 
         {!reviewing && !outcome.over && !myTurn && <p className="muted small">L'avversario sta pensando…</p>}
 
-        {!reviewing && myTurn && !outcome.over && (settings.hints === 'always' || hintStage >= 2) && (
-          <CoachPanel book={bookMovesHere.filter((n) => n.isUserMove)} lines={coachHere} onPlay={play} />
+        {coachVisible && (
+          <CoachPanel
+            book={bookMovesHere.filter((n) => n.isUserMove)}
+            lines={coachHere}
+            onPlay={play}
+            onFocus={setFocusUci}
+            arrowChips={settings.arrows}
+          />
         )}
 
         {reviewing && (

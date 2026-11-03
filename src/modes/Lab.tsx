@@ -5,6 +5,8 @@ import { findInBook, lineNameOf, nextMoves, pathFromRoot } from '../core/tree';
 import { evaluate, judgeMove, QUALITY_INFO, type Verdict } from '../engine/judge';
 import { Board, sanOf } from '../components/Board';
 import { EvalBar, ExplanationCard } from '../components/Explanation';
+import { ENGINE_ARROW_COLORS } from '../components/CoachPanel';
+import { engine } from '../engine/stockfish';
 
 interface Props {
   opening: Opening;
@@ -121,9 +123,21 @@ export function Lab({ opening, initialMoves = [] }: Props) {
     return true;
   };
 
+  // Frecce delle 3 mosse migliori (come l'engine di chess.com), solo quando richieste.
+  const [top, setTop] = useState<{ fen: string; moves: string[] } | null>(null);
+  useEffect(() => {
+    if (!showBest || top?.fen === fen) return;
+    let alive = true;
+    engine.analyze(fen, { depth: 14, multiPv: 3 }).then((l) => alive && setTop({ fen, moves: l.map((x) => x.move) }), () => {});
+    return () => {
+      alive = false;
+    };
+  }, [showBest, fen, top?.fen]);
+
   const ev = evals[fen];
   const arrows: Arrow[] = bookMoves.map((c) => ({ from: c.from, to: c.to, color: BOOK_ARROW }));
-  if (showBest && ev?.best) arrows.push({ from: ev.best.slice(0, 2), to: ev.best.slice(2, 4), color: BEST_ARROW });
+  if (showBest && top?.fen === fen) top.moves.forEach((m, i) => arrows.push({ from: m.slice(0, 2), to: m.slice(2, 4), color: ENGINE_ARROW_COLORS[i] }));
+  else if (showBest && ev?.best) arrows.push({ from: ev.best.slice(0, 2), to: ev.best.slice(2, 4), color: BEST_ARROW });
 
   // Ultima mossa analizzata fino al cursore (di solito la tua, anche se l'avversario ha già risposto).
   let judged = cursor;
@@ -178,7 +192,7 @@ export function Lab({ opening, initialMoves = [] }: Props) {
             <input type="checkbox" checked={autoReply} onChange={(e) => setAutoReply(e.target.checked)} /> L'avversario risponde da solo
           </label>
           <label className="toggle-inline">
-            <input type="checkbox" checked={showBest} onChange={(e) => setShowBest(e.target.checked)} /> Freccia blu: mossa migliore
+            <input type="checkbox" checked={showBest} onChange={(e) => setShowBest(e.target.checked)} /> Frecce blu: le 3 mosse migliori
           </label>
         </div>
       </div>
