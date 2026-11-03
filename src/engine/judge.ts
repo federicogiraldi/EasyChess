@@ -13,6 +13,18 @@ export const QUALITY_INFO: Record<Quality, { label: string; symbol: string }> = 
   grave: { label: 'Errore grave', symbol: '??' },
 };
 
+/**
+ * Classifica una mossa dalla perdita di probabilità di vittoria (scala winChance, da 0 a 2)
+ * rispetto alla mossa migliore. Le stesse soglie valgono per Laboratorio e Simulatore.
+ */
+export function qualityFromLoss(loss: number, isBest: boolean): Quality {
+  if (isBest) return 'migliore';
+  if (loss < 0.1) return 'buona';
+  if (loss < 0.2) return 'imprecisione';
+  if (loss < 0.3) return 'errore';
+  return 'grave';
+}
+
 export interface Verdict {
   quality: Quality;
   playedSan: string;
@@ -73,13 +85,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
   const bestScore = Math.max(played.score, top[0]?.score ?? played.score, betterLine?.score ?? -Infinity);
   const loss = winChance(bestScore) - winChance(played.score);
-  const quality: Quality =
-    top[0]?.move === playedUci || loss < 0.02
-      ? top[0]?.move === playedUci ? 'migliore' : 'buona'
-      : loss < 0.1 ? 'buona'
-      : loss < 0.2 ? 'imprecisione'
-      : loss < 0.3 ? 'errore'
-      : 'grave';
+  const quality = qualityFromLoss(loss, top[0]?.move === playedUci);
 
   const after = new Chess(fen);
   after.move(playedSan);
