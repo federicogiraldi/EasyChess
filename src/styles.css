@@ -17,7 +17,12 @@
   --sq-dark: #b58863;
   --last-move: rgba(205, 210, 106, 0.75);
   --selected: rgba(20, 85, 30, 0.45);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* Margini per notch, isola dinamica e barra Home su iPhone/iPad (0 altrove). */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
   color-scheme: light;
 }
 
@@ -42,7 +47,15 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  /* iOS: niente ingrandimento automatico del testo ruotando lo schermo, niente riquadro grigio al tocco */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
 h1, h2, h3 { margin: 0; }
 code { background: var(--panel-2); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
 
@@ -58,8 +71,16 @@ button, .button {
   align-items: center;
   gap: 6px;
   transition: background 0.15s, border-color 0.15s;
+  /* Tocco immediato (niente attesa del doppio tocco per lo zoom) e niente selezione del testo tenendo premuto */
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
-button:hover, .button:hover { border-color: var(--accent); }
+/* Solo con il mouse: su iPhone/iPad l'hover resterebbe "incollato" dopo il tocco */
+@media (hover: hover) {
+  button:hover, .button:hover { border-color: var(--accent); }
+}
+button:active, .button:active { border-color: var(--accent); }
 button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 button.link { background: none; border: none; padding: 0; color: var(--muted); text-decoration: underline; font-size: 0.85em; }
 select { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); max-width: 100%; }
@@ -71,10 +92,14 @@ select { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 10px 20px;
+  padding: calc(10px + var(--safe-top)) calc(20px + var(--safe-right)) 10px calc(20px + var(--safe-left));
   background: var(--panel);
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
+  /* Sempre visibile: su telefono e tablet le pagine sono lunghe e le schede restano a portata di dito */
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 .brand { border: none; background: none; font-size: 1.25em; font-weight: 700; padding: 4px 0; }
 .logo { color: var(--accent); font-size: 1.3em; }
@@ -82,12 +107,16 @@ select { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
 .tabs button.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
-main { max-width: 1320px; margin: 0 auto; padding: 20px 16px 40px; }
+main {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 20px calc(16px + var(--safe-right)) calc(40px + var(--safe-bottom)) calc(16px + var(--safe-left));
+}
 
 /* Home */
 .hero { margin-bottom: 18px; }
 .hero h1 { font-size: 1.8em; margin-bottom: 4px; }
-.picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 16px; }
 .opening-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
 .opening-card header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .opening-card .desc { margin: 0; line-height: 1.45; }
@@ -115,8 +144,25 @@ main { max-width: 1320px; margin: 0 auto; padding: 20px 16px 40px; }
   .layout.three, .layout.two { grid-template-columns: 1fr; }
 }
 
-.board-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.board { width: 100%; }
+.board-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  width: 100%;
+  /* La scacchiera deve stare tutta nello schermo anche in orizzontale (iPhone ruotato, iPad landscape) */
+  max-width: max(280px, calc(100vh - 200px));
+  max-width: max(280px, calc(100dvh - 200px));
+  justify-self: center;
+}
+.board {
+  width: 100%;
+  /* Trascinare un pezzo non deve far scorrere la pagina né aprire il menu "copia/condividi" di iOS */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
 .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .toggle { display: inline-flex; gap: 6px; align-items: center; margin-left: auto; color: var(--muted); font-size: 0.9em; }
 
@@ -125,10 +171,12 @@ main { max-width: 1320px; margin: 0 auto; padding: 20px 16px 40px; }
 .line-tree { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px 8px; display: flex; flex-direction: column; gap: 2px; max-height: 80vh; overflow: auto; }
 .line-tree h3 { font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 0 8px 6px; }
 .line-item { border: none; background: none; text-align: left; justify-content: flex-start; padding: 5px 8px; border-radius: 6px; font-size: 0.92em; }
-.line-item:hover { background: var(--panel-2); }
+@media (hover: hover) {
+  .line-item:hover { background: var(--panel-2); }
+}
 .line-item.on-path { background: var(--panel-2); font-weight: 600; color: var(--accent); }
 
-.moves { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; line-height: 2; font-family: Consolas, 'Cascadia Mono', monospace; font-size: 0.95em; }
+.moves { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; line-height: 2; font-family: ui-monospace, Menlo, Consolas, 'Cascadia Mono', monospace; font-size: 0.95em; }
 .move-wrap { white-space: nowrap; margin-right: 4px; }
 .move-num { color: var(--muted); margin-right: 2px; }
 .move { border: none; background: none; padding: 1px 4px; border-radius: 4px; font-family: inherit; font-size: inherit; display: inline; }
@@ -202,3 +250,54 @@ button:disabled { opacity: 0.5; cursor: default; }
 .quiz-opt.right { background: var(--mine-bg); border-color: var(--mine); }
 .quiz-opt.wrong { background: var(--wrong-bg); border-color: var(--wrong); }
 .lesson-done { background: var(--panel); border: 1px solid var(--mine); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+
+/* Invito a installare l'app (solo iPhone/iPad in Safari) */
+.install-hint { display: flex; gap: 12px; align-items: flex-start; background: var(--panel); border: 1px solid var(--accent); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+.install-hint p { margin: 4px 0 0; line-height: 1.45; }
+.install-icon { font-size: 1.6em; line-height: 1; }
+.install-close { margin-left: auto; border: none; background: none; padding: 4px 8px; color: var(--muted); }
+.share-icon { vertical-align: -2px; color: var(--accent); }
+
+/* Telefono (anche ruotato): schede su una sola riga scorrevole invece di tre righe */
+@media (max-width: 760px), (max-height: 500px) {
+  .topbar { gap: 4px 12px; padding-top: calc(8px + var(--safe-top)); padding-bottom: 8px; }
+  .tabs {
+    width: 100%;
+    margin: 0 calc(-20px - var(--safe-right)) 0 calc(-20px - var(--safe-left));
+    padding: 2px calc(20px + var(--safe-right)) 2px calc(20px + var(--safe-left));
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: content-box;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: none; }
+  .hero h1 { font-size: 1.5em; }
+  main { padding-top: 14px; }
+}
+
+/* Schermi touch (iPhone, iPad): bersagli più grandi, come raccomanda Apple (~44 pt) */
+@media (pointer: coarse) {
+  button, .button, select { min-height: 44px; }
+  .move { min-height: 0; padding: 4px 7px; }
+  .moves { line-height: 2.3; }
+  .line-item { min-height: 40px; }
+  .install-close { min-height: 0; }
+  .toggle-inline input, .toggle input { width: 20px; height: 20px; }
+}
+
+/* iPad in verticale: scacchiera e commenti affiancati, le colonne si dividono meglio lo spazio */
+@media (min-width: 761px) and (max-width: 1050px) {
+  .layout.two { grid-template-columns: minmax(300px, 1.3fr) minmax(260px, 1fr); }
+  .layout.three { grid-template-columns: minmax(300px, 1.3fr) minmax(260px, 1fr); }
+}
+
+/* iPhone ruotato in orizzontale: poco spazio in altezza. L'intestazione scorre via e la scacchiera
+   sta a sinistra alta quanto lo schermo, commenti e analisi a destra. */
+@media (max-height: 500px) and (min-width: 560px) {
+  .topbar { position: static; }
+  .layout.three, .layout.two { grid-template-columns: auto minmax(220px, 1fr); }
+  .layout.three .line-tree { grid-column: 1 / -1; order: 3; max-height: none; }
+  .board-col { width: calc(100dvh - 24px); max-width: calc(100dvh - 24px); min-width: 240px; }
+}

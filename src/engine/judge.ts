@@ -1,6 +1,7 @@
 import { Chess } from 'chess.js';
 import type { OpeningNode } from '../model/types';
 import { engine, winChance, type EngineLine } from './stockfish';
+import { isPhone } from '../core/device';
 import { reasonsAgainst, reasonsFor, sanLine } from './reasons';
 
 export type Quality = 'migliore' | 'buona' | 'imprecisione' | 'errore' | 'grave';
@@ -34,7 +35,8 @@ export interface Verdict {
   mateWhite?: number;
 }
 
-const DEPTH = 14;
+// Sul telefono una profondità un po' minore: risposte rapide e meno batteria, giudizi praticamente uguali.
+const DEPTH = isPhone() ? 12 : 14;
 
 function toUci(fen: string, san: string): string {
   const m = new Chess(fen).move(san);
