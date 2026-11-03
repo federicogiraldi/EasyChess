@@ -3,6 +3,7 @@ import { SIM_QUALITY, SIM_QUALITY_ORDER, type PosEval, type SimPly, type SimQual
 import { sanFromUci } from '../engine/simEngine';
 import { formatScore } from '../engine/stockfish';
 import { WhyButton } from './Explanation';
+import { QualityIcon } from './QualityIcon';
 
 /** Pezzi della revisione di una partita (Simulatore e Analisi). */
 
@@ -56,9 +57,7 @@ export function ReviewSummary({
           {SIM_QUALITY_ORDER.map((q) => (
             <tr key={q}>
               <td>
-                <span className="sim-q-icon small" style={{ background: SIM_QUALITY[q].color }}>
-                  {SIM_QUALITY[q].icon}
-                </span>{' '}
+                <QualityIcon q={q} size={20} />{' '}
                 {SIM_QUALITY[q].label}
               </td>
               <td>{count(q, myWhite)}</td>
@@ -94,9 +93,7 @@ export function ReviewMove({
   return (
     <div className="sim-feedback" style={info ? { borderLeftColor: info.color } : undefined}>
       <div className="sim-feedback-head">
-        <span className="sim-q-icon" style={info ? { background: info.color } : undefined}>
-          {info?.icon ?? '…'}
-        </span>
+        {quality ? <QualityIcon q={quality} /> : <span className="sim-q-icon">…</span>}
         <strong>
           {ply.san}
           {info?.symbol}
@@ -143,9 +140,7 @@ export function KeyMoments({
       ) : (
         moments.map(({ p, i, q }) => (
           <button key={i} className="sim-moment" onClick={() => onSelect(i + 1)}>
-            <span className="sim-q-icon small" style={{ background: SIM_QUALITY[q!].color }}>
-              {SIM_QUALITY[q!].icon}
-            </span>
+            <QualityIcon q={q!} size={20} />
             {Math.floor(i / 2) + 1}
             {p.white ? '.' : '...'}
             {p.san} · {SIM_QUALITY[q!].label}

@@ -32,6 +32,7 @@ import { Board, sanOf } from '../components/Board';
 import { EvalBar, WhyButton } from '../components/Explanation';
 import { EvalGraph } from '../components/EvalGraph';
 import { KeyMoments, ReviewMove, ReviewSummary } from '../components/ReviewParts';
+import { QualityIcon } from '../components/QualityIcon';
 import { BOOK_ARROW_COLOR, CoachPanel, ENGINE_ARROW_COLORS } from '../components/CoachPanel';
 import './simulator.css';
 
@@ -382,7 +383,7 @@ export function Simulator({ opening, initialMoves }: Props) {
   const arrows: Arrow[] = [];
   const marks: Record<string, string> = {};
   const highlights: { square: string; color: string }[] = [];
-  if (lastPly && lastQ) marks[lastPly.uci.slice(2, 4)] = SIM_QUALITY[lastQ].color + '99';
+  if (lastPly && lastQ) marks[lastPly.uci.slice(2, 4)] = SIM_QUALITY[lastQ].color + '66';
 
   // Suggerimento: prima il pezzo, poi la freccia.
   const suggestion: { uci: string; book: boolean } | undefined =
@@ -439,6 +440,7 @@ export function Simulator({ opening, initialMoves }: Props) {
           arrows={arrows}
           highlights={highlights}
           marks={marks}
+          badge={lastPly && lastQ ? { square: lastPly.uci.slice(2, 4), quality: lastQ } : undefined}
           lastMove={lastPly ? { from: lastPly.uci.slice(0, 2), to: lastPly.uci.slice(2, 4) } : undefined}
         />
         {reviewing ? (
@@ -633,9 +635,7 @@ function MoveFeedback({
   return (
     <div className={`sim-feedback ${bad || deviated ? 'bad' : 'good'}`} style={info ? { borderLeftColor: info.color } : undefined}>
       <div className="sim-feedback-head">
-        <span className="sim-q-icon" style={info ? { background: info.color } : undefined}>
-          {info?.icon ?? '…'}
-        </span>
+        {quality ? <QualityIcon q={quality} /> : <span className="sim-q-icon">…</span>}
         <strong>
           {p.san}
           {info?.symbol}

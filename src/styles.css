@@ -310,3 +310,11 @@ button:disabled { opacity: 0.5; cursor: default; }
 .variation-moves { display: flex; flex-wrap: wrap; gap: 2px 4px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.95em; }
 .variation-back { margin-left: auto; }
 .exp-show { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Icona della qualità della mossa sulla scacchiera */
+.board { position: relative; }
+.square-badge { position: absolute; z-index: 5; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45)); animation: badge-pop 0.22s ease-out; }
+.square-badge svg { display: block; }
+@keyframes badge-pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .square-badge { animation: none; } }
+.q-icon { flex: none; vertical-align: middle; }

@@ -391,7 +391,7 @@ function GameAnalysis({
   const q = cursor > 0 ? qualities[cursor - 1] : undefined;
   const arrows: Arrow[] = [];
   const marks: Record<string, string> = {};
-  if (ply && q) marks[ply.uci.slice(2, 4)] = SIM_QUALITY[q].color + '99';
+  if (ply && q) marks[ply.uci.slice(2, 4)] = SIM_QUALITY[q].color + '66';
   if (ply && q && q !== 'libro' && q !== 'migliore') {
     const best = evals[fens[cursor - 1]]?.best;
     if (best) arrows.push({ from: best.slice(0, 2), to: best.slice(2, 4), color: BEST_ARROW });
@@ -417,6 +417,7 @@ function GameAnalysis({
           orientation={myWhite === false ? 'black' : 'white'}
           arrows={arrows}
           marks={marks}
+          badge={ply && q ? { square: ply.uci.slice(2, 4), quality: q } : undefined}
           lastMove={ply ? { from: ply.uci.slice(0, 2), to: ply.uci.slice(2, 4) } : undefined}
         />
         <div className="controls">
