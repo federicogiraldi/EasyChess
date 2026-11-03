@@ -59,3 +59,4 @@
 .engine-tips h3 { font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
 .engine-tips .coach-line { display: flex; flex-direction: column; gap: 3px; padding: 7px 10px; border: 1px solid var(--border); border-left: 4px solid #2563eb; border-radius: 8px; }
 .engine-tips .primary { align-self: flex-start; margin-top: 4px; }
+.arrow-chip { display: inline-block; width: 10px; height: 10px; border-radius: 99px; margin-right: 6px; vertical-align: 1px; }

@@ -176,9 +176,11 @@ export interface SimSettings {
   elo: number;
   hints: HintMode;
   evalBar: boolean;
+  /** Frecce sulla scacchiera per le mosse consigliate (come l'engine di chess.com). */
+  arrows: boolean;
 }
 
-export const DEFAULT_SETTINGS: SimSettings = { elo: 1200, hints: 'request', evalBar: true };
+export const DEFAULT_SETTINGS: SimSettings = { elo: 1200, hints: 'request', evalBar: true, arrows: true };
 
 export function loadSettings(): SimSettings {
   return { ...DEFAULT_SETTINGS, ...load<Partial<SimSettings>>('simSettings', {}) };
