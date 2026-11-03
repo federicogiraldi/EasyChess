@@ -55,6 +55,15 @@ EasyChess è una **PWA** (`vite-plugin-pwa`), come LearnWeb: un service worker m
 | 🎮 **Simulatore** | Partita contro **Stockfish** al livello Elo che scegli (400–3000, come i bot di chess.com). Finché c'è teoria l'avversario segue il repertorio (una linea scelta o a caso, preferendo quelle che conosci meno); quando la linea finisce gioca l'engine. Ogni tua mossa riceve un'etichetta (📖 Libro, ★ Migliore, Buona, ?! Imprecisione, ? Errore, ?? Errore grave). Il **coach** suggerisce le mosse (💡: prima il pezzo, poi la freccia, con le 3 migliori e il perché; sulla scacchiera compaiono le **frecce** delle mosse consigliate come nell'engine di chess.com: blu scuro la migliore, poi più chiare, verdi quelle del repertorio) e puoi annullare o riprovare. A fine partita c'è la **revisione**: precisione tua e dell'avversario, conteggio per categoria, grafico della valutazione, momenti chiave con "Riprova da qui", PGN da copiare e storico delle partite. Da Esplora: **🎮 Gioca da qui**, e a fine linea i consigli di Stockfish per continuare. |
 | 🔬 **Laboratorio** | Scacchiera libera con **Stockfish**: giochi qualsiasi mossa e ti dice quanto è buona e *perché* un'altra (quella del repertorio o la migliore dell'engine) sarebbe più valida. Può rispondere al posto dell'avversario. Ci arrivi anche da Esplora con "Prova altre mosse da qui". |
 
+### 📊 Analisi delle tue partite
+
+Dalla home, **Analizza le mie partite**:
+
+- **Da chess.com**: scrivi il tuo nome utente e le partite pubbliche si caricano da sole, mese per mese (API pubblica di chess.com, serve internet).
+- **Da PGN**: incolla il PGN o apri un file (anche con più partite). Dall'app di chess.com: apri la partita → **Condividi** → **PGN** → **Copia**, poi incolla.
+
+Stockfish analizza ogni posizione: precisione tua e dell'avversario, mosse classificate (📖 Libro, ★ Migliore, Buona, ?!, ?, ??), grafico della valutazione, freccia con la mossa migliore, momenti chiave e "Perché … è peggio?" con la variante sulla scacchiera. Se la partita segue un'apertura del tuo repertorio ti dice chi ne è uscito e dove (e cosa prevedeva), con i pulsanti per aprire il Laboratorio o rigiocare da lì contro Stockfish. Le partite analizzate restano in un archivio (ultime 50).
+
 In Allenamento, Ripasso, Quiz e Corso, quando sbagli compare il pulsante **🔬 Perché … è peggio?** con la stessa analisi.
 
 Nella spiegazione, **♟ Mostra … sulla scacchiera** gioca sulla scacchiera tutta la variante consigliata (e **♟ Cosa succede dopo …** quella della tua mossa): la sequenza parte da sola, poi la scorri con ◀ ▶ (o le frecce della tastiera, o cliccando le mosse) e con **↩ Torna alla posizione** (o Esc) ritrovi la partita dove l'avevi lasciata. Funziona in tutte le modalità.

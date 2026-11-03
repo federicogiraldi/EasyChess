@@ -73,12 +73,17 @@ export interface SimPly {
 
 /** Ricostruisce le semimosse, segnando quelle "da libro" (prefisso della partita dentro il repertorio). */
 export function buildPlies(opening: Opening, moves: string[]): SimPly[] {
-  const chess = new Chess(opening.root.fen);
+  return buildPliesFrom(opening.root.fen, moves, opening.root);
+}
+
+/** Come buildPlies, da una posizione qualsiasi; senza `bookRoot` nessuna mossa è "da libro". */
+export function buildPliesFrom(startFen: string, moves: string[], bookRoot?: OpeningNode): SimPly[] {
+  const chess = new Chess(startFen);
   const out: SimPly[] = [];
-  let inBook = true;
+  let inBook = !!bookRoot;
   for (const san of moves) {
     const fenBefore = chess.fen();
-    const node: OpeningNode | undefined = inBook ? findInBook(opening.root, fenBefore) : undefined;
+    const node: OpeningNode | undefined = inBook && bookRoot ? findInBook(bookRoot, fenBefore) : undefined;
     inBook = !!node && nextMoves(node).some((c) => c.san === san);
     const m = chess.move(san);
     out.push({ san: m.san, uci: m.from + m.to + (m.promotion ?? ''), fenBefore, fenAfter: chess.fen(), white: m.color === 'w', book: inBook });

@@ -1,0 +1,30 @@
+/* Analisi delle partite */
+.analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 16px; align-items: start; }
+.analysis-home .library { margin-top: 16px; }
+.cc-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.text-input { font: inherit; font-size: 16px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); flex: 1; min-width: 180px; }
+.pgn-input { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 16px; min-height: 140px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: var(--text); resize: vertical; }
+.error-text { color: var(--wrong); margin: 0; }
+.game-list { display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow: auto; }
+.game-row { width: 100%; justify-content: flex-start; text-align: left; gap: 10px; }
+.game-result { flex: none; width: 26px; height: 26px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; background: var(--panel-2); color: var(--muted); }
+.game-result.vinta { background: #5c9b2f; color: #fff; }
+.game-result.persa { background: #d43a2f; color: #fff; }
+.game-result.patta { background: #8a8378; color: #fff; }
+.game-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.game-players { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+.game-players .me { font-weight: 700; }
+.game-cta { flex: none; color: var(--accent); font-weight: 600; }
+.library-row { display: flex; align-items: center; gap: 8px; }
+.library-row .game-row { flex: 1; }
+.howto { background: var(--panel-2); border-radius: 8px; padding: 8px 12px; line-height: 1.5; }
+.howto summary { cursor: pointer; font-weight: 600; }
+.howto ol { padding-left: 20px; margin: 8px 0; }
+.howto p { margin: 0; }
+
+.analysis-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; }
+.seg { display: inline-flex; gap: 4px; align-items: center; }
+.seg button.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.book-actions { margin-top: 8px; font-weight: 400; }
+.home-analysis { margin-top: 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.home-analysis p { margin: 4px 0 0; }
