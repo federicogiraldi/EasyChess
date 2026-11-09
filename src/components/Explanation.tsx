@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { OpeningNode } from '../model/types';
 import { judgeMove, QUALITY_INFO, type Verdict } from '../engine/judge';
-import { formatScore, winChance } from '../engine/stockfish';
+import { engine, formatScore, winChance, type EngineProgress } from '../engine/stockfish';
 import { lineNameOf, pathFromRoot } from '../core/tree';
 
 const fmt = (cp: number) => formatScore(cp);
@@ -72,9 +72,27 @@ export function WhyButton({ fen, san, expected }: { fen: string; san: string; ex
       </button>
     );
   }
-  if (state === 'loading') return <p className="muted small">Stockfish sta analizzando…</p>;
+  if (state === 'loading') return <AnalysisProgress label={`Stockfish sta analizzando ${san}…`} />;
   if (state instanceof Error) return <p className="muted small">Analisi non disponibile: {state.message}</p>;
   return <ExplanationCard verdict={state} />;
+}
+
+/** Barra di avanzamento dell'analisi: sui telefoni un'analisi accurata richiede qualche secondo. */
+export function AnalysisProgress({ label }: { label: string }) {
+  const [p, setP] = useState<EngineProgress | null>(null);
+  useEffect(() => engine.onProgress(setP), []);
+  const pct = p ? Math.min(100, (p.depth / p.target) * 100) : 0;
+  return (
+    <div className="analysis-progress">
+      <div className="muted small">
+        {label}
+        {p && p.depth > 0 && ` profondità ${p.depth}/${p.target}`}
+      </div>
+      <div className="step-progress">
+        <div className="bar" style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
 }
 
 export function EvalBar({ scoreWhite, mateWhite }: { scoreWhite?: number; mateWhite?: number }) {

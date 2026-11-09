@@ -4,7 +4,7 @@ import type { Arrow, Opening } from '../model/types';
 import { findInBook, lineNameOf, nextMoves, pathFromRoot } from '../core/tree';
 import { evaluate, judgeMove, QUALITY_INFO, type Verdict } from '../engine/judge';
 import { Board, sanOf } from '../components/Board';
-import { EvalBar, ExplanationCard } from '../components/Explanation';
+import { AnalysisProgress, EvalBar, ExplanationCard } from '../components/Explanation';
 
 interface Props {
   opening: Opening;
@@ -150,6 +150,7 @@ export function Lab({ opening, initialMoves = [] }: Props) {
           fen={fen}
           orientation={opening.color}
           onMove={onMove}
+          premoveColor={autoReply && cursor === moves.length ? opening.color : undefined}
           arrows={arrows}
           lastMove={lastMove ? { from: lastMove.from, to: lastMove.to } : undefined}
         />
@@ -218,7 +219,7 @@ export function Lab({ opening, initialMoves = [] }: Props) {
             Risposta: {moves.slice(judged, cursor).map((m, k) => moveText(judged + k, m)).join(' ')} · analisi della mossa {moveText(judged - 1, moves[judged - 1])}:
           </p>
         )}
-        {lastVerdict === 'loading' && <p className="muted small">Stockfish sta analizzando {moves[judged - 1]}…</p>}
+        {lastVerdict === 'loading' && <AnalysisProgress label={`Stockfish sta analizzando ${moves[judged - 1]}…`} />}
         {lastVerdict instanceof Error && <p className="muted small">Analisi non disponibile: {lastVerdict.message}</p>}
         {lastVerdict && lastVerdict !== 'loading' && !(lastVerdict instanceof Error) && <ExplanationCard verdict={lastVerdict} />}
         {judged < cursor && cursor > 0 && (

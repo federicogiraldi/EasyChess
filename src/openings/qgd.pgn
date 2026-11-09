@@ -1,0 +1,50 @@
+[Opening "Gambetto di Donna Rifiutato"]
+[Id "qgd"]
+[Color "black"]
+[Description "La risposta classica a 1.d4 d5 2.c4: 2...e6, poi ...Nf6, ...Be7, arrocco e ...h6. Solida, con piani chiari: liberarsi con scambi (Difesa Lasker) e rompere con ...c5 o ...e5. Alternativa alla Slava per lo stesso Gambetto di Donna."]
+
+{ Contro il Gambetto di Donna (1.d4 d5 2.c4) hai già la Slava (2...c6). Il Gambetto di Donna Rifiutato (2...e6) è l'altra grande risposta: il pedone e6 sostiene d5 in modo granitico. Il prezzo: l'alfiere c8 resta chiuso dietro e6. Tutto il piano del Nero ruota intorno a liberarlo con le rotture ...c5 o ...e5, oppure con il fianchetto ...b6 e ...Bb7. }
+1. d4 d5 { [%line Gambetto di Donna Rifiutato] Occupa il centro e impedisce e4. } 2. c4 { Il Gambetto di Donna: il Bianco attacca d5 con il pedone c. [%cal Rc4d5] }
+2... e6 { Difende d5 con un altro pedone. Se il Bianco prende in d5, riprendi con il pedone e: il centro resta tuo. [%key ...e6 sostiene d5 in modo solidissimo, ma chiude l'alfiere c8: va liberato più avanti] [%cal Ge6d5] } *
+
+; ===================== 3.Nc3 Nf6 4.Bg5: LA LINEA PRINCIPALE =====================
+1. d4 d5 2. c4 e6 3. Nc3 { [%line Linea principale: 3.Nc3] Il cavallo aumenta la pressione su d5. } 3... Nf6 { Sviluppa difendendo d5 una volta in più. }
+4. Bg5 { [%line Classica: 4.Bg5] L'alfiere inchioda il cavallo f6, uno dei difensori di d5. [%cal Rg5f6,Rf6d8] }
+4... Be7 { Toglie l'inchiodatura: ora il cavallo f6 non è più legato alla donna. [%key Contro Bg5: ...Be7 rompe l'inchiodatura] }
+5. e3 O-O { Il re va al sicuro subito. } 6. Nf3 h6 { Chiedi all'alfiere cosa vuole fare: cambiare in f6 o ritirarsi in h4. In più il re avrà una casa di fuga in h7. [%cal Gh6g5] }
+7. Bh4 { [%line Difesa Lasker: 7...Ne4] L'alfiere mantiene l'inchiodatura. } 7... Ne4 { La Difesa Lasker: il cavallo salta al centro e costringe al cambio di due coppie di pezzi. Con meno pezzi sulla scacchiera, la mancanza di spazio del Nero pesa molto meno. [%key Difesa Lasker: ...Ne4 e cambi per liberare la posizione] [%cal Gf6e4] }
+8. Bxe7 Qxe7 { La donna riprende ed è ben piazzata in e7. }
+9. Rc1 { [%line Lasker: 9.Rc1] La torre si prepara alla colonna c, che si aprirà dopo ...dxc4. } 9... c6 { Sostiene d5 e prepara ...Nxc3 e ...dxc4. }
+10. Be2 Nxc3 11. Rxc3 dxc4 { Ora che il Bianco ha speso un tempo con l'alfiere, prendi in c4. } 12. Bxc4 Nd7 13. O-O b6 { Prepara ...Bb7 e ...c5: ecco come si libera l'alfiere c8. [%cal Gc8b7,Gc6c5] }
+14. Bd3 c5 { La rottura ...c5 attacca il centro bianco. } 15. Be4 Rb8 { Toglie la torre dalla diagonale dell'alfiere e4: ora ...Bb7 è possibile. Posizione solida ed equilibrata. [%key Piano Lasker: ...b6, ...Bb7 e ...c5] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 h6 7. Bh4 Ne4 8. Bxe7 Qxe7 9. cxd5 { [%line Lasker: 9.cxd5] Il Bianco cambia subito al centro. }
+9... Nxc3 { Prima il cambio dei cavalli. } 10. bxc3 exd5 { Riprendi con il pedone: la colonna e si apre per la tua torre e l'alfiere c8 respira. [%cal Gc8f5] }
+11. Qb3 { Attacca d5 e b7. } 11... Rd8 { Difende d5 una seconda volta. } 12. c4 dxc4 { Cedi il centro, ma ottieni case libere per i pezzi. } 13. Bxc4 Nc6 { Sviluppo con minaccia ...Na5 sulla donna e sull'alfiere. Il Nero ha pareggiato. [%cal Gc6a5] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 h6 7. Bh4 Ne4 8. Bxe7 Qxe7 9. Qc2 { [%line Lasker: 9.Qc2] La donna difende c3 ed e4. }
+9... Nxc3 10. Qxc3 c6 { Struttura solida: d5 è difeso da c6 ed e6. } 11. Be2 Nd7 12. O-O dxc4 13. Bxc4 b6 { Stesso piano di sempre: ...Bb7 e ...c5. [%key Lasker: ...Nxc3, ...c6, ...dxc4, ...b6 e ...Bb7] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 h6 7. Bxf6 { [%line Contro 7.Bxf6] Il Bianco cede la coppia degli alfieri. } 7... Bxf6 { L'alfiere ora è sulla grande diagonale. }
+8. Rc1 c6 9. Bd3 Nd7 10. O-O dxc4 11. Bxc4 e5 { La rottura ...e5 libera l'alfiere c8: la coppia degli alfieri ti dà un piccolo vantaggio a lungo termine. [%key Contro Bxf6: ...c6, ...dxc4 ed ...e5] [%cal Gc8g4] } *
+
+; ===================== VARIANTE DI CAMBIO =====================
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 { [%line Variante di Cambio: 4.cxd5] Il Bianco fissa la struttura subito: la "struttura Carlsbad". } 4... exd5 { Riprendi con il pedone e: l'alfiere c8 è finalmente libero. [%key Nel Cambio l'alfiere c8 è libero: è il vantaggio del Nero] [%cal Gc8f5] }
+5. Bg5 c6 { Sostiene d5 e dà alla donna la casa c7 e b6. } 6. Qc2 { Impedisce ...Bf5. } 6... Be7 7. e3 Nbd7 8. Bd3 O-O
+9. Nf3 { [%line Cambio: 9.Nf3 (attacco di minoranza)] Il Bianco prepara l'attacco di minoranza: b4-b5 per indebolire c6. } 9... Re8 { La torre va sulla colonna e semiaperta. } 10. O-O Nf8 { Il cavallo va in g6 o e6, verso il lato di re. Il piano del Nero: ...Ne4, ...Bf5 o ...Ng6 per giocare sul lato di re, dove il Bianco ha meno pezzi. [%key Struttura Carlsbad: il Bianco attacca sul lato di donna, il Nero sul lato di re] [%cal Gf8g6,Gf6e4] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. Bg5 c6 6. Qc2 Be7 7. e3 Nbd7 8. Bd3 O-O 9. Nge2 { [%line Cambio: 9.Nge2 (piano con f3)] Il Bianco vuole f3 ed e4. } 9... Re8 10. O-O Nf8 11. f3 Be6 { L'alfiere si sviluppa e controlla le case chiare. Piano: ...N6d7 per cambiare gli alfieri camposcuro, poi ...c5 se il Bianco spinge e4. } *
+
+; ===================== ALTRI ORDINI DI MOSSE =====================
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Nf3 { [%line Contro 4.Nf3] } 4... Be7 { Lo sviluppo standard. }
+5. Bg5 O-O 6. e3 h6 7. Bh4 { Traspone nella linea principale. } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Nf3 Be7 5. Bf4 { [%line Contro 5.Bf4] L'alfiere va in f4, come nel Londra. } 5... O-O 6. e3 c5 { Attacca subito il centro: con l'alfiere in f4 il pedone d4 è meno difeso. [%cal Gc5d4] }
+7. dxc5 Bxc5 8. Qc2 Nc6 9. a3 Qa5 { La donna esce con tempo e mette pressione sulla diagonale e1-a5 e sul cavallo c3. Pezzi attivi e sviluppo completo. [%key Contro Bf4: ...c5 subito, poi ...Nc6 e ...Qa5] } *
+
+1. d4 d5 2. c4 e6 3. Nf3 { [%line Contro 3.Nf3] } 3... Nf6 4. Nc3 Be7 { Traspone nella linea con 4.Nf3. } *
+
+1. d4 d5 2. c4 e6 3. Nf3 Nf6 4. g3 { [%line Catalana: 4.g3] L'alfiere andrà in g2, contro d5 e b7. } 4... Be7 5. Bg2 O-O 6. O-O dxc4 { Prendi il pedone: il Bianco dovrà spendere tempo per riprenderlo. }
+7. Qc2 a6 { Prepara ...b5 per tenere il pedone o guadagnare spazio. } 8. Qxc4 b5 9. Qc2 Bb7 { L'alfiere si piazza sulla grande diagonale e neutralizza l'alfiere g2. Piano: ...Nbd7 e ...c5. [%key Contro la Catalana: ...dxc4, ...a6, ...b5 e ...Bb7] [%cal Gb7g2] } *
+
+1. d4 d5 2. c4 e6 3. cxd5 { [%line Contro 3.cxd5] } 3... exd5 4. Nc3 Nf6 { Traspone nella Variante di Cambio. } *

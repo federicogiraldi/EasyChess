@@ -16,7 +16,7 @@ export function Drill({ opening, initialLine }: { opening: Opening; initialLine?
   const [path, setPath] = useState<OpeningNode[]>(() => pathFromRoot(start));
   const [wrongHere, setWrongHere] = useState(false);
   const [wrongSan, setWrongSan] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<Feedback>({ kind: 'info', text: 'Gioca le tue mosse: l\'avversario risponde con le varie linee.' });
+  const [feedback, setFeedback] = useState<Feedback>({ kind: 'info', text: 'Gioca le tue mosse: l\'avversario risponde con le varie linee. Se sai già la mossa, giocala in anticipo (pre-move) mentre l\'avversario pensa.' });
   const [stats, setStats] = useState({ correct: 0, mistakes: 0, lines: 0 });
 
   const current = path[path.length - 1];
@@ -79,6 +79,7 @@ export function Drill({ opening, initialLine }: { opening: Opening; initialLine?
           fen={current.fen}
           orientation={opening.color}
           onMove={onMove}
+          premoveColor={opening.color}
           arrows={wrongHere ? solutionArrows(next) : []}
           lastMove={current.parent ? current : undefined}
         />

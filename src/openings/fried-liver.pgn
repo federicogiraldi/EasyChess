@@ -1,0 +1,52 @@
+[Opening "Attacco Fried Liver (Due Cavalli, 4.Ng5)"]
+[Id "fried-liver"]
+[Color "white"]
+[Description "Dall'Italiana: 3.Bc4 e, se il Nero gioca 3...Nf6, subito 4.Ng5 contro f7. Se il Nero sbaglia con 5...Nxd5 arriva il sacrificio Nxf7 (il Fried Liver); contro le difese corrette impari i piani giusti."]
+
+{ La Difesa dei Due Cavalli nasce da 1.e4 e5 2.Nf3 Nc6 3.Bc4 Nf6: il Nero contrattacca e4 invece di difendersi. Con 4.Ng5 il Bianco attacca f7 con due pezzi. È un'arma perfetta per te, che giochi già l'Italiana: stesse prime mosse, ma con un piano aggressivo e trappole frequenti nelle partite rapide. }
+1. e4 e5 2. Nf3 Nc6 3. Bc4 { [%line Italiana: 3.Bc4] L'alfiere punta su f7, il punto più debole del Nero perché è difeso solo dal re. [%cal Gc4f7] }
+3... Nf6 { [%line Due Cavalli: 3...Nf6] Il Nero attacca e4 invece di giocare 3...Bc5. È qui che parte il tuo attacco. }
+4. Ng5 { [%line Attacco: 4.Ng5] Il cavallo si unisce all'alfiere contro f7: due attaccanti contro un solo difensore (il re). Il Nero deve reagire subito. [%key 4.Ng5: due pezzi contro f7, difeso solo dal re] [%cal Gg5f7,Gc4f7] }
+4... d5 { La difesa principale: il pedone d5 chiude la diagonale dell'alfiere c4. }
+5. exd5 { Prendi il pedone: ora il Nero deve decidere come riprendere, ed è qui che si sbaglia di più. } *
+
+; ===================== 5...Nxd5? IL FRIED LIVER =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Nxd5 { [%line Fried Liver: 5...Nxd5?] La ripresa più naturale, ma è un errore: il cavallo d5 è inchiodato sulla diagonale dell'alfiere c4 verso f7 e il re. }
+6. Nxf7 { Il sacrificio del Fried Liver: il cavallo prende f7 e attacca donna e torre. Il Nero deve prendere col re, che finisce in mezzo alla scacchiera. [%key Contro 5...Nxd5 sacrifica in f7: il re nero viene tirato fuori] [%cal Gg5f7,Rf7d8,Rf7h8] }
+6... Kxf7 7. Qf3+ { Scacco e attacco al cavallo d5, inchiodato contro il re. Il re nero non ha case comode. [%cal Gf3d5,Gc4d5] }
+7... Ke6 { L'unica difesa che tiene il cavallo d5: il re va avanti, al centro. }
+8. Nc3 { Terzo attaccante sul cavallo d5: il Nero deve difenderlo ancora, e il suo re è in e6. [%key Dopo 7...Ke6: Nc3, arrocco e d4 per aprire il centro contro il re] [%cal Gc3d5] }
+8... Ncb4 { Difende d5 e minaccia ...Nxc2+. } 9. O-O { Il re si mette al sicuro e la torre si prepara a entrare in e1. Prima la sicurezza, poi l'attacco: ...Nxc2 non fa paura perché la torre a1 è difesa. }
+9... c6 10. d4 { Apre il centro proprio dove sta il re nero: la torre f1 entra in e1, l'alfiere c1 in g5 o f4. Il Bianco ha un pezzo in meno, ma un attacco molto forte (circa +1 secondo Stockfish). [%key Contro il re in e6: apri il centro con d4 e porta le torri in e1] [%cal Gd4e5,Gf1e1] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Nxd5 6. Nxf7 Kxf7 7. Qf3+ Ke6 8. Nc3 Nce7 { [%line Fried Liver: 8...Nce7] Il cavallo difende d5 da e7. }
+9. d4 { Subito al centro: e5 è attaccato e la colonna e si apre contro il re. } 9... c6 10. dxe5 { Il pedone avanza fino a e5 e il re nero, in e6, resta senza case sicure. Seguiranno Bg5, arrocco lungo e torri al centro: l'attacco vale molto più del pezzo sacrificato. [%cal Gc1g5,Ge1c1] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Nxd5 6. Nxf7 Kxf7 7. Qf3+ Kg8 { [%line Fried Liver: 7...Kg8??] Il re torna indietro, ma lascia il cavallo d5 senza difesa. }
+8. Bxd5+ { Prende il cavallo con scacco. } 8... Qxd5 9. Qxd5+ Be6 10. Qxe6# { Scacco matto: il re nero è chiuso dai suoi stessi pezzi. [%key Dopo 7...Kg8 prendi in d5: matto in pochi tratti] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Nxd5 6. Nxf7 Kxf7 7. Qf3+ Ke8 { [%line Fried Liver: 7...Ke8] Il re torna in e8 e abbandona il cavallo d5. }
+8. Bxd5 { Prendi il cavallo: hai recuperato il pezzo sacrificato e il re nero non può più arroccare. } 8... Qd7 9. Bxc6 Qxc6 10. Qxc6+ bxc6 11. d3 { Finale con un pedone in più e una struttura migliore: i pedoni neri in c6, c7 ed e5 sono isolati o doppiati. Sviluppa con Be3, Nd2 e arrocco lungo. [%key Dopo 7...Ke8: Bxd5 e finale con un pedone in più] } *
+
+; ===================== 5...Na5: LA DIFESA CORRETTA =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Na5 { [%line Difesa principale: 5...Na5] La mossa migliore: il cavallo attacca l'alfiere c4 e il Nero sacrifica un pedone per lo sviluppo. }
+6. Bb5+ { Scacco con tempo: l'alfiere si salva e costringe il Nero a bloccare con un pedone. } 6... c6 7. dxc6 bxc6 { Il Nero ha un pedone in meno ma gioca con tutti i pezzi. }
+8. Be2 { L'alfiere si ritira in una casa sicura, da dove difende il lato di re. } 8... h6 9. Nf3 e4 { Il Nero caccia il cavallo con tempo e guadagna spazio. } 10. Ne5 { Il cavallo va al centro, dove è più attivo. } 10... Bd6
+11. d4 { Il pedone d4 sostiene il cavallo e5 e apre la diagonale all'alfiere c1. } 11... exd3 { Presa en passant: il Nero elimina il sostegno del cavallo. } 12. Nxd3 Qc7 13. h3 { Toglie la casa g4 a cavallo e alfiere neri, così puoi arroccare tranquillo. } 13... O-O 14. O-O { Posizione tipica: hai un pedone in più, il Nero ha più spazio e pezzi attivi. Piano: Nc3, b3 e Bb2, poi sfrutta il pedone in più sul lato di donna. [%key Contro 5...Na5: Bb5+, Be2, Nf3-e5, d4 e arrocco] } *
+
+; ===================== 5...b5 E 5...Nd4 =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 b5 { [%line Variante Ulvestad: 5...b5] Il Nero sacrifica un pedone per attaccare l'alfiere. }
+6. Bf1 { La ritirata migliore: l'alfiere torna a casa ma non può più essere attaccato, e b5 resta debole. [%key Contro ...b5 l'alfiere torna in f1] }
+6... Nd4 7. c3 { Caccia il cavallo d4: deve decidere dove andare. } 7... Nxd5 8. cxd4 Qxg5 { Il Nero riprende il pezzo, ma ha ceduto il pedone b5. } 9. Bxb5+ Kd8 { Il re nero non può arroccare. } 10. O-O { Re al sicuro e un pedone in più; il re nero resta al centro. Piano: Nc3, Qf3 e d4xe5 per aprire le linee. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Nd4 { [%line Variante Fritz: 5...Nd4] Il cavallo va in d4 e minaccia ...Nxd5. }
+6. c3 { Caccia subito il cavallo. } 6... b5 7. Bf1 { Traspone nella variante Ulvestad. } *
+
+; ===================== 4...Bc5: IL CONTRATTACCO TRAXLER =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 Bc5 { [%line Contrattacco Traxler: 4...Bc5] Il Nero lascia prendere f7 e contrattacca in f2: una variante molto tagliente. }
+5. Bxf7+ { Prendi f7 con l'alfiere e scacco: la via più sicura, senza calcolare varianti complicate. } 5... Ke7 { Il re non può tornare indietro e perde l'arrocco. }
+6. Bb3 { L'alfiere si ritira su una diagonale sicura, ancora puntato verso il lato di re nero. Hai un pedone in più e il re nero è in e7: continua con d3, Nc3 e arrocco. [%key Contro il Traxler: Bxf7+ e Bb3, con un pedone in più] } 6... Rf8 7. d3 { Difende e4 e apre la diagonale all'alfiere c1. } 7... d6 8. Nc3 { Sviluppo semplice: Be3 e arrocco tolgono al Nero ogni contrattacco. } *
+
+; ===================== 3...Bc5: ITALIANA =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 { [%line Contro 3...Bc5 (Giuoco Piano)] Il Nero sceglie l'Italiana classica: niente Fried Liver. }
+4. c3 { Prepara d4 per costruire un grande centro. [%cal Gc3d4] } 4... Nf6 5. d4 exd4 6. e5 { Il pedone caccia il cavallo con tempo: è la stessa posizione del Gambetto Scozzese con 4...Bc5. } 6... d5 7. Bb5 Ne4 8. cxd4 Bb4+ 9. Bd2 Nxd2 10. Nbxd2 O-O 11. O-O { Hai il centro con d4 ed e5. Piano: Rc1 e Qa4 contro il pedone c6, poi f4-f5. [%key Contro 3...Bc5: c3, d4 ed e5, poi gioco sul centro] } *

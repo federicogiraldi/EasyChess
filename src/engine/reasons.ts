@@ -192,15 +192,12 @@ export function reasonsAgainst(fen: string, pv: string[]): string[] {
     }
   }
 
-  if (pv.length > 1) reasons.push(`La risposta migliore per l'avversario è ${uciToSan(after.fen(), pv[1])}.`);
+  if (pv.length > 1) reasons.push(`La risposta migliore per l'avversario è ${describeReply(after.fen(), pv[1])}.`);
   return reasons;
 }
 
 /** Cosa fa di buono la mossa migliore (prima mossa di `pv`). */
 export function reasonsFor(fen: string, pv: string[]): string[] {
-  const before = new Chess(fen);
-  const me = before.turn();
-  const opp: Color = me === 'w' ? 'b' : 'w';
   const after = new Chess(fen);
   let move;
   try {
@@ -208,43 +205,229 @@ export function reasonsFor(fen: string, pv: string[]): string[] {
   } catch {
     return [];
   }
-  const reasons: string[] = [];
-
   if (after.isCheckmate()) return ['Dà scacco matto!'];
-  if (move.captured) reasons.push(`Cattura ${withArticle(move.captured)} in ${move.to}.`);
+  const reasons = describeMove(fen, move.san);
   const swing = materialSwing(fen, pv);
   if (swing >= 1) reasons.push(`Guadagna ${describeMaterial(swing)}: ${sanLine(fen, pv, 5)}.`);
-  if (move.flags.includes('k') || move.flags.includes('q')) reasons.push('Arrocca: mette al sicuro il re e collega le torri.');
-  if ((move.piece === 'n' || move.piece === 'b') && HOME_MINORS[me].includes(move.from)) {
-    reasons.push(`Sviluppa ${withArticle(move.piece)} in ${move.to}.`);
+  return reasons;
+}
+
+// ---------------------------------------------------------------------------
+// Descrizione di una singola mossa: cosa fa e a cosa mira.
+// ---------------------------------------------------------------------------
+
+const CENTER: Square[] = ['d4', 'e4', 'd5', 'e5'];
+
+const square = (file: number, rank: number) => `${String.fromCharCode(97 + file)}${rank + 1}` as Square;
+const onBoard = (file: number, rank: number) => file >= 0 && file < 8 && rank >= 0 && rank < 8;
+const listText = (items: string[]) => (items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')} e ${items[items.length - 1]}`);
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+const feminine = (t: PieceSymbol) => t === 'r' || t === 'q';
+
+/** Case controllate dal pezzo in `sq`. */
+function controlled(chess: Chess, sq: Square): Square[] {
+  const p = chess.get(sq);
+  if (!p) return [];
+  const out: Square[] = [];
+  for (let f = 0; f < 8; f++) {
+    for (let r = 0; r < 8; r++) {
+      const t = square(f, r);
+      if (t !== sq && chess.attackers(t, p.color).includes(sq)) out.push(t);
+    }
   }
+  return out;
+}
+
+const SLIDES: Partial<Record<PieceSymbol, number[][]>> = {
+  b: [[1, 1], [1, -1], [-1, 1], [-1, -1]],
+  r: [[1, 0], [-1, 0], [0, 1], [0, -1]],
+  q: [[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]],
+};
+
+interface Pin {
+  pinned: Square;
+  type: PieceSymbol;
+  behind: PieceSymbol;
+}
+
+/** Inchiodature create dal pezzo a lungo raggio in `sq`: un pezzo avversario davanti a re, donna o torre. */
+function pinsFrom(chess: Chess, sq: Square): Pin[] {
+  const p = chess.get(sq);
+  const dirs = p && SLIDES[p.type];
+  if (!p || !dirs) return [];
+  const out: Pin[] = [];
+  const f0 = sq.charCodeAt(0) - 97;
+  const r0 = Number(sq[1]) - 1;
+  for (const [df, dr] of dirs) {
+    let first: { sq: Square; type: PieceSymbol } | null = null;
+    for (let f = f0 + df, r = r0 + dr; onBoard(f, r); f += df, r += dr) {
+      const t = chess.get(square(f, r));
+      if (!t) continue;
+      if (t.color === p.color) break;
+      if (!first) {
+        if (t.type === 'k') break;
+        first = { sq: square(f, r), type: t.type };
+        continue;
+      }
+      if (first.type !== 'p' && (t.type === 'k' || VALUE[t.type] > VALUE[first.type])) {
+        out.push({ pinned: first.sq, type: first.type, behind: t.type });
+      }
+      break;
+    }
+  }
+  return out;
+}
+
+function canCastleNow(chess: Chess, color: Color, side: 'k' | 'q'): boolean {
+  if (!castlingRights(chess.fen(), color).toLowerCase().includes(side)) return false;
+  const rank = color === 'w' ? '1' : '8';
+  const between = side === 'k' ? ['f', 'g'] : ['b', 'c', 'd'];
+  return between.every((f) => !chess.get(`${f}${rank}` as Square));
+}
+
+/**
+ * Spiega con parole semplici cosa fa la mossa `san` nella posizione `fen`: sviluppo, centro,
+ * catene di pedoni, minacce, attacchi doppi, inchiodature, preparazione dell'arrocco…
+ * Completa i commenti del repertorio e le analisi di Stockfish.
+ */
+export function describeMove(fen: string, san: string): string[] {
+  const before = new Chess(fen);
+  const me = before.turn();
+  const opp: Color = me === 'w' ? 'b' : 'w';
+  const after = new Chess(fen);
+  let move;
+  try {
+    move = after.move(san);
+  } catch {
+    return [];
+  }
+  if (after.isCheckmate()) return ['Scacco matto!'];
+
+  const out: string[] = [];
+  const from = move.from as Square;
+  const to = move.to as Square;
+  const isCastle = move.flags.includes('k') || move.flags.includes('q');
+
+  if (isCastle) {
+    out.push(
+      move.flags.includes('k')
+        ? 'Arrocco corto: il re va al sicuro e la torre si avvicina al centro.'
+        : 'Arrocco lungo: il re va sul lato di donna e la torre entra subito in colonna d.',
+    );
+  }
+
+  // Catture, scambi e sacrifici.
+  if (move.flags.includes('e')) {
+    out.push('Presa en passant del pedone appena avanzato di due case.');
+  } else if (move.captured) {
+    const recapture = after.attackers(to, opp).length > 0;
+    const given = VALUE[move.piece] - VALUE[move.captured];
+    if (!recapture) out.push(`Cattura ${withArticle(move.captured)} in ${to}: nessun pezzo avversario può riprendere.`);
+    else if (given >= 2) {
+      out.push(`Sacrificio: ${withArticle(move.piece)} prende ${withArticle(move.captured)} in ${to} e può essere ripres${feminine(move.piece) ? 'a' : 'o'}. Si dà materiale in cambio di attacco o tempo.`);
+    } else if (given === 0) out.push(`Cattura ${withArticle(move.captured)} in ${to}: se l'avversario riprende è uno scambio alla pari.`);
+    else out.push(`Cattura ${withArticle(move.captured)} in ${to}.`);
+  }
+
+  // Sviluppo e centro.
+  if ((move.piece === 'n' || move.piece === 'b') && HOME_MINORS[me].includes(from)) {
+    const c = controlled(after, to).filter((t) => CENTER.includes(t));
+    const centre = c.length ? `: controlla ${c.length > 1 ? 'le case centrali' : 'la casa centrale'} ${listText(c)}` : '';
+    out.push(`Sviluppa ${withArticle(move.piece)} in ${to}${centre}.`);
+  } else if (move.piece === 'n' && CENTER.includes(to)) {
+    out.push('Il cavallo si piazza al centro, dove controlla il massimo delle case.');
+  }
+
   if (move.piece === 'p') {
-    const rank = Number(move.to[1]);
-    const rel = me === 'w' ? rank : 9 - rank;
-    if ('cdef'.includes(move.to[0]) && (rel === 4 || rel === 5)) reasons.push('Occupa o contesta il centro.');
+    const rel = me === 'w' ? Number(to[1]) : 9 - Number(to[1]);
+    if (!move.captured) {
+      if ('de'.includes(to[0]) && rel === 4) out.push('Occupa il centro con un pedone.');
+      else if ('cdef'.includes(to[0]) && rel === 5) out.push('Avanza al centro e guadagna spazio.');
+      if (rel === 3 && 'ah'.includes(to[0])) {
+        const denied = `${to[0] === 'h' ? 'g' : 'b'}${me === 'w' ? 4 : 5}`;
+        out.push(`Mossa profilattica: toglie la casa ${denied} ai pezzi avversari (per esempio a un alfiere che vorrebbe inchiodare il cavallo).`);
+      }
+      if (rel === 3 && 'bg'.includes(to[0])) {
+        const b = before.get(`${to[0] === 'g' ? 'f' : 'c'}${me === 'w' ? 1 : 8}` as Square);
+        if (b && b.type === 'b' && b.color === me) out.push(`Prepara il fianchetto: l'alfiere andrà in ${to[0]}${me === 'w' ? 2 : 7}, sulla grande diagonale.`);
+      }
+    }
     const dir = me === 'w' ? 1 : -1;
-    for (const df of [-1, 1]) {
-      const f = move.to.charCodeAt(0) + df;
-      if (f < 97 || f > 104) continue;
-      const target = `${String.fromCharCode(f)}${rank + dir}` as Square;
-      const p = after.get(target);
-      if (p && p.color === opp && p.type === 'p') {
-        reasons.push(`Attacca il pedone in ${target}: è la rottura che mette in discussione la struttura avversaria.`);
-        break;
+    const f = to.charCodeAt(0) - 97;
+    const r = Number(to[1]) - 1;
+    const ahead = [-1, 1].filter((df) => onBoard(f + df, r + dir)).map((df) => square(f + df, r + dir));
+    const pawnTarget = ahead.find((t) => after.get(t)?.color === opp && after.get(t)?.type === 'p');
+    const pieceTarget = ahead.find((t) => after.get(t)?.color === opp && !['p', 'k'].includes(after.get(t)!.type));
+    if (pieceTarget) out.push(`Minaccia di prendere ${withArticle(after.get(pieceTarget)!.type)} in ${pieceTarget} con il pedone.`);
+    else if (pawnTarget) out.push(`Attacca il pedone in ${pawnTarget}: è la rottura che mette in discussione la struttura avversaria.`);
+    const supported = ahead.find((t) => after.get(t)?.color === me && after.get(t)?.type === 'p');
+    if (supported) out.push(`Sostiene il pedone in ${supported}.`);
+    // Diagonali che si aprono per alfieri e donna.
+    for (const row of before.board()) {
+      for (const p of row) {
+        if (!p || p.color !== me || (p.type !== 'b' && p.type !== 'q')) continue;
+        if (bishopScope(after, p.square) - bishopScope(before, p.square) >= 3) {
+          out.push(`Apre la diagonale ${p.type === 'b' ? `all'alfiere in ${p.square}` : 'alla donna'}.`);
+        }
       }
     }
   }
+
+  // Minacce, attacchi doppi, inchiodature, colonne.
   if (move.piece !== 'p' && move.piece !== 'k') {
-    // Attacchi creati dal pezzo mosso: pezzi di valore maggiore o indifesi.
-    const targets = hangingPieces(after, opp).filter((h) => after.attackers(h.square, me).includes(move.to));
-    if (targets[0]) reasons.push(`Attacca ${withArticle(targets[0].type)} in ${targets[0].square}.`);
+    const targets = hangingPieces(after, opp).filter((h) => after.attackers(h.square, me).includes(to));
+    const check = after.inCheck();
+    if (targets.length + (check ? 1 : 0) >= 2) {
+      const what = [...(check ? ['il re (scacco)'] : []), ...targets.map((t) => `${withArticle(t.type)} in ${t.square}`)];
+      out.push(`Attacco doppio: colpisce contemporaneamente ${listText(what)}.`);
+    } else if (targets[0]) {
+      out.push(`Attacca ${withArticle(targets[0].type)} in ${targets[0].square}.`);
+    }
+    for (const pin of pinsFrom(after, to)) {
+      const behind = pin.behind === 'k' ? 'al re: non può muoversi' : pin.behind === 'q' ? 'alla donna' : 'alla torre';
+      out.push(`Inchioda ${withArticle(pin.type)} in ${pin.pinned} ${behind}.`);
+    }
+    const weak = (opp === 'b' ? 'f7' : 'f2') as Square;
+    const wp = after.get(weak);
+    const weakAttackers = after.attackers(weak, me);
+    if (wp?.type === 'p' && wp.color === opp && weakAttackers.includes(to) && after.attackers(weak, opp).every((s) => after.get(s)!.type === 'k')) {
+      out.push(
+        weakAttackers.length >= 2
+          ? `Secondo pezzo contro ${weak}: ora è attaccato due volte e difeso solo dal re, quindi è minacciato.`
+          : `Punta su ${weak}, il punto debole ${opp === 'b' ? 'del Nero' : 'del Bianco'}: all'inizio della partita è difeso solo dal re.`,
+      );
+    }
+    if (move.piece === 'r' && !isCastle) {
+      const pawns = [1, 2, 3, 4, 5, 6, 7, 8].map((r) => after.get(`${to[0]}${r}` as Square)).filter((p) => p?.type === 'p');
+      if (pawns.length === 0) out.push(`La torre occupa la colonna aperta ${to[0]}.`);
+      else if (!pawns.some((p) => p!.color === me)) out.push(`La torre si piazza sulla colonna semiaperta ${to[0]}, contro il pedone avversario.`);
+    }
+    if (hangingPieces(before, me).some((h) => h.square === from) && !hangingPieces(after, me).some((h) => h.square === to)) {
+      out.push(`Toglie ${withArticle(move.piece)} dall'attacco.`);
+    }
+    if (check && targets.length === 0) out.push('Dà scacco.');
+  } else if (after.inCheck()) {
+    out.push('Dà scacco.');
   }
-  if (after.inCheck() && !after.isCheckmate()) reasons.push('Dà scacco.');
 
-  const hangBefore = hangingPieces(before, me);
+  // Difese.
   const hangAfter = new Set(hangingPieces(after, me).map((h) => h.square));
-  const solved = hangBefore.find((h) => !hangAfter.has(h.square === move.from ? move.to : h.square));
-  if (solved) reasons.push(`Risolve la minaccia su ${withArticle(solved.type)} in ${solved.square}.`);
+  const defended = hangingPieces(before, me).find((h) => h.square !== from && !hangAfter.has(h.square));
+  if (defended) out.push(`Difende ${withArticle(defended.type)} in ${defended.square}, che era sotto attacco.`);
 
-  return reasons;
+  // Arrocco.
+  if (!isCastle && move.piece !== 'k') {
+    if (canCastleNow(after, me, 'k') && !canCastleNow(before, me, 'k')) out.push('Libera la strada: ora puoi arroccare corto.');
+    else if (canCastleNow(after, me, 'q') && !canCastleNow(before, me, 'q')) out.push('Libera la strada: ora puoi arroccare lungo.');
+  }
+  if (move.piece === 'k' && !isCastle && castlingRights(fen, me)) out.push('Il re si muove e perde il diritto di arroccare.');
+
+  return [...new Set(out)];
+}
+
+/** Una mossa (UCI) con le sue intenzioni tra parentesi: "Nb5 (attacca il pedone in c7)". */
+export function describeReply(fen: string, uci: string): string {
+  const san = uciToSan(fen, uci);
+  const motifs = describeMove(fen, san).slice(0, 2);
+  return motifs.length ? `${san} (${motifs.map((m) => lowerFirst(m).replace(/\.$/, '')).join('; ')})` : san;
 }

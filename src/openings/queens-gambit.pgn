@@ -1,0 +1,60 @@
+[Opening "Gambetto di Donna"]
+[Id "queens-gambit"]
+[Color "white"]
+[Description "1.d4 d5 2.c4: il Bianco offre il pedone c per togliere al Nero il centro. Contro 2...e6 la Variante di Cambio con l'attacco di minoranza, un piano che si gioca quasi \"a sistema\"; risposte pronte contro Slava, Accettato, Albin e Chigorin."]
+
+{ Il Gambetto di Donna è l'apertura più classica con 1.d4. Non è un vero gambetto: se il Nero prende in c4, il pedone si recupera quasi sempre. L'idea è semplice: c4 attacca d5, il difensore del centro nero. Se d5 cade o si sposta, il Bianco ha il centro con e4. Conosci già il lato del Nero (Slava e Gambetto Rifiutato): qui vedi le stesse posizioni dall'altra parte. }
+1. d4 { Occupa il centro e apre la diagonale dell'alfiere c1. } 1... d5 2. c4 { [%line Gambetto di Donna] Attacca d5 con un pedone laterale: se il Nero cede il centro, e4 diventa possibile. [%key c4 attacca d5: il Bianco vuole togliere al Nero il pedone centrale] [%cal Gc4d5] } *
+
+; ===================== 2...e6: CAMBIO E ATTACCO DI MINORANZA =====================
+1. d4 d5 2. c4 e6 { [%line Rifiutato: 2...e6] Il Nero difende d5 con e6 e chiude il suo alfiere c8. }
+3. Nc3 { Più pressione su d5. } 3... Nf6
+4. cxd5 { [%line Variante di Cambio: 4.cxd5] Cambi subito: la struttura che nasce (detta Carlsbad) è sempre la stessa, quindi i piani si imparano una volta per tutte. [%key Variante di Cambio: struttura fissa, piani sempre uguali] } 4... exd5
+5. Bg5 { Inchioda il cavallo f6, che difende d5. [%cal Rg5f6] } 5... c6 6. Qc2 { Controlla f5: l'alfiere c8 nero non esce comodamente, e la donna guarda h7. [%cal Gc2f5,Gc2h7] }
+6... Be7 7. e3 Nbd7 8. Bd3 { L'alfiere va sulla diagonale b1-h7, verso il re nero. } 8... O-O
+9. Nf3 { Sviluppo naturale, il cavallo controlla e5. } 9... Re8 10. O-O Nf8
+11. Rab1 { La torre va dietro il pedone b: è l'inizio dell'attacco di minoranza. Spingi b4 e b5: due pedoni contro tre, per creare una debolezza in c6 o d5. [%key Attacco di minoranza: Rab1, b4, b5 e bxc6] [%cal Gb2b4,Gb4b5] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. Bg5 Be7 { [%line Cambio: 5...Be7] Il Nero toglie subito l'inchiodatura. } 6. e3 c6 7. Qc2 { Traspone nella linea principale. } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 exd5 5. Bg5 Nbd7 { [%line Cambio: 5...Nbd7 (trappola dell'elefante)] Attenzione: sembra che il cavallo f6 sia inchiodato, ma NON prendere in d5! Dopo 6.Nxd5?? Nxd5 7.Bxd8 Bb4+ 8.Qd2 Bxd2+ 9.Kxd2 Kxd8 il Nero vince un pezzo. [%key Trappola dell'elefante: con ...Nbd7 non prendere mai in d5] }
+6. e3 { Sviluppo tranquillo, senza cadere nella trappola. } 6... c6 7. Qc2 Be7 8. Bd3 O-O 9. Nf3 { Traspone nella linea principale. } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Be7 { [%line Rifiutato: 3...Be7] Il Nero aspetta a sviluppare il cavallo. } 4. Nf3 Nf6 5. cxd5 exd5 6. Bg5 c6 7. Qc2 { Stessa struttura di cambio. } 7... O-O 8. e3 Nbd7 9. Bd3 { Traspone nella linea principale. } *
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. cxd5 Nxd5 { [%line Cambio: 4...Nxd5] Il Nero riprende col cavallo e lascia il centro. } 5. e4 { Grazie: occupi il centro con due pedoni e con tempo sul cavallo. } 5... Nxc3 6. bxc3 { Il pedone c3 sostiene d4. Il centro con d4 ed e4 è il tuo vantaggio: sviluppa con Nf3, Bd3 e arrocco. [%key Se il Nero cede il centro: e4 con tempo] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 c5 { [%line Difesa Tarrasch: 3...c5] Il Nero accetta un pedone isolato in cambio di pezzi attivi. }
+4. cxd5 exd5 5. Nf3 Nc6 6. g3 { L'alfiere andrà in g2, contro il pedone d5 che non può più essere difeso da un pedone. [%cal Gf1g2,Gg2d5] } 6... Nf6 7. Bg2 Be7 8. O-O O-O 9. Bg5 { Attacca il difensore di d5. Piano: dxc5 al momento giusto, Rc1, e pressione su d5 fino a vincerlo o a bloccarlo. [%key Contro il pedone isolato: bloccalo, attaccalo, scambia i pezzi] } *
+
+1. d4 d5 2. c4 e6 3. Nc3 c6 { [%line Semi-Slava: 3...c6] Il Nero gioca sia ...e6 sia ...c6. } 4. Nf3 Nf6 5. e3 Nbd7 6. Qc2 Bd6 7. Bd3 O-O 8. O-O { Sviluppo completo e re al sicuro. Piano: e4 al momento giusto. Se il Nero gioca ...dxc4, riprendi Bxc4 e spingi e4. [%key Contro la Semi-Slava: Qc2, Bd3, arrocco ed e4] [%cal Ge3e4] } *
+
+; ===================== 2...c6: SLAVA =====================
+1. d4 d5 2. c4 c6 { [%line Slava: 2...c6] La difesa che giochi tu col Nero: conosci già le sue idee. }
+3. Nf3 Nf6 4. e3 { [%line Slava: 4.e3] Il sistema tranquillo: difendi c4 con l'alfiere e non ti preoccupi di ...dxc4. }
+4... Bf5 { L'alfiere esce prima di ...e6, come nella tua Slava. } 5. Nc3 e6 6. Nh4 { Dai la caccia all'alfiere: la coppia degli alfieri è il premio. [%cal Gh4f5] }
+6... Bg4 7. Qb3 { Attacca b7, rimasto senza la difesa dell'alfiere. [%cal Gb3b7] } 7... Qb6 8. h3 Bh5 9. g4 Bg6 10. Nxg6 hxg6 11. Bg2 { L'alfiere va sulla grande diagonale. Hai la coppia degli alfieri: arrocca e apri il gioco con cxd5, perché gli alfieri rendono di più nelle posizioni aperte. Se il Nero cambia le donne con ...Qxb3, riprendi axb3: la colonna a si apre per la tua torre. [%key Contro ...Bf5: Nh4 e caccia all'alfiere] } *
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3 Bg4 { [%line Slava: 4...Bg4] } 5. h3 { Chiedi subito all'alfiere cosa fare. } 5... Bxf3 6. Qxf3 e6 7. Nc3 Nbd7 8. Bd3 { Hai la coppia degli alfieri e uno sviluppo comodo. Piano: arrocco ed e4. } *
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3 e6 { [%line Slava: 4...e6] } 5. Nc3 { Traspone nella Semi-Slava. } *
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3 dxc4 { [%line Slava: 4...dxc4] } 5. Bxc4 { Riprendi subito: l'alfiere è attivo e il centro è tuo. Piano: O-O, Qe2, Rd1 ed e4. } *
+
+1. d4 d5 2. c4 c6 3. Nf3 dxc4 { [%line Slava: 3...dxc4] } 4. e3 b5 5. a4 { Attacca la catena b5-c4. } 5... e6 6. axb5 cxb5 7. b3 { Il pedone c4 cade: se ...cxb3 Qxb3, se ...Bb7 bxc4 bxc4 Bxc4. Recuperi il pedone con un ottimo centro. [%key Se il Nero difende c4 con ...b5: a4 e b3] } *
+
+; ===================== 2...dxc4: GAMBETTO ACCETTATO =====================
+1. d4 d5 2. c4 dxc4 { [%line Accettato: 2...dxc4] Il Nero prende il pedone, ma cede il centro. }
+3. e3 { Prepari Bxc4: il pedone si recupera con calma. [%key Contro l'Accettato: e3 e Bxc4, senza fretta] [%cal Gf1c4] } 3... Nf6 4. Bxc4 e6 5. Nf3 c5 6. O-O a6 7. Qe2 { Prepara Rd1 ed e4. } 7... b5 8. Bb3 Bb7 9. Rd1 { La torre va sulla colonna della donna nera, pronta ad aprire il gioco con d4-d5 o dxc5. [%key Accettato: O-O, Qe2, Rd1, poi e4 o d5] } *
+
+1. d4 d5 2. c4 dxc4 3. e3 e5 { [%line Accettato: 3...e5] Il Nero restituisce il pedone per liberarsi. } 4. Bxc4 exd4 5. exd4 { Pedone isolato in d4, ma tanti pezzi attivi. } 5... Nf6 6. Nf3 Be7 7. O-O O-O 8. h3 { Toglie la casa g4 all'alfiere nero. Piano: Nc3, Re1, Bg5 e attacco sul lato di re, sostenuto dal pedone d4. [%key Con il pedone isolato: pezzi attivi e attacco] } *
+
+1. d4 d5 2. c4 dxc4 3. e3 b5 { [%line Accettato: 3...b5] Il Nero prova a tenere il pedone. } 4. a4 c6 5. axb5 cxb5 6. b3 { Il pedone c4 non si può difendere: recuperi il materiale con un vantaggio evidente. } *
+
+; ===================== CONTROGAMBETTI E ALTRE DIFESE =====================
+1. d4 d5 2. c4 Nc6 { [%line Difesa Chigorin: 2...Nc6] Il Nero sviluppa i pezzi invece di difendere d5 con i pedoni. } 3. Nf3 Bg4 4. cxd5 { Prendi d5 subito. } 4... Bxf3 5. gxf3 Qxd5 6. e3 { Hai la coppia degli alfieri e un centro solido. Piano: Nc3, Bd2, Rg1 e pressione sulla colonna g. [%key Contro la Chigorin: coppia degli alfieri e centro] } *
+
+1. d4 d5 2. c4 e5 { [%line Controgambetto Albin: 2...e5] Il Nero sacrifica un pedone per spingere ...d4. } 3. dxe5 d4 4. Nf3 { Sviluppo semplice. Attenzione a 4.e3?, che cade nella trappola di Lasker: 4...Bb4+ 5.Bd2 dxe3! 6.Bxb4?? exf2+ 7.Ke2 fxg1=N+ e il Nero vince. [%key Contro l'Albin: Nf3, g3 e Bg2, mai e3 subito] }
+4... Nc6 5. g3 { L'alfiere va in g2, sulla grande diagonale. } 5... Be6 6. Nbd2 Qd7 7. Bg2 O-O-O 8. O-O { Il re al sicuro e un pedone in più. Piano: a3, b4 e attacco sul lato di donna, dove ha arroccato il Nero. [%cal Gb2b4,Ga2a3] } *
+
+1. d4 d5 2. c4 Bf5 { [%line Difesa Baltica: 2...Bf5] L'alfiere esce subito, ma b7 resta debole. } 3. cxd5 Nf6 4. Nf3 Nxd5 5. Nbd2 { Prepara e4 con tempo sul cavallo d5 e sull'alfiere f5. [%key Contro ...Bf5: cxd5 e la spinta e4] [%cal Ge2e4] } *

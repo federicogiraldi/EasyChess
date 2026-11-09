@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js';
 import type { OpeningNode } from '../model/types';
-import { engine, winChance, type EngineLine } from './stockfish';
+import { ANALYSIS_DEPTH, engine, winChance, type EngineLine } from './stockfish';
 import { reasonsAgainst, reasonsFor, sanLine } from './reasons';
 
 export type Quality = 'migliore' | 'buona' | 'imprecisione' | 'errore' | 'grave';
@@ -34,7 +34,7 @@ export interface Verdict {
   mateWhite?: number;
 }
 
-const DEPTH = 14;
+const DEPTH = ANALYSIS_DEPTH;
 
 function toUci(fen: string, san: string): string {
   const m = new Chess(fen).move(san);
