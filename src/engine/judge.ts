@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js';
 import type { OpeningNode } from '../model/types';
-import { ANALYSIS_DEPTH, engine, winChance, type EngineLine } from './stockfish';
+import { ANALYSIS_DEPTH, EVAL_DEPTH, engine, winChance, type EngineLine } from './stockfish';
 import { reasonsAgainst, reasonsFor, sanLine } from './reasons';
 
 export type Quality = 'migliore' | 'buona' | 'imprecisione' | 'errore' | 'grave';
@@ -13,9 +13,25 @@ export const QUALITY_INFO: Record<Quality, { label: string; symbol: string }> = 
   grave: { label: 'Errore grave', symbol: '??' },
 };
 
+/**
+ * Classifica una mossa dalla perdita di probabilità di vittoria (scala winChance, da 0 a 2)
+ * rispetto alla mossa migliore. Le stesse soglie valgono per Laboratorio e Simulatore.
+ */
+export function qualityFromLoss(loss: number, isBest: boolean): Quality {
+  if (isBest) return 'migliore';
+  if (loss < 0.1) return 'buona';
+  if (loss < 0.2) return 'imprecisione';
+  if (loss < 0.3) return 'errore';
+  return 'grave';
+}
+
 export interface Verdict {
   quality: Quality;
+  /** Posizione prima della mossa: da qui partono le varianti da mostrare sulla scacchiera. */
+  fen: string;
   playedSan: string;
+  /** Variante di Stockfish dopo la mossa giocata (UCI, inizia con la mossa stessa). */
+  playedPv: string[];
   /** Valutazioni in centipedoni dal punto di vista di chi ha mosso. */
   playedScore: number;
   /** Mossa con cui confrontare: quella del repertorio se esiste, altrimenti la migliore dell'engine. */
@@ -23,6 +39,8 @@ export interface Verdict {
     san: string;
     score: number;
     line: string;
+    /** Variante della mossa migliore (UCI, inizia con la mossa stessa). */
+    pv: string[];
     source: 'repertorio' | 'engine';
     node?: OpeningNode;
     reasons: string[];
@@ -34,6 +52,7 @@ export interface Verdict {
   mateWhite?: number;
 }
 
+// Stessa profondità su PC e telefono: sul telefono l'analisi richiede qualche secondo in più, ma i giudizi non cambiano.
 const DEPTH = ANALYSIS_DEPTH;
 
 function toUci(fen: string, san: string): string {
@@ -73,20 +92,16 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
   const bestScore = Math.max(played.score, top[0]?.score ?? played.score, betterLine?.score ?? -Infinity);
   const loss = winChance(bestScore) - winChance(played.score);
-  const quality: Quality =
-    top[0]?.move === playedUci || loss < 0.02
-      ? top[0]?.move === playedUci ? 'migliore' : 'buona'
-      : loss < 0.1 ? 'buona'
-      : loss < 0.2 ? 'imprecisione'
-      : loss < 0.3 ? 'errore'
-      : 'grave';
+  const quality = qualityFromLoss(loss, top[0]?.move === playedUci);
 
   const after = new Chess(fen);
   after.move(playedSan);
 
   return {
     quality,
+    fen,
     playedSan,
+    playedPv: played.pv,
     playedScore: played.score,
     inRepertoire,
     // Anche quando l'engine la considera giocabile, se devii dal repertorio ti dico cosa perdi rispetto al piano.
@@ -95,6 +110,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
       san: betterNode?.san ?? new Chess(fen).move({ from: betterLine.move.slice(0, 2), to: betterLine.move.slice(2, 4), promotion: betterLine.move[4] ?? 'q' }).san,
       score: betterLine.score,
       line: sanLine(fen, betterLine.pv, 6),
+      pv: betterLine.pv,
       source: betterNode ? 'repertorio' : 'engine',
       node: betterNode,
       reasons: reasonsFor(fen, betterLine.pv),
@@ -106,7 +122,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
 /** Valutazione della posizione dal punto di vista del Bianco + mossa migliore. */
 export async function evaluate(fen: string) {
-  const [line] = await engine.analyze(fen, { depth: DEPTH });
+  const [line] = await engine.analyze(fen, { depth: EVAL_DEPTH });
   const white = fen.split(' ')[1] === 'w';
   if (!line) return { scoreWhite: 0, best: undefined as string | undefined, line: '' };
   return {

@@ -2,10 +2,19 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover: su iPhone/iPad l'app usa tutto lo schermo; i margini per notch e barra home sono in styles.css -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/png" href="./icons/icon-192.png" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
-    <meta name="theme-color" content="#272420" />
+    <!-- iOS/iPadOS: aperta dalla schermata Home è a schermo intero, senza barre di Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="EasyChess" />
+    <!-- Niente link automatici su numeri (es. "1.e4") in Safari -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#272420" media="(prefers-color-scheme: dark)" />
     <title>EasyChess</title>
   </head>
   <body>

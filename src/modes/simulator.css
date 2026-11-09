@@ -1,0 +1,62 @@
+/* Simulatore */
+.sim-setup { display: grid; grid-template-columns: minmax(0, 620px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 1050px) { .sim-setup { grid-template-columns: 1fr; } }
+.sim-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.sim-card h2 { font-size: 1.4em; }
+.sim-card h3 { font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.sim-card p { margin: 0; line-height: 1.5; }
+.sim-field { display: flex; flex-direction: column; gap: 6px; border: none; padding: 0; margin: 0; }
+.sim-field > span:first-child, .sim-field legend { font-weight: 600; margin-bottom: 2px; }
+.sim-field input[type='range'] { width: 100%; accent-color: var(--accent); height: 28px; }
+.sim-elo-scale { display: flex; justify-content: space-between; }
+.sim-radio { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; cursor: pointer; }
+.sim-radio input { accent-color: var(--accent); }
+.sim-start { align-self: flex-start; font-size: 1.05em; padding: 10px 20px; }
+.sim-start-from { background: var(--panel-2); border-radius: 8px; padding: 8px 12px; }
+.sim-history { display: flex; flex-direction: column; gap: 6px; }
+.sim-history-row { flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; }
+
+.sim-feedback { background: var(--panel); border: 1px solid var(--border); border-left: 5px solid var(--muted); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.sim-feedback p { margin: 0; line-height: 1.45; }
+.sim-feedback-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.sim-q-icon { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; padding: 0 5px; border-radius: 99px; background: var(--muted); color: #fff; font-weight: 800; font-size: 0.85em; }
+.sim-q-icon.small { min-width: 20px; height: 20px; font-size: 0.72em; padding: 0 4px; }
+.sim-book-dot { display: inline-block; width: 6px; height: 6px; border-radius: 99px; background: #a8865c; margin-right: 3px; vertical-align: middle; }
+
+.coach { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.coach h3 { font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.coach-book { display: flex; flex-direction: column; gap: 6px; }
+.coach-line { flex-direction: column; align-items: flex-start; gap: 3px; text-align: left; border-left: 4px solid #2563eb; }
+.coach-line.book { border-left-color: var(--mine); }
+.coach-move { font-weight: 700; }
+.coach-score { font-weight: 600; color: var(--muted); margin-left: 6px; font-size: 0.9em; }
+.coach-info { font-size: 0.9em; line-height: 1.4; }
+.coach-pv { font-family: ui-monospace, Menlo, Consolas, monospace; }
+
+.sim-summary { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.sim-result { font-weight: 700; font-size: 1.1em; }
+.sim-acc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sim-acc > div { display: flex; flex-direction: column; align-items: center; background: var(--panel-2); border-radius: 10px; padding: 10px; }
+.sim-acc-num { font-size: 1.9em; font-weight: 800; color: var(--mine); }
+.sim-acc-num.opp { color: var(--text); }
+.sim-table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+.sim-table th { text-align: center; color: var(--muted); font-weight: 600; padding: 2px 4px; }
+.sim-table td { padding: 4px; border-top: 1px solid var(--border); }
+.sim-table td:not(:first-child) { text-align: center; font-weight: 700; width: 3.5em; }
+
+.eval-graph { width: 100%; height: 90px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; display: block; touch-action: manipulation; }
+.eg-black { fill: #3a3631; }
+.eg-white { fill: #f2efe9; }
+.eg-mid { stroke: #888; stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+.eg-cursor { stroke: var(--accent); stroke-width: 2; vector-effect: non-scaling-stroke; }
+
+.sim-moments { display: flex; flex-direction: column; gap: 6px; }
+.sim-moments h3 { font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.sim-moment { justify-content: flex-start; }
+
+/* Consigli di Stockfish a fine linea (Esplora) */
+.engine-tips { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.engine-tips h3 { font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.engine-tips .coach-line { display: flex; flex-direction: column; gap: 3px; padding: 7px 10px; border: 1px solid var(--border); border-left: 4px solid #2563eb; border-radius: 8px; }
+.engine-tips .primary { align-self: flex-start; margin-top: 4px; }
+.arrow-chip { display: inline-block; width: 10px; height: 10px; border-radius: 99px; margin-right: 6px; vertical-align: 1px; }

@@ -1,8 +1,10 @@
-import { useMemo, useState, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent } from 'react';
 import { builtinSources, loadOpenings, type PgnSource } from './openings';
 import { parseOpening } from './core/pgnToTree';
 import { exportCards, replaceCards } from './core/progress';
 import { load, save } from './core/storage';
+import { saveFile } from './core/device';
+import { InstallHint } from './components/InstallHint';
 import { OpeningPicker } from './components/OpeningPicker';
 import { Explore } from './modes/Explore';
 import { Drill } from './modes/Drill';
@@ -10,8 +12,11 @@ import { Review } from './modes/Review';
 import { Quiz } from './modes/Quiz';
 import { Lab } from './modes/Lab';
 import { Course } from './modes/Course';
+import { Simulator } from './modes/Simulator';
+import { Analysis } from './modes/Analysis';
+import { VariationPreviewProvider } from './components/VariationPreview';
 
-export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab';
+export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
 
 const MODES: { id: Mode; label: string }[] = [
   { id: 'course', label: '🎓 Corso' },
@@ -19,6 +24,7 @@ const MODES: { id: Mode; label: string }[] = [
   { id: 'drill', label: '♟ Allenamento' },
   { id: 'review', label: '🔁 Ripasso' },
   { id: 'quiz', label: '❓ Quiz' },
+  { id: 'sim', label: '🎮 Simulatore' },
   { id: 'lab', label: '🔬 Laboratorio' },
 ];
 
@@ -26,11 +32,18 @@ const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, '')
 
 export default function App() {
   const [imported, setImported] = useState<PgnSource[]>(() => load('imported', []));
-  const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string } | null>(null);
+  const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState(false);
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
+
+  // Sul telefono le schede scorrono in orizzontale: porta in vista quella attiva (es. Esplora → Laboratorio).
+  useEffect(() => {
+    document.querySelector('.tabs .active')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    window.scrollTo({ top: 0 });
+  }, [route?.mode, route?.openingId]);
 
   const updateImported = (next: PgnSource[]) => {
     setImported(next);
@@ -54,12 +67,11 @@ export default function App() {
 
   const exportProgress = () => {
     const data = { version: 1, cards: exportCards(), imported };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `easychess-progressi-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    void saveFile(
+      `easychess-progressi-${new Date().toISOString().slice(0, 10)}.json`,
+      JSON.stringify(data, null, 2),
+      'application/json',
+    );
   };
 
   const importProgress = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,83 +90,116 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      <header className="topbar">
-        <button className="brand" onClick={() => setRoute(null)}>
-          <span className="logo">♞</span> EasyChess
-        </button>
-        {opening && route && (
-          <>
-            <span className="crumb">{opening.name}</span>
-            <nav className="tabs">
-              {MODES.filter((m) => m.id !== 'course' || opening.course).map((m) => (
-                <button
-                  key={m.id}
-                  className={m.id === route.mode ? 'active' : ''}
-                  onClick={() => setRoute({ openingId: route.openingId, mode: m.id })}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </nav>
-          </>
-        )}
-      </header>
+    <VariationPreviewProvider>
+      <div className="app">
+        <header className="topbar">
+          <button
+            className="brand"
+            onClick={() => {
+              setRoute(null);
+              setAnalysis(false);
+            }}
+          >
+            <span className="logo">♞</span> EasyChess
+          </button>
+          {analysis && !route && <span className="crumb">📊 Analisi partite</span>}
+          {opening && route && (
+            <>
+              <span className="crumb">{opening.name}</span>
+              <nav className="tabs">
+                {MODES.filter((m) => m.id !== 'course' || opening.course).map((m) => (
+                  <button
+                    key={m.id}
+                    className={m.id === route.mode ? 'active' : ''}
+                    onClick={() => setRoute({ openingId: route.openingId, mode: m.id })}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </nav>
+            </>
+          )}
+        </header>
 
-      <main>
-        {opening && route ? (
-          <div key={`${opening.id}-${route.mode}`}>
-            {route.mode === 'explore' && (
-              <Explore opening={opening} onOpenLab={(labMoves) => setRoute({ openingId: opening.id, mode: 'lab', labMoves })} />
-            )}
-            {route.mode === 'drill' && <Drill opening={opening} initialLine={route.drillLine} />}
-            {route.mode === 'course' && opening.course && (
-              <Course
-                opening={{ ...opening, course: opening.course }}
-                onDrillLine={(drillLine) => setRoute({ openingId: opening.id, mode: 'drill', drillLine })}
-              />
-            )}
-            {route.mode === 'review' && <Review opening={opening} />}
-            {route.mode === 'quiz' && <Quiz opening={opening} />}
-            {route.mode === 'lab' && <Lab opening={opening} initialMoves={route.labMoves} />}
-          </div>
-        ) : (
-          <>
-            <section className="hero">
-              <h1>Le tue aperture</h1>
-              <p className="muted">
-                Esplora le linee, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
-              </p>
-            </section>
-            {message && (
-              <div className="toast" onClick={() => setMessage(null)}>
-                {message}
-              </div>
-            )}
-            <OpeningPicker
+        <main>
+          {analysis && !route ? (
+            <Analysis
               openings={openings}
-              errors={errors}
-              onOpen={(openingId, mode) => setRoute({ openingId, mode })}
-              onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
+              onOpenMode={(openingId, mode, moves) => {
+                setAnalysis(false);
+                setRoute(mode === 'lab' ? { openingId, mode, labMoves: moves } : { openingId, mode, simMoves: moves });
+              }}
             />
-            <section className="tools">
-              <label className="button">
-                ➕ Importa apertura (.pgn)
-                <input type="file" accept=".pgn,text/plain" onChange={importPgn} hidden />
-              </label>
-              <button onClick={exportProgress}>💾 Esporta progressi</button>
-              <label className="button">
-                📂 Ripristina progressi
-                <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
-              </label>
-            </section>
-            <p className="muted small hint">
-              Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
-              header <code>[Opening]</code>, <code>[Color]</code> e <code>[Description]</code>. Istruzioni complete nel README.
-            </p>
-          </>
-        )}
-      </main>
-    </div>
+          ) : opening && route ? (
+            <div key={`${opening.id}-${route.mode}`}>
+              {route.mode === 'explore' && (
+                <Explore
+                  opening={opening}
+                  onOpenLab={(labMoves) => setRoute({ openingId: opening.id, mode: 'lab', labMoves })}
+                  onSimulate={(simMoves) => setRoute({ openingId: opening.id, mode: 'sim', simMoves })}
+                />
+              )}
+              {route.mode === 'drill' && <Drill opening={opening} initialLine={route.drillLine} />}
+              {route.mode === 'course' && opening.course && (
+                <Course
+                  opening={{ ...opening, course: opening.course }}
+                  onDrillLine={(drillLine) => setRoute({ openingId: opening.id, mode: 'drill', drillLine })}
+                />
+              )}
+              {route.mode === 'review' && <Review opening={opening} />}
+              {route.mode === 'quiz' && <Quiz opening={opening} />}
+              {route.mode === 'lab' && <Lab opening={opening} initialMoves={route.labMoves} />}
+              {route.mode === 'sim' && <Simulator opening={opening} initialMoves={route.simMoves} />}
+            </div>
+          ) : (
+            <>
+              <section className="hero">
+                <h1>Le tue aperture</h1>
+                <p className="muted">
+                  Esplora le linee, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
+                </p>
+              </section>
+              <InstallHint />
+              {message && (
+                <div className="toast" onClick={() => setMessage(null)}>
+                  {message}
+                </div>
+              )}
+              <OpeningPicker
+                openings={openings}
+                errors={errors}
+                onOpen={(openingId, mode) => setRoute({ openingId, mode })}
+                onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
+              />
+              <section className="sim-card home-analysis">
+                <div>
+                  <h3>📊 Analisi delle tue partite</h3>
+                  <p className="muted small">Carica le partite da chess.com (o un PGN) e Stockfish le analizza, confrontandole con il tuo repertorio.</p>
+                </div>
+                <button className="primary" onClick={() => setAnalysis(true)}>
+                  Analizza le mie partite
+                </button>
+              </section>
+              <section className="tools">
+                <label className="button">
+                  ➕ Importa apertura (.pgn)
+                  {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
+                  <input type="file" onChange={importPgn} hidden />
+                </label>
+                <button onClick={exportProgress}>💾 Esporta progressi</button>
+                <label className="button">
+                  📂 Ripristina progressi
+                  <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
+                </label>
+              </section>
+              <p className="muted small hint">
+                Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
+                header <code>[Opening]</code>, <code>[Color]</code> e <code>[Description]</code>. Istruzioni complete nel README.
+              </p>
+            </>
+          )}
+        </main>
+      </div>
+    </VariationPreviewProvider>
   );
 }

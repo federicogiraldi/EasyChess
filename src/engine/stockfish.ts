@@ -18,15 +18,33 @@ export interface AnalyzeOptions {
   multiPv?: number;
   /** Limita la ricerca a queste mosse UCI (per valutare una mossa precisa). */
   searchMoves?: string[];
+  /** Cerca per questo tempo (ms) invece che fino a una profondità. */
+  movetime?: number;
+  /** Forza di gioco: Elo (UCI_Elo, da 1320) e/o Skill Level (0-20). Assenti = piena forza. */
+  elo?: number;
+  skill?: number;
 }
+
+export interface SearchResult {
+  lines: EngineLine[];
+  /** Mossa scelta dall'engine: con la forza limitata può non essere la prima delle linee. */
+  bestmove?: string;
+}
+
+/** Elo minimo e massimo che Stockfish accetta in UCI_Elo. */
+export const ENGINE_ELO_MIN = 1320;
+export const ENGINE_ELO_MAX = 3190;
 
 const MATE = 100000;
 
 /**
- * Profondità di analisi, uguale su PC e telefono: su un telefono ci vuole qualche secondo in più,
- * ma il giudizio sulle mosse resta lo stesso (a profondità 14 alcune valutazioni cambiavano di segno).
+ * Profondità di analisi, uguali su PC e telefono: sul telefono ci vuole qualche secondo in più,
+ * ma i giudizi restano gli stessi (a profondità 12-14 alcune valutazioni cambiavano di segno).
+ * ANALYSIS_DEPTH: spiegazione di una singola mossa ("Perché?", Laboratorio).
+ * EVAL_DEPTH: valutazione di posizioni in serie (revisione delle partite, barra di valutazione, coach).
  */
 export const ANALYSIS_DEPTH = 18;
+export const EVAL_DEPTH = 16;
 
 export interface EngineProgress {
   /** Profondità raggiunta dalla ricerca in corso e quella richiesta. */
@@ -39,15 +57,17 @@ export interface EngineProgress {
 interface Job {
   fen: string;
   opts: AnalyzeOptions;
-  resolve: (lines: EngineLine[]) => void;
+  resolve: (r: SearchResult) => void;
   reject: (e: Error) => void;
+  cancelled?: boolean;
 }
 
-class Engine {
+export class Engine {
   private worker: Worker | null = null;
   private ready: Promise<void> | null = null;
   private queue: Job[] = [];
   private busy = false;
+  private current: Job | null = null;
   private cache = new Map<string, EngineLine[]>();
   private listeners = new Set<(p: EngineProgress | null) => void>();
 
@@ -89,16 +109,33 @@ class Engine {
   }
 
   analyze(fen: string, opts: AnalyzeOptions = {}): Promise<EngineLine[]> {
-    const key = `${fen}|${opts.depth ?? 0}|${opts.multiPv ?? 1}|${(opts.searchMoves ?? []).join(',')}`;
+    const key = `${fen}|${opts.depth ?? 0}|${opts.multiPv ?? 1}|${(opts.searchMoves ?? []).join(',')}|${opts.movetime ?? 0}`;
     const cached = this.cache.get(key);
     if (cached) return Promise.resolve(cached);
-    return new Promise<EngineLine[]>((resolve, reject) => {
-      this.queue.push({ fen, opts, resolve, reject });
-      void this.pump();
-    }).then((lines) => {
-      this.cache.set(key, lines);
+    return this.search(fen, opts).then(({ lines }) => {
+      // Risultati a tempo o a forza ridotta non sono riproducibili: non vanno in cache.
+      if (!opts.movetime && opts.elo === undefined && opts.skill === undefined) this.cache.set(key, lines);
       return lines;
     });
+  }
+
+  /** Ricerca senza cache, con la mossa scelta dall'engine (serve per l'avversario a forza limitata). */
+  search(fen: string, opts: AnalyzeOptions = {}): Promise<SearchResult> {
+    return new Promise<SearchResult>((resolve, reject) => {
+      this.queue.push({ fen, opts, resolve, reject });
+      void this.pump();
+    });
+  }
+
+  /** Annulla le richieste in coda e interrompe quella in corso (es. nuova partita). */
+  cancelAll() {
+    const pending = this.queue.splice(0);
+    pending.forEach((j) => j.reject(new Error('annullata')));
+    if (this.current) {
+      // Il risultato parziale della ricerca interrotta viene scartato (non va in cache).
+      this.current.cancelled = true;
+      this.worker?.postMessage('stop');
+    }
   }
 
   private async pump() {
@@ -106,19 +143,23 @@ class Engine {
     const job = this.queue.shift();
     if (!job) return;
     this.busy = true;
+    this.current = job;
     try {
       await this.start();
-      job.resolve(await this.run(job));
+      const result = await this.run(job);
+      if (job.cancelled) job.reject(new Error('annullata'));
+      else job.resolve(result);
     } catch (e) {
       job.reject(e as Error);
     } finally {
       this.busy = false;
+      this.current = null;
       if (this.queue.length === 0) this.emit(null);
       void this.pump();
     }
   }
 
-  private run({ fen, opts }: Job): Promise<EngineLine[]> {
+  private run({ fen, opts }: Job): Promise<SearchResult> {
     const w = this.worker!;
     const multiPv = opts.multiPv ?? 1;
     const target = opts.depth ?? ANALYSIS_DEPTH;
@@ -139,19 +180,31 @@ class Engine {
           if (idx === 1) this.emit({ depth, target, queued: this.queue.length });
         } else if (msg.startsWith('bestmove')) {
           w.removeEventListener('message', onMsg);
-          resolve([...lines.entries()].sort((a, b) => a[0] - b[0]).map(([, l]) => l));
+          const best = msg.split(/\s+/)[1];
+          resolve({
+            lines: [...lines.entries()].sort((a, b) => a[0] - b[0]).map(([, l]) => l),
+            bestmove: best && best !== '(none)' ? best : undefined,
+          });
         }
       };
       w.addEventListener('message', onMsg);
+      // Le opzioni di forza vanno reimpostate ogni volta: lo stesso worker può servire ricerche diverse.
+      const limit = opts.elo !== undefined;
+      w.postMessage(`setoption name UCI_LimitStrength value ${limit}`);
+      if (limit) w.postMessage(`setoption name UCI_Elo value ${Math.round(Math.min(ENGINE_ELO_MAX, Math.max(ENGINE_ELO_MIN, opts.elo!)))}`);
+      w.postMessage(`setoption name Skill Level value ${opts.skill ?? 20}`);
       w.postMessage(`setoption name MultiPV value ${multiPv}`);
       w.postMessage(`position fen ${fen}`);
       const search = opts.searchMoves?.length ? ` searchmoves ${opts.searchMoves.join(' ')}` : '';
-      w.postMessage(`go depth ${target}${search}`);
+      w.postMessage(opts.movetime ? `go movetime ${opts.movetime}${search}` : `go depth ${target}${search}`);
     });
   }
 }
 
+/** Analisi a piena forza (giudizi, valutazioni, coach). */
 export const engine = new Engine();
+/** Avversario del Simulatore: worker separato, così la forza ridotta non tocca le analisi. */
+export const opponentEngine = new Engine();
 
 /** Probabilità di vittoria in [-1, 1] (stessa curva usata da Lichess). */
 export function winChance(cp: number): number {

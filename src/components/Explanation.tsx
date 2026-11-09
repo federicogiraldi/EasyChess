@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useVariationPreview } from './VariationPreview';
 import type { OpeningNode } from '../model/types';
 import { judgeMove, QUALITY_INFO, type Verdict } from '../engine/judge';
 import { engine, formatScore, winChance, type EngineProgress } from '../engine/stockfish';
@@ -9,6 +10,17 @@ const fmt = (cp: number) => formatScore(cp);
 export function ExplanationCard({ verdict }: { verdict: Verdict }) {
   const q = QUALITY_INFO[verdict.quality];
   const b = verdict.better;
+  const preview = useVariationPreview();
+  const owner = useRef({}).current;
+  // Se la spiegazione sparisce (nuova mossa, cambio di modalità) la scacchiera torna alla partita.
+  useEffect(() => () => preview?.close(owner), [preview?.close, owner]);
+  const showing = preview?.state?.req.owner === owner ? preview.state.req.tone : undefined;
+  const showLine = (tone: 'good' | 'bad') => {
+    if (!preview) return;
+    if (tone === 'good' && b) preview.show({ owner, tone, startFen: verdict.fen, uci: b.pv, title: `${b.source === 'repertorio' ? 'Repertorio' : 'Stockfish'}: ${b.san}` });
+    if (tone === 'bad') preview.show({ owner, tone, startFen: verdict.fen, uci: verdict.playedPv, title: `La tua mossa: ${verdict.playedSan}` });
+  };
+  const canShowPlayed = verdict.playedPv.length > 1 && verdict.quality !== 'migliore';
   return (
     <div className={`explanation q-${verdict.quality}`}>
       <div className="exp-head">
@@ -46,6 +58,18 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
             </ul>
           )}
           <p className="muted small">Linea: {b.line}</p>
+          {preview && b.pv.length > 0 && (
+            <div className="exp-show">
+              <button className={showing === 'good' ? 'primary' : ''} onClick={() => showLine('good')}>
+                ♟ Mostra {b.san} sulla scacchiera
+              </button>
+              {canShowPlayed && (
+                <button className={showing === 'bad' ? 'primary' : ''} onClick={() => showLine('bad')}>
+                  ♟ Cosa succede dopo {verdict.playedSan}
+                </button>
+              )}
+            </div>
+          )}
           {b.source === 'repertorio' && verdict.quality === 'buona' && (
             <p className="muted small">
               Secondo l'engine anche la tua mossa è giocabile: il repertorio sceglie {b.san} per restare nelle strutture che stai studiando.
