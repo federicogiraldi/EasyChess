@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Chess } from 'chess.js';
-import { hangingPieces, materialSwing, reasonsAgainst, reasonsFor, sanLine } from './reasons';
+import { describeMove, hangingPieces, materialSwing, reasonsAgainst, reasonsFor, sanLine } from './reasons';
 
 const fenAfter = (moves: string) => {
   const c = new Chess();
@@ -39,6 +39,13 @@ describe('reasons', () => {
     const fen = fenAfter('e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2');
     const r = reasonsFor(fen, ['c6c5']).join(' ');
     expect(r).toMatch(/Attacca il pedone in d4/);
+  });
+
+  it('descrive inchiodature, attacchi doppi e la pressione su f7', () => {
+    expect(describeMove(fenAfter('d4 d5 c4 e6 Nc3 Nf6'), 'Bg5').join(' ')).toMatch(/Inchioda il cavallo in f6 alla donna/);
+    expect(describeMove(fenAfter('e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5'), 'Nxf7').join(' ')).toMatch(/Sacrificio.*Attacco doppio.*donna in d8 e la torre in h8/);
+    expect(describeMove(fenAfter('e4 e5 Nf3 Nc6 Bc4 Nf6'), 'Ng5').join(' ')).toMatch(/f7: ora è attaccato due volte/);
+    expect(describeMove(fenAfter('d4 d5 c4'), 'c6').join(' ')).toMatch(/Sostiene il pedone in d5/);
   });
 
   it('riconosce lo sviluppo con attacco', () => {

@@ -37,6 +37,23 @@ export const ENGINE_ELO_MAX = 3190;
 
 const MATE = 100000;
 
+/**
+ * Profondità di analisi, uguali su PC e telefono: sul telefono ci vuole qualche secondo in più,
+ * ma i giudizi restano gli stessi (a profondità 12-14 alcune valutazioni cambiavano di segno).
+ * ANALYSIS_DEPTH: spiegazione di una singola mossa ("Perché?", Laboratorio).
+ * EVAL_DEPTH: valutazione di posizioni in serie (revisione delle partite, barra di valutazione, coach).
+ */
+export const ANALYSIS_DEPTH = 18;
+export const EVAL_DEPTH = 16;
+
+export interface EngineProgress {
+  /** Profondità raggiunta dalla ricerca in corso e quella richiesta. */
+  depth: number;
+  target: number;
+  /** Analisi ancora in coda dopo quella in corso. */
+  queued: number;
+}
+
 interface Job {
   fen: string;
   opts: AnalyzeOptions;
@@ -52,6 +69,17 @@ export class Engine {
   private busy = false;
   private current: Job | null = null;
   private cache = new Map<string, EngineLine[]>();
+  private listeners = new Set<(p: EngineProgress | null) => void>();
+
+  /** Avanzamento dell'analisi in corso (null quando il motore è fermo). */
+  onProgress(fn: (p: EngineProgress | null) => void): () => void {
+    this.listeners.add(fn);
+    return () => this.listeners.delete(fn);
+  }
+
+  private emit(p: EngineProgress | null) {
+    for (const fn of this.listeners) fn(p);
+  }
 
   private start(): Promise<void> {
     if (this.ready) return this.ready;
@@ -63,7 +91,11 @@ export class Engine {
         return;
       }
       const onMsg = (e: MessageEvent) => {
-        if (String(e.data) === 'uciok') this.worker!.postMessage('isready');
+        if (String(e.data) === 'uciok') {
+          // Più memoria per la tabella delle trasposizioni: ricerche profonde più rapide.
+          this.worker!.postMessage('setoption name Hash value 32');
+          this.worker!.postMessage('isready');
+        }
         if (String(e.data) === 'readyok') {
           this.worker!.removeEventListener('message', onMsg);
           resolve();
@@ -122,6 +154,7 @@ export class Engine {
     } finally {
       this.busy = false;
       this.current = null;
+      if (this.queue.length === 0) this.emit(null);
       void this.pump();
     }
   }
@@ -129,6 +162,8 @@ export class Engine {
   private run({ fen, opts }: Job): Promise<SearchResult> {
     const w = this.worker!;
     const multiPv = opts.multiPv ?? 1;
+    const target = opts.depth ?? ANALYSIS_DEPTH;
+    this.emit({ depth: 0, target, queued: this.queue.length });
     const lines = new Map<number, EngineLine>();
     return new Promise((resolve) => {
       const onMsg = (e: MessageEvent) => {
@@ -142,6 +177,7 @@ export class Engine {
           const m = mate ? Number(mate[1]) : undefined;
           const score = m !== undefined ? Math.sign(m || -1) * (MATE - Math.abs(m) * 10) : Number(cp?.[1] ?? 0);
           lines.set(idx, { move: pv[0], score, mate: m, pv, depth });
+          if (idx === 1) this.emit({ depth, target, queued: this.queue.length });
         } else if (msg.startsWith('bestmove')) {
           w.removeEventListener('message', onMsg);
           const best = msg.split(/\s+/)[1];
@@ -160,7 +196,7 @@ export class Engine {
       w.postMessage(`setoption name MultiPV value ${multiPv}`);
       w.postMessage(`position fen ${fen}`);
       const search = opts.searchMoves?.length ? ` searchmoves ${opts.searchMoves.join(' ')}` : '';
-      w.postMessage(opts.movetime ? `go movetime ${opts.movetime}${search}` : `go depth ${opts.depth ?? 14}${search}`);
+      w.postMessage(opts.movetime ? `go movetime ${opts.movetime}${search}` : `go depth ${target}${search}`);
     });
   }
 }

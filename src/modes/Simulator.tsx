@@ -437,6 +437,7 @@ export function Simulator({ opening, initialMoves }: Props) {
           fen={shownFen}
           orientation={opening.color}
           onMove={reviewing ? undefined : onMove}
+          premoveColor={phase === 'play' && !outcome.over ? opening.color : undefined}
           arrows={arrows}
           highlights={highlights}
           marks={marks}

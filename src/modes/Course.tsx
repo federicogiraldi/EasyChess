@@ -149,6 +149,7 @@ export function Course({ opening, onDrillLine }: Props) {
           fen={fen}
           orientation={opening.color}
           onMove={onMove}
+          premoveColor={playing && !demo ? opening.color : undefined}
           arrows={arrows}
           highlights={playing ? [] : step.highlights}
           lastMove={lastMove ? { from: lastMove.from, to: lastMove.to } : undefined}

@@ -1,12 +1,12 @@
 import { Chess } from 'chess.js';
-import { engine, opponentEngine, ENGINE_ELO_MIN } from './stockfish';
+import { engine, opponentEngine, ENGINE_ELO_MIN, EVAL_DEPTH } from './stockfish';
 import { evaluate } from './judge';
 import { reasonsFor, sanLine, uciToSan } from './reasons';
 import { pickWeakMove, thinkTime, type PosEval } from '../core/simulation';
 
 const MATE = 100000;
 
-/** Telefono (schermo touch stretto): ricerche più brevi per risposte rapide e meno batteria. */
+/** Telefono (schermo touch stretto): l'avversario pensa meno. Riguarda solo il suo tempo di gioco, non la precisione delle analisi. */
 function isPhoneLike(): boolean {
   return typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse) and (max-width: 760px)').matches;
 }
@@ -43,7 +43,7 @@ export interface CoachLine {
 
 /** Le migliori mosse secondo Stockfish, con il motivo in parole semplici. */
 export async function coachLines(fen: string, count = 3): Promise<CoachLine[]> {
-  const lines = await engine.analyze(fen, { depth: isPhoneLike() ? 12 : 14, multiPv: count });
+  const lines = await engine.analyze(fen, { depth: EVAL_DEPTH, multiPv: count });
   return lines.map((l) => ({
     uci: l.move,
     san: uciToSan(fen, l.move),

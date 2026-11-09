@@ -4,8 +4,12 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 
 - **Caro-Kann** (col Nero): 24 linee, corso di 9 lezioni;
 - **Difesa Slava** (col Nero, contro 1.d4 e i sistemi come Londra e Colle): 15 linee, corso di 8 lezioni;
-- **Sistema Londra** (col Bianco): 14 linee, corso di 7 lezioni.
-- **Attacco Indiano di Re** (col Bianco, 1.Nf3 o da 1.e4 con d3): 13 linee, corso di 7 lezioni.
+- **Gambetto di Donna Rifiutato** (col Nero, 2...e6 contro 1.d4 d5 2.c4): 11 linee, corso di 5 lezioni;
+- **Sistema Londra** (col Bianco): 14 linee, corso di 7 lezioni;
+- **Attacco Indiano di Re** (col Bianco, 1.Nf3 o da 1.e4 con d3): 13 linee, corso di 7 lezioni;
+- **Gambetto di Donna** (col Bianco, 1.d4 d5 2.c4): 18 linee, corso di 6 lezioni;
+- **Gambetto Scozzese** (col Bianco, 1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Bc4): 10 linee, corso di 5 lezioni;
+- **Attacco Fried Liver** (col Bianco, Due Cavalli con 4.Ng5): 9 linee, corso di 6 lezioni.
 
 ## Online
 
@@ -49,7 +53,7 @@ EasyChess è una **PWA** (`vite-plugin-pwa`), come LearnWeb: un service worker m
 |---|---|
 | 🎓 **Corso** | Lezioni guidate passo per passo: spiegazioni, mosse da giocare tu sulla scacchiera e quiz. Se sbagli puoi chiedere "Perché?". A fine lezione puoi allenarti subito su quella linea. |
 | 📖 **Esplora** | Navighi l'albero mossa per mossa (frecce ← →, clic sulle mosse o sulle linee a sinistra). Frecce verdi = mosse tue, arancioni = risposte avversarie. Commenti e idee chiave a destra. |
-| ♟ **Allenamento** | Giochi tu le tue mosse, l'app risponde con le varie linee dell'avversario (preferendo quelle che conosci meno). Se sbagli ti mostra la mossa giusta e devi giocarla. Puoi limitarti a una sola linea dal menu. |
+| ♟ **Allenamento** | Giochi tu le tue mosse, l'app risponde con le varie linee dell'avversario (preferendo quelle che conosci meno). Se sbagli ti mostra la mossa giusta e devi giocarla. Puoi limitarti a una sola linea dal menu. Se conosci già la risposta puoi fare la **pre-move** mentre l'avversario muove (anche nel Corso, nel Simulatore e nel Laboratorio); clic su una casa o tasto destro per annullarla. |
 | 🔁 **Ripasso** | Ripetizione spaziata: ogni posizione in cui tocca a te è una "flashcard". Le risposte giuste allungano l'intervallo (1 → 3 → ~8 giorni…), gli errori la riportano in coda subito. 10 posizioni nuove per sessione. |
 | ❓ **Quiz** | Posizioni a caso da tutto il repertorio: trova la mossa. |
 | 🎮 **Simulatore** | Partita contro **Stockfish** al livello Elo che scegli (400–3000, come i bot di chess.com). Finché c'è teoria l'avversario segue il repertorio (una linea scelta o a caso, preferendo quelle che conosci meno); quando la linea finisce gioca l'engine. Ogni tua mossa riceve un'etichetta (📖 Libro, ★ Migliore, Buona, ?! Imprecisione, ? Errore, ?? Errore grave). Il **coach** suggerisce le mosse (💡: prima il pezzo, poi la freccia, con le 3 migliori e il perché; sulla scacchiera compaiono le **frecce** delle mosse consigliate come nell'engine di chess.com: blu scuro la migliore, poi più chiare, verdi quelle del repertorio) e puoi annullare o riprovare. A fine partita c'è la **revisione**: precisione tua e dell'avversario, conteggio per categoria, grafico della valutazione, momenti chiave con "Riprova da qui", PGN da copiare e storico delle partite. Da Esplora: **🎮 Gioca da qui**, e a fine linea i consigli di Stockfish per continuare. |
@@ -70,7 +74,9 @@ Nella spiegazione, **♟ Mostra … sulla scacchiera** gioca sulla scacchiera tu
 
 ### Come nascono le spiegazioni
 
-Tutto gira offline. Nel Simulatore l'avversario usa un secondo Stockfish con la forza limitata (`UCI_Elo` da 1320 in su; sotto, Skill Level 0 e ogni tanto una mossa più debole scelta apposta), separato da quello che analizza a piena forza. La precisione usa la stessa formula di Lichess (perdita di probabilità di vittoria a ogni mossa). Stockfish 17 (versione "lite", dentro il browser) valuta le mosse; le spiegazioni sono ricavate da regole scacchistiche: materiale perso lungo la variante, pezzi lasciati in presa o minacce ignorate, arrocco perso, donna uscita troppo presto, pezzo mosso due volte, alfiere chiuso dai propri pedoni, spinte che indeboliscono il re, attacco al centro e alla base della catena. A questo si aggiunge il commento del repertorio sulla mossa giusta.
+Tutto gira offline. Nel Simulatore l'avversario usa un secondo Stockfish con la forza limitata (`UCI_Elo` da 1320 in su; sotto, Skill Level 0 e ogni tanto una mossa più debole scelta apposta), separato da quello che analizza a piena forza. La precisione usa la stessa formula di Lichess (perdita di probabilità di vittoria a ogni mossa). Stockfish 17 (versione "lite", dentro il browser) valuta le mosse con la **stessa profondità su qualsiasi dispositivo** (18 per spiegare una mossa, 16 per la revisione delle partite e la barra di valutazione): su telefono l'analisi richiede qualche secondo in più (una barra mostra l'avanzamento), ma la precisione è la stessa del PC; le spiegazioni sono ricavate da regole scacchistiche: materiale perso lungo la variante, pezzi lasciati in presa o minacce ignorate, arrocco perso, donna uscita troppo presto, pezzo mosso due volte, alfiere chiuso dai propri pedoni, spinte che indeboliscono il re, attacco al centro e alla base della catena. A questo si aggiunge il commento del repertorio sulla mossa giusta, e la risposta migliore dell'avversario viene spiegata (cosa attacca, cosa minaccia).
+
+Sotto il commento di ogni mossa (Esplora, Allenamento, Ripasso, Quiz) c'è anche **🔍 Cosa fa questa mossa**: una spiegazione automatica che riconosce sviluppo e controllo del centro, catene di pedoni e rotture, inchiodature, attacchi doppi, pressione su f7/f2, sacrifici, colonne aperte, mosse profilattiche (h3/a3), fianchetti e preparazione dell'arrocco.
 
 Allenamento, Ripasso e Quiz aggiornano tutti gli stessi progressi (salvati nel browser). Dalla home puoi **esportare/ripristinare i progressi** in un file JSON.
 

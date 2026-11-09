@@ -1,7 +1,6 @@
 import { Chess } from 'chess.js';
 import type { OpeningNode } from '../model/types';
-import { engine, winChance, type EngineLine } from './stockfish';
-import { isPhone } from '../core/device';
+import { ANALYSIS_DEPTH, EVAL_DEPTH, engine, winChance, type EngineLine } from './stockfish';
 import { reasonsAgainst, reasonsFor, sanLine } from './reasons';
 
 export type Quality = 'migliore' | 'buona' | 'imprecisione' | 'errore' | 'grave';
@@ -53,8 +52,8 @@ export interface Verdict {
   mateWhite?: number;
 }
 
-// Sul telefono una profondità un po' minore: risposte rapide e meno batteria, giudizi praticamente uguali.
-const DEPTH = isPhone() ? 12 : 14;
+// Stessa profondità su PC e telefono: sul telefono l'analisi richiede qualche secondo in più, ma i giudizi non cambiano.
+const DEPTH = ANALYSIS_DEPTH;
 
 function toUci(fen: string, san: string): string {
   const m = new Chess(fen).move(san);
@@ -123,7 +122,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
 /** Valutazione della posizione dal punto di vista del Bianco + mossa migliore. */
 export async function evaluate(fen: string) {
-  const [line] = await engine.analyze(fen, { depth: DEPTH });
+  const [line] = await engine.analyze(fen, { depth: EVAL_DEPTH });
   const white = fen.split(' ')[1] === 'w';
   if (!line) return { scoreWhite: 0, best: undefined as string | undefined, line: '' };
   return {

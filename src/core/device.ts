@@ -16,12 +16,6 @@ export function isStandalone(): boolean {
   return nav.standalone === true || (typeof matchMedia !== 'undefined' && matchMedia('(display-mode: standalone)').matches);
 }
 
-/** Telefono: schermo touch e stretto. Usato per alleggerire Stockfish. */
-export function isPhone(): boolean {
-  if (typeof matchMedia === 'undefined') return false;
-  return matchMedia('(pointer: coarse) and (max-width: 760px), (pointer: coarse) and (max-height: 500px)').matches;
-}
-
 /**
  * Chiede al browser di non cancellare i dati salvati (progressi in localStorage).
  * Safari può ripulire i siti non usati da giorni; l'app sulla schermata Home e lo storage persistente lo evitano.

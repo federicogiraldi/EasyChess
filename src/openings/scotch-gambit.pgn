@@ -1,0 +1,57 @@
+[Opening "Gambetto Scozzese"]
+[Id "scotch-gambit"]
+[Color "white"]
+[Description "1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Bc4: invece di riprendere subito il pedone sviluppi l'alfiere contro f7. Gioco aperto, sviluppo rapido e iniziativa, partendo dalle mosse che giochi già."]
+
+{ Il Gambetto Scozzese nasce dalla stessa posizione della tua Italiana, ma al terzo tratto il Bianco apre il centro con d4. Dopo 3...exd4 non riprende subito il pedone: sviluppa l'alfiere in c4 contro f7 e lascia al Nero il compito di difendersi. }
+1. e4 { Occupa il centro e apre le diagonali di donna e alfiere f1. } 1... e5 2. Nf3 { Sviluppa il cavallo attaccando subito e5. } 2... Nc6 { Difende e5 sviluppando un pezzo: la risposta più comune. }
+3. d4 { [%line Gambetto Scozzese] Attacca e5 una seconda volta e apre il centro. Rispetto all'Italiana (3.Bc4) il Bianco non aspetta: vuole linee aperte subito, quando il Nero ha ancora il re al centro. [%key Il segnale del gambetto: d4 al terzo tratto e, dopo ...exd4, Bc4 invece di Nxd4] [%cal Gd4e5] }
+3... exd4 { La risposta normale: il Nero cede il centro ma guadagna un pedone, almeno per ora. }
+4. Bc4 { [%line Il gambetto: 4.Bc4] Ecco il gambetto. Invece di 4.Nxd4 (la Scozzese classica) sviluppi l'alfiere puntando su f7. Il pedone d4 non scappa: lo riprenderai quasi sempre con Nxd4 o con c3. [%key Pedone d4: lo recuperi più tardi, intanto sviluppi e attacchi f7] [%cal Gc4f7] } *
+
+; ===================== 4...Nf6 5.e5 =====================
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Nf6 { [%line 4...Nf6 5.e5] La risposta più naturale: sviluppa e attacca e4. Ma il cavallo in f6 diventa un bersaglio. }
+5. e5 { Spinge il pedone con tempo: il cavallo f6 deve spostarsi, e il pedone e5 toglie al Nero la casa f6 per tutta la partita. [%key Contro ...Nf6 spingi e5: il cavallo nero deve muoversi di nuovo] [%cal Ge5f6] }
+5... d5 { La reazione migliore: il Nero contrattacca l'alfiere c4 e apre il gioco al centro. }
+6. Bb5 { L'alfiere si sposta e inchioda il cavallo c6, che difende il pedone d4. [%cal Gb5c6,Rc6d4] }
+6... Ne4 { Il cavallo va in un avamposto centrale, dove è difeso da d5. }
+7. Nxd4 { Recuperi il pedone: il materiale è pari e hai più spazio grazie a e5. }
+7... Bd7 { Il Nero toglie l'inchiodatura su c6. }
+8. Bxc6 { Cambi l'alfiere con il cavallo: il Nero si ritrova con pedoni doppiati in c6 e c7. } 8... bxc6 9. O-O { Re al sicuro. Il piano è chiaro: f3 per cacciare il cavallo e4, poi f4-f5 per attaccare sul lato di re con il pedone e5 in testa. Il Nero ha la coppia degli alfieri ma una struttura di pedoni peggiore. [%key Piano dopo 9.O-O: f3, f4-f5 con i pedoni del lato di re] [%cal Gf2f4,Gf4f5] } *
+
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Nf6 5. e5 Ng4 { [%line 5...Ng4] Il cavallo salta in g4 e attacca e5 da dietro. }
+6. O-O { Prima il re al sicuro: la torre arriva subito in e1, sulla colonna dove sta il re nero. }
+6... d6 { Il Nero attacca e5 per aprire il gioco. } 7. exd6 Bxd6 8. Re1+ { Scacco sulla colonna aperta: il re nero non può arroccare dopo il prossimo tratto. [%cal Ge1e8] }
+8... Kf8 { Il re deve spostarsi: ...Be7 o ...Ne5 costerebbero materiale, e ...Kf8 rinuncia all'arrocco. }
+9. h3 { Caccia il cavallo g4. Il Nero ha un pedone in più (d4), ma il suo re è in f8 e la torre h8 è fuori gioco: hai ottimo compenso. Piano: Nbd2–e4 o Na3–b5, con pressione costante. [%key Contro 5...Ng4: arrocco, Re1+ e il re nero resta al centro] } *
+
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Nf6 5. e5 Ne4 { [%line 5...Ne4] Il cavallo va al centro, ma lì è attaccabile. }
+6. Qe2 { Attacca il cavallo e4 e mette la donna sulla colonna del re nero. [%cal Ge2e4,Ge2e8] }
+6... Nc5 7. O-O { Arrocca prima di riprendere il pedone: con Rd1 e Nxd4 lo recuperi comodamente, e la colonna e resta pericolosa per il Nero. [%key Contro 5...Ne4: Qe2, arrocco, Rd1 e recupero del pedone d4] } *
+
+; ===================== 4...Bc5 5.c3 =====================
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Bc5 { [%line 4...Bc5 5.c3] Il Nero difende il pedone d4 con l'alfiere. }
+5. c3 { Il vero gambetto: offri un secondo pedone per avere un grande centro e linee aperte. [%cal Gc3d4] }
+5... Nf6 { La risposta più solida: contrattacca e4. }
+6. e5 { Stessa idea della linea 4...Nf6: il pedone caccia il cavallo con tempo. } 6... d5 7. Bb5 Ne4 8. cxd4 { Il pedone c3 riprende in d4: ora hai il centro con d4 ed e5. } 8... Bb4+ { Lo scacco evita che l'alfiere venga cacciato. }
+9. Bd2 { Para lo scacco offrendo il cambio. } 9... Nxd2 10. Nbxd2 O-O 11. O-O { Il centro con d4 ed e5 è il tuo punto di forza: piano Rc1, Qb3 o Qa4 per pressare c6 e la colonna c, e f4-f5 se il Nero si chiude. [%key Contro 4...Bc5: c3, e5 e cxd4 per avere il centro] } *
+
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Bc5 5. c3 dxc3 { [%line Accetta: 5...dxc3] Il Nero prende il secondo pedone. }
+6. Nxc3 { Sviluppi con tempo: con due pedoni in meno hai un enorme vantaggio di sviluppo. [%cal Gc3d5] }
+6... d6 7. O-O { Prima il re al sicuro, poi l'attacco: Nd5, Bg5 e Qb3 arrivano tutti con tempo, mentre il Nero deve ancora sviluppare il lato di re. Con due pedoni in meno conta solo l'iniziativa: non perdere tempo a recuperare materiale. [%key Con due pedoni in meno: arrocco, poi Nd5, Bg5 e Qb3 contro f7] [%cal Gc3d5,Gc1g5,Gd1b3] } *
+
+; ===================== ALTRE QUARTE MOSSE =====================
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Bb4+ { [%line 4...Bb4+] Lo scacco di alfiere. }
+5. c3 { Para lo scacco attaccando sia l'alfiere sia il pedone d4. } 5... dxc3 6. O-O { Ti sviluppi invece di riprendere: il Nero ha tanti pedoni ma pochi pezzi in gioco. } 6... cxb2 7. Bxb2 { Hai tre pedoni in meno, ma due alfieri che puntano sul re nero, il re bianco al sicuro e tutte le colonne aperte. Il Nero, senza lo sviluppo, fa fatica anche ad arroccare. [%key Contro 4...Bb4+: c3, arrocco e alfieri sulle diagonali] [%cal Gb2g7,Gc4f7] } *
+
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Be7 { [%line 4...Be7] Mossa solida ma passiva. }
+5. Nxd4 { Riprendi subito il pedone: hai il pedone e4 al centro contro il pedone d6 del Nero. } 5... d6 6. O-O Nf6 7. Nc3 O-O 8. h3 { Una piccola mossa utile: toglie la casa g4 al cavallo e all'alfiere neri. Hai più spazio e piani semplici: f4, Re1 e Bf4. [%key Contro le mosse passive riprendi d4 e goditi il centro] } *
+
+1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 d6 { [%line 4...d6] Il Nero tiene il pedone ma chiude l'alfiere f8. } 5. Nxd4 { Recuperi il pedone con un bel centro. } 5... Nf6 6. Nc3 Be7 7. O-O O-O 8. h3 { Stessa posizione ideale della linea 4...Be7: spazio, sviluppo completo e piani chiari. } *
+
+; ===================== TERZE MOSSE DIVERSE =====================
+1. e4 e5 2. Nf3 Nc6 3. d4 Nxd4 { [%line 3...Nxd4] Il Nero cambia il cavallo, ma perde tempo. }
+4. Nxd4 exd4 5. Qxd4 { La donna riprende al centro e qui non può essere attaccata da ...Nc6 (il cavallo non c'è più). Più spazio e sviluppo più facile. [%key Dopo 3...Nxd4 la donna sta bene in d4] } *
+
+1. e4 e5 2. Nf3 Nc6 3. d4 d6 { [%line 3...d6] Il Nero tiene e5 come nella difesa Philidor. }
+4. Bb5 { Inchioda il cavallo che difende e5: la pressione sul centro aumenta. [%cal Gb5c6,Rc6e5] } 4... Bd7 5. Nc3 Nf6 6. O-O Be7 7. Re1 { Tutti i pezzi minacciano e5. Il Nero deve cedere il centro con 7...exd4: se arrocca subito (7...O-O?), 8.Bxc6 Bxc6 9.dxe5 dxe5 10.Qxd8 Raxd8 11.Nxe5 il Bianco vince materiale. [%key Contro ...d6: Bb5, Nc3, arrocco e Re1 contro e5] } *
