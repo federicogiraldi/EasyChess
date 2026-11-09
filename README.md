@@ -72,6 +72,16 @@ In Allenamento, Ripasso, Quiz e Corso, quando sbagli compare il pulsante **🔬 
 
 Nella spiegazione, **♟ Mostra … sulla scacchiera** gioca sulla scacchiera tutta la variante consigliata (e **♟ Cosa succede dopo …** quella della tua mossa): la sequenza parte da sola, poi la scorri con ◀ ▶ (o le frecce della tastiera, o cliccando le mosse) e con **↩ Torna alla posizione** (o Esc) ritrovi la partita dove l'avevi lasciata. Funziona in tutte le modalità.
 
+### 🧩 Problemi
+
+Dalla home, **Risolvi problemi**: quasi 100.000 problemi di tattica senza limiti giornalieri, presi dal [database pubblico di Lichess](https://database.lichess.org/#puzzles) (licenza CC0) e inclusi nell'app, quindi funzionano anche offline.
+
+- **🎯 Misti**: problemi vicini al tuo punteggio (parte da 1500 e si assesta in fretta nei primi problemi), con la difficoltà regolabile.
+- **🏷 Per tema**: forchette, inchiodature, matti in 2, finali di torri…
+- **🔁 Errori**: i problemi sbagliati tornano finché non li risolvi al primo colpo (non contano per il punteggio).
+
+Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il punteggio), 👀 mostra la soluzione, e dopo una mossa sbagliata Stockfish spiega perché era peggio. All'ultima mossa vale anche un matto diverso da quello previsto. La banca si rigenera con `scripts/build-puzzles.mjs` (istruzioni nel file).
+
 ### Come nascono le spiegazioni
 
 Tutto gira offline. Nel Simulatore l'avversario usa un secondo Stockfish con la forza limitata (`UCI_Elo` da 1320 in su; sotto, Skill Level 0 e ogni tanto una mossa più debole scelta apposta), separato da quello che analizza a piena forza. La precisione usa la stessa formula di Lichess (perdita di probabilità di vittoria a ogni mossa). Stockfish 17 (versione "lite", dentro il browser) valuta le mosse con la **stessa profondità su qualsiasi dispositivo** (18 per spiegare una mossa, 16 per la revisione delle partite e la barra di valutazione): su telefono l'analisi richiede qualche secondo in più (una barra mostra l'avanzamento), ma la precisione è la stessa del PC; le spiegazioni sono ricavate da regole scacchistiche: materiale perso lungo la variante, pezzi lasciati in presa o minacce ignorate, arrocco perso, donna uscita troppo presto, pezzo mosso due volte, alfiere chiuso dai propri pedoni, spinte che indeboliscono il re, attacco al centro e alla base della catena. A questo si aggiunge il commento del repertorio sulla mossa giusta, e la risposta migliore dell'avversario viene spiegata (cosa attacca, cosa minaccia).

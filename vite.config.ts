@@ -31,8 +31,9 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Anche Stockfish (engine/stockfish.wasm, ~7 MB) va in cache: il Laboratorio funziona offline.
-        globPatterns: ['**/*.{js,css,html,png,svg,ico,wasm}'],
+        // Stockfish (engine/stockfish.wasm, ~7 MB) va in cache: il Laboratorio funziona offline.
+        // E la banca problemi (public/puzzles, ~5 MB compressi): i problemi funzionano offline.
+        globPatterns: ['**/*.{js,css,html,png,svg,ico,wasm}', 'puzzles/*.{txt,json}'],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,

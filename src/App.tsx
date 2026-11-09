@@ -14,6 +14,7 @@ import { Lab } from './modes/Lab';
 import { Course } from './modes/Course';
 import { Simulator } from './modes/Simulator';
 import { Analysis } from './modes/Analysis';
+import { Puzzles } from './modes/Puzzles';
 import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
@@ -35,6 +36,7 @@ export default function App() {
   const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState(false);
+  const [puzzles, setPuzzles] = useState(false);
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
@@ -98,11 +100,13 @@ export default function App() {
             onClick={() => {
               setRoute(null);
               setAnalysis(false);
+              setPuzzles(false);
             }}
           >
             <span className="logo">♞</span> EasyChess
           </button>
           {analysis && !route && <span className="crumb">📊 Analisi partite</span>}
+          {puzzles && !route && <span className="crumb">🧩 Problemi</span>}
           {opening && route && (
             <>
               <span className="crumb">{opening.name}</span>
@@ -122,11 +126,14 @@ export default function App() {
         </header>
 
         <main>
-          {analysis && !route ? (
+          {puzzles && !route ? (
+            <Puzzles />
+          ) : analysis && !route ? (
             <Analysis
               openings={openings}
               onOpenMode={(openingId, mode, moves) => {
                 setAnalysis(false);
+                setPuzzles(false);
                 setRoute(mode === 'lab' ? { openingId, mode, labMoves: moves } : { openingId, mode, simMoves: moves });
               }}
             />
@@ -171,6 +178,15 @@ export default function App() {
                 onOpen={(openingId, mode) => setRoute({ openingId, mode })}
                 onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
               />
+              <section className="sim-card home-analysis">
+                <div>
+                  <h3>🧩 Problemi</h3>
+                  <p className="muted small">Quasi 100.000 problemi di tattica, senza limiti giornalieri e anche offline: col tuo punteggio, per tema e con il ripasso degli errori.</p>
+                </div>
+                <button className="primary" onClick={() => setPuzzles(true)}>
+                  Risolvi problemi
+                </button>
+              </section>
               <section className="sim-card home-analysis">
                 <div>
                   <h3>📊 Analisi delle tue partite</h3>
