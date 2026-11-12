@@ -108,6 +108,22 @@ select { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
 .tabs button.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 
+/* Account e sincronizzazione */
+.account-btn { margin-left: auto; white-space: nowrap; }
+.tabs + .account-btn { margin-left: 0; }
+.avatar { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 0.9em; }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); display: grid; place-items: center; z-index: 100; padding: 16px; }
+.modal { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: min(420px, 100%); display: flex; flex-direction: column; gap: 12px; max-height: calc(100dvh - 32px); overflow: auto; }
+.modal p { margin: 0; line-height: 1.45; }
+.modal-close { position: absolute; top: 14px; right: 16px; font-size: 1.1em; text-decoration: none; }
+.auth-form { display: flex; flex-direction: column; gap: 12px; }
+.auth-form label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: 0.9em; }
+/* 16px: su iPhone evita lo zoom automatico quando si tocca il campo */
+.auth-form input { font: inherit; font-size: 16px; font-weight: 400; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+.auth-form button.primary { justify-content: center; }
+.auth-form button.link { align-self: center; }
+.auth-msg { background: var(--panel-2); border-radius: 8px; padding: 8px 10px; font-size: 0.9em; }
+
 main {
   max-width: 1320px;
   margin: 0 auto;
@@ -276,6 +292,11 @@ button:disabled { opacity: 0.5; cursor: default; }
   }
   .tabs::-webkit-scrollbar { display: none; }
   .tabs button { flex: none; }
+  /* L'account sta sulla riga del logo, le schede scorrono sotto */
+  .brand { order: -2; }
+  .crumb, .account-btn, .tabs + .account-btn { order: -1; }
+  .tabs + .account-btn { margin-left: auto; }
+  .account-btn { padding: 5px 10px; }
   .hero h1 { font-size: 1.5em; }
   main { padding-top: 14px; }
 }

@@ -31,8 +31,17 @@ export function replaceCards(next: Record<string, CardState>) {
   emit();
 }
 
+/** Rilegge le schede salvate (arrivate da un altro dispositivo) senza risalvarle. */
+export function reloadCards() {
+  cards = load('cards', {});
+  version++;
+  listeners.forEach((l) => l());
+}
+
 export function resetOpening(openingId: string) {
   cards = Object.fromEntries(Object.entries(cards).filter(([k]) => !k.startsWith(openingId + '|')));
+  // Ricorda l'azzeramento, così la sincronizzazione non riporta le schede dall'altro dispositivo.
+  save('cards:resets', { ...load<Record<string, number>>('cards:resets', {}), [openingId]: Date.now() });
   emit();
 }
 

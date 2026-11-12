@@ -1,6 +1,8 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "easychess", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 5317 }
+    { "name": "easychess", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 5317 },
+    { "name": "easychess-5318", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5318", "--strictPort"], "port": 5318 },
+    { "name": "easychess-5319", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5319", "--strictPort"], "port": 5319 }
   ]
 }

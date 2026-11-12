@@ -25,7 +25,13 @@ L'interfaccia è adattata al touch: tocca un pezzo e poi la casa (oppure trascin
 
 Per portare i progressi dal PC: **💾 Esporta progressi** sul PC → manda il file all'iPhone (AirDrop, iCloud Drive, mail) → **📂 Ripristina progressi** nell'app. Sull'iPhone/iPad "Esporta" apre il foglio di condivisione (Salva su File, AirDrop…). Nota: Safari e l'app sulla schermata Home hanno progressi separati, usa sempre l'icona.
 
-I progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **💾 Esporta progressi** e **📂 Ripristina progressi** in home.
+### Account e sincronizzazione
+
+Con **👤 Accedi** (in alto a destra) crei un account con email e password: i progressi diventano uguali su tutti i dispositivi (iPad, telefono, PC, e anche fra Safari e l'icona sulla Home). L'app resta "prima locale": salva sempre sul dispositivo e funziona offline; quando c'è internet sincronizza all'avvio, pochi secondi dopo ogni progresso e quando torni sull'app. Se hai giocato offline su due dispositivi i dati vengono uniti (schede del ripasso una per una, problemi visti e lezioni completate sommati, il resto vince la modifica più recente). Al primo accesso i progressi già presenti sul dispositivo vengono uniti all'account.
+
+Backend: progetto Supabase gratuito **EasyChess** (tabella `user_data`, una riga per chiave salvata, con RLS: ogni account vede solo le proprie righe). Codice in `src/core/sync.ts` e `src/core/merge.ts`. La conferma via email è disattivata (il servizio mail gratuito di Supabase non invia ad altri indirizzi). Il progetto gratuito va in pausa solo dopo 7 giorni senza alcun uso: in quel caso si riattiva dalla dashboard, e l'app intanto funziona offline.
+
+Senza account, i progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **💾 Esporta progressi** e **📂 Ripristina progressi** in home.
 
 ## Avvio dal desktop
 
