@@ -1,2 +1,5 @@
 node_modules
 dist
+
+# Mappa di graphify (si rigenera da sola)
+graphify-out/
