@@ -82,6 +82,16 @@ Dalla home, **Risolvi problemi**: quasi 100.000 problemi di tattica senza limiti
 
 Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il punteggio), 👀 mostra la soluzione, e dopo una mossa sbagliata Stockfish spiega perché era peggio. All'ultima mossa vale anche un matto diverso da quello previsto. La banca si rigenera con `scripts/build-puzzles.mjs` (istruzioni nel file).
 
+### ♚ Come dare matto
+
+Dalla home, **Inizia il corso**: un mini-corso per principianti sul matto con **Re + Donna** e **Re + Torre** contro Re, con l'attenzione allo **stallo**.
+
+- **Matto o stallo?**: la differenza spiegata sulla scacchiera, con quiz.
+- **I matti finali** (Donna e Torre): matti in una mossa, con trappole di stallo. Se sbagli vedi la posizione che hai ottenuto e perché non è matto (stallo, pezzo indifeso, il Re scappa in…).
+- **Il metodo** (la scatola, la mossa del cavallo, l'opposizione) e poi **partite vere** contro il Re nero, da posizioni fisse o casuali.
+
+Nelle partite il Re nero si difende **in modo perfetto**: i due finali sono risolti per intero dentro l'app (analisi retrograda in `src/core/endgame.ts`, qualche decimo di secondo, niente Stockfish). Per questo il contatore **"Matto perfetto in N"** è esatto, ogni mossa viene giudicata (ottima / più lenta / stallo / pezzo perso), 💡 suggerisce una mossa ottima, ↶ annulla, e alla fine le stelle confrontano le tue mosse con il matto più veloce. Vale la regola delle 50 mosse.
+
 ### Come nascono le spiegazioni
 
 Tutto gira offline. Nel Simulatore l'avversario usa un secondo Stockfish con la forza limitata (`UCI_Elo` da 1320 in su; sotto, Skill Level 0 e ogni tanto una mossa più debole scelta apposta), separato da quello che analizza a piena forza. La precisione usa la stessa formula di Lichess (perdita di probabilità di vittoria a ogni mossa). Stockfish 17 (versione "lite", dentro il browser) valuta le mosse con la **stessa profondità su qualsiasi dispositivo** (18 per spiegare una mossa, 16 per la revisione delle partite e la barra di valutazione): su telefono l'analisi richiede qualche secondo in più (una barra mostra l'avanzamento), ma la precisione è la stessa del PC; le spiegazioni sono ricavate da regole scacchistiche: materiale perso lungo la variante, pezzi lasciati in presa o minacce ignorate, arrocco perso, donna uscita troppo presto, pezzo mosso due volte, alfiere chiuso dai propri pedoni, spinte che indeboliscono il re, attacco al centro e alla base della catena. A questo si aggiunge il commento del repertorio sulla mossa giusta, e la risposta migliore dell'avversario viene spiegata (cosa attacca, cosa minaccia).

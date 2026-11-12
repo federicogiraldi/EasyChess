@@ -1,0 +1,4 @@
+.mates .feedback .rich { background: none; border: 0; padding: 0; font-size: inherit; line-height: inherit; }
+.mates .feedback .rich p { margin: 0; }
+.mate-counter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+.mate-counter .big { font-size: 1.6rem; font-weight: 700; line-height: 1.15; }
