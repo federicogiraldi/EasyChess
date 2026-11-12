@@ -84,7 +84,7 @@ Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il
 
 ### ♚ Come dare matto
 
-Dalla home, **Inizia il corso**: un mini-corso per principianti sul matto con **Re + Donna** e **Re + Torre** contro Re, con l'attenzione allo **stallo**.
+Dal menu in alto, **♚ Matti**: un mini-corso per principianti sul matto con **Re + Donna** e **Re + Torre** contro Re, con l'attenzione allo **stallo**.
 
 - **Matto o stallo?**: la differenza spiegata sulla scacchiera, con quiz.
 - **I matti finali** (Donna e Torre): matti in una mossa, con trappole di stallo. Se sbagli vedi la posizione che hai ottenuto e perché non è matto (stallo, pezzo indifeso, il Re scappa in…).

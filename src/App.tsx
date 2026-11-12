@@ -30,15 +30,26 @@ const MODES: { id: Mode; label: string }[] = [
   { id: 'lab', label: '🔬 Laboratorio' },
 ];
 
+type Section = 'openings' | 'mates' | 'puzzles' | 'analysis';
+
+/** Menu principale: ogni sezione ha la sua pagina, così la home resta dedicata alle aperture. */
+const SECTIONS: { id: Section; label: string }[] = [
+  { id: 'openings', label: '♞ Aperture' },
+  { id: 'mates', label: '♚ Matti' },
+  { id: 'puzzles', label: '🧩 Problemi' },
+  { id: 'analysis', label: '📊 Analisi' },
+];
+
 const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, ''), s.source).id;
 
 export default function App() {
   const [imported, setImported] = useState<PgnSource[]>(() => load('imported', []));
   const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  const [analysis, setAnalysis] = useState(false);
-  const [puzzles, setPuzzles] = useState(false);
-  const [mates, setMates] = useState(false);
+  const [section, setSection] = useState<Section>('openings');
+  const analysis = section === 'analysis';
+  const puzzles = section === 'puzzles';
+  const mates = section === 'mates';
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
@@ -101,16 +112,27 @@ export default function App() {
             className="brand"
             onClick={() => {
               setRoute(null);
-              setAnalysis(false);
-              setPuzzles(false);
-              setMates(false);
+              setSection('openings');
             }}
           >
             <span className="logo">♞</span> EasyChess
           </button>
-          {analysis && !route && <span className="crumb">📊 Analisi partite</span>}
-          {puzzles && !route && <span className="crumb">🧩 Problemi</span>}
-          {mates && !route && <span className="crumb">♚ Come dare matto</span>}
+          {!route && (
+            <nav className="tabs sections">
+              {SECTIONS.map((sec) => (
+                <button
+                  key={sec.id}
+                  className={sec.id === section ? 'active' : ''}
+                  onClick={() => {
+                    setSection(sec.id);
+                    window.scrollTo({ top: 0 });
+                  }}
+                >
+                  {sec.label}
+                </button>
+              ))}
+            </nav>
+          )}
           {opening && route && (
             <>
               <span className="crumb">{opening.name}</span>
@@ -138,8 +160,7 @@ export default function App() {
             <Analysis
               openings={openings}
               onOpenMode={(openingId, mode, moves) => {
-                setAnalysis(false);
-                setPuzzles(false);
+                setSection('openings');
                 setRoute(mode === 'lab' ? { openingId, mode, labMoves: moves } : { openingId, mode, simMoves: moves });
               }}
             />
@@ -186,19 +207,10 @@ export default function App() {
               />
               <section className="sim-card home-analysis">
                 <div>
-                  <h3>♚ Come dare matto</h3>
-                  <p className="muted small">Mini-corso per principianti: matto con la Donna e con la Torre, senza cadere nello stallo. Con esercizi e partite contro il Re nero.</p>
-                </div>
-                <button className="primary" onClick={() => setMates(true)}>
-                  Inizia il corso
-                </button>
-              </section>
-              <section className="sim-card home-analysis">
-                <div>
                   <h3>🧩 Problemi</h3>
                   <p className="muted small">Quasi 100.000 problemi di tattica, senza limiti giornalieri e anche offline: col tuo punteggio, per tema e con il ripasso degli errori.</p>
                 </div>
-                <button className="primary" onClick={() => setPuzzles(true)}>
+                <button className="primary" onClick={() => setSection('puzzles')}>
                   Risolvi problemi
                 </button>
               </section>
@@ -207,7 +219,7 @@ export default function App() {
                   <h3>📊 Analisi delle tue partite</h3>
                   <p className="muted small">Carica le partite da chess.com (o un PGN) e Stockfish le analizza, confrontandole con il tuo repertorio.</p>
                 </div>
-                <button className="primary" onClick={() => setAnalysis(true)}>
+                <button className="primary" onClick={() => setSection('analysis')}>
                   Analizza le mie partite
                 </button>
               </section>
