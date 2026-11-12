@@ -14,6 +14,7 @@
     "postinstall": "node scripts/copy-engine.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
     "chess.js": "^1.4.0",
     "react": "^18.3.1",
     "react-chessboard": "^4.7.2",

@@ -5,6 +5,7 @@ import { exportCards, replaceCards } from './core/progress';
 import { load, save } from './core/storage';
 import { saveFile } from './core/device';
 import { InstallHint } from './components/InstallHint';
+import { Account } from './components/Account';
 import { OpeningPicker } from './components/OpeningPicker';
 import { Explore } from './modes/Explore';
 import { Drill } from './modes/Drill';
@@ -149,6 +150,7 @@ export default function App() {
               </nav>
             </>
           )}
+          <Account />
         </header>
 
         <main>

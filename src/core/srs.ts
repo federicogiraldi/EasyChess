@@ -10,6 +10,8 @@ export interface CardState {
   lapses: number;
   seen: number;
   correct: number;
+  /** Ultima risposta (ms): serve a unire i progressi fra dispositivi. */
+  at?: number;
 }
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -19,6 +21,7 @@ export function grade(prev: CardState | undefined, correct: boolean, now = Date.
     ? { ...prev }
     : { due: now, interval: 0, ease: 2.5, reps: 0, lapses: 0, seen: 0, correct: 0 };
   s.seen++;
+  s.at = now;
   if (correct) {
     s.correct++;
     s.reps++;
