@@ -15,6 +15,7 @@ import { Course } from './modes/Course';
 import { Simulator } from './modes/Simulator';
 import { Analysis } from './modes/Analysis';
 import { Puzzles } from './modes/Puzzles';
+import { MateCourse } from './modes/MateCourse';
 import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
@@ -37,6 +38,7 @@ export default function App() {
   const [message, setMessage] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState(false);
   const [puzzles, setPuzzles] = useState(false);
+  const [mates, setMates] = useState(false);
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
@@ -101,12 +103,14 @@ export default function App() {
               setRoute(null);
               setAnalysis(false);
               setPuzzles(false);
+              setMates(false);
             }}
           >
             <span className="logo">♞</span> EasyChess
           </button>
           {analysis && !route && <span className="crumb">📊 Analisi partite</span>}
           {puzzles && !route && <span className="crumb">🧩 Problemi</span>}
+          {mates && !route && <span className="crumb">♚ Come dare matto</span>}
           {opening && route && (
             <>
               <span className="crumb">{opening.name}</span>
@@ -126,7 +130,9 @@ export default function App() {
         </header>
 
         <main>
-          {puzzles && !route ? (
+          {mates && !route ? (
+            <MateCourse />
+          ) : puzzles && !route ? (
             <Puzzles />
           ) : analysis && !route ? (
             <Analysis
@@ -178,6 +184,15 @@ export default function App() {
                 onOpen={(openingId, mode) => setRoute({ openingId, mode })}
                 onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
               />
+              <section className="sim-card home-analysis">
+                <div>
+                  <h3>♚ Come dare matto</h3>
+                  <p className="muted small">Mini-corso per principianti: matto con la Donna e con la Torre, senza cadere nello stallo. Con esercizi e partite contro il Re nero.</p>
+                </div>
+                <button className="primary" onClick={() => setMates(true)}>
+                  Inizia il corso
+                </button>
+              </section>
               <section className="sim-card home-analysis">
                 <div>
                   <h3>🧩 Problemi</h3>
