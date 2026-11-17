@@ -90,6 +90,17 @@ Dalla home, **Risolvi problemi**: quasi 100.000 problemi di tattica senza limiti
 
 Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il punteggio), 👀 mostra la soluzione, e dopo una mossa sbagliata Stockfish spiega perché era peggio. All'ultima mossa vale anche un matto diverso da quello previsto. La banca si rigenera con `scripts/build-puzzles.mjs` (istruzioni nel file).
 
+### 🔥 Oggi: Ripasso di oggi, obiettivo e serie
+
+In cima alla home c'è il riquadro **Oggi**:
+
+- **▶ Ripasso di oggi**: un'unica sessione con le posizioni in scadenza di *tutte* le aperture (le più vecchie prima), più qualche posizione nuova delle aperture che hai già iniziato, se servono per arrivare all'obiettivo. La scacchiera si gira da sola quando cambia il colore.
+- **Obiettivo del giorno** (10, 20, 30 o 50 risposte): conta ogni posizione a cui rispondi (Ripasso, Allenamento, Quiz, Corso) e ogni problema concluso.
+- **Serie** 🔥: i giorni di fila in cui hai raggiunto l'obiettivo. Se oggi non l'hai ancora raggiunto, la serie resta quella fino a ieri.
+- **🧩 Rivedi i problemi sbagliati**: apre i Problemi direttamente sugli Errori.
+
+Anche obiettivo e attività si sincronizzano fra i dispositivi.
+
 ### 📈 Progressi
 
 Dal menu in alto, **📈 Progressi**: una pagina con tutto il tuo percorso.

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Opening, OpeningNode } from '../model/types';
 import { cardPositions, lineNameOf, moveLabel, nextMoves, pathFromRoot, type CardPosition } from '../core/tree';
 import { checkMove, gradePosition, solutionArrows } from '../core/training';
@@ -8,6 +8,7 @@ import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
 import { CommentPanel } from '../components/CommentPanel';
 import { WhyButton } from '../components/Explanation';
+import type { DailyItem } from '../core/daily';
 
 const NEW_PER_SESSION = 10;
 
@@ -25,29 +26,39 @@ function randomCard(all: CardPosition[], avoid?: CardPosition): CardPosition {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+/** Una domanda: la posizione e l'apertura a cui appartiene (nel Ripasso di oggi cambiano da una all'altra). */
+type Item = DailyItem;
+
 type Phase = 'ask' | 'wrong' | 'solved';
 
-interface Props {
-  opening: Opening;
-  mode: 'review' | 'quiz';
-}
+type Props =
+  | { opening: Opening; mode: 'review' | 'quiz' }
+  /** Ripasso di oggi: coda già pronta con posizioni di più aperture. */
+  | { mode: 'daily'; items: Item[]; onEnd: (score: { correct: number; wrong: number }) => ReactNode };
 
-export function PositionTrainer({ opening, mode }: Props) {
-  const [all] = useState(() => cardPositions(opening));
-  const [queue, setQueue] = useState<CardPosition[]>(() => (mode === 'review' ? reviewQueue(opening) : [randomCard(all)]));
+export function PositionTrainer(props: Props) {
+  const { mode } = props;
+  const single = props.mode === 'daily' ? null : props.opening;
+  const [all] = useState(() => (single ? cardPositions(single) : []));
+  const [queue, setQueue] = useState<Item[]>(() =>
+    props.mode === 'daily'
+      ? props.items
+      : (mode === 'review' ? reviewQueue(single!) : [randomCard(all)]).map((card) => ({ opening: single!, card })),
+  );
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>('ask');
   const [answer, setAnswer] = useState<OpeningNode | null>(null);
   const [wrongSan, setWrongSan] = useState<string | null>(null);
   const [score, setScore] = useState({ correct: 0, wrong: 0 });
 
-  const card = queue[index] as CardPosition | undefined;
+  const item = queue[index] as Item | undefined;
+  const card = item?.card;
   // Calcolato all'inizio della domanda: dopo la risposta la card non è più nuova.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const isNew = useMemo(() => !!card && !getCard(card.key), [index]);
 
   const advance = () => {
-    if (mode === 'quiz') setQueue((q) => [...q, randomCard(all, card)]);
+    if (mode === 'quiz') setQueue((q) => [...q, { opening: single!, card: randomCard(all, card) }]);
     setIndex((i) => i + 1);
     setPhase('ask');
     setAnswer(null);
@@ -65,7 +76,9 @@ export function PositionTrainer({ opening, mode }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   });
 
-  if (!card) return <SessionEnd opening={opening} score={score} empty={queue.length === 0} />;
+  if (!item || !card) return props.mode === 'daily' ? <>{props.onEnd(score)}</> : <SessionEnd opening={single!} score={score} empty={queue.length === 0} />;
+
+  const opening = item.opening;
 
   const position = card.node;
   const onMove = (from: string, to: string) => {
@@ -85,7 +98,7 @@ export function PositionTrainer({ opening, mode }: Props) {
       gradePosition(opening, position, false);
       setScore((s) => ({ ...s, wrong: s.wrong + 1 }));
       // Nel ripasso, una posizione sbagliata torna in fondo alla coda.
-      if (mode === 'review') setQueue((q) => [...q, card]);
+      if (mode !== 'quiz') setQueue((q) => [...q, item]);
     }
     setWrongSan(san);
     setPhase('wrong');
@@ -111,10 +124,11 @@ export function PositionTrainer({ opening, mode }: Props) {
       </div>
       <div className="side">
         <div className="stats-row">
-          {mode === 'review' ? <span>Da fare: {remaining}</span> : <span>Quiz</span>}
+          {mode === 'quiz' ? <span>Quiz</span> : <span>Da fare: {remaining}</span>}
           <span>✓ {score.correct}</span>
           <span>✗ {score.wrong}</span>
-          {mode === 'review' && <span>{isNew ? 'Nuova' : 'Ripasso'}</span>}
+          {mode !== 'quiz' && <span>{isNew ? 'Nuova' : 'Ripasso'}</span>}
+          {mode === 'daily' && <span className="daily-opening">{opening.name}</span>}
         </div>
         <div className={`feedback ${phase === 'ask' ? 'info' : phase === 'wrong' ? 'wrong' : 'ok'}`}>
           {phase === 'ask' && 'Trova la mossa del tuo repertorio.'}
