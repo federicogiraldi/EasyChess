@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Icon } from '../components/Icon';
 import type { Arrow, Opening, OpeningNode } from '../model/types';
 import { findInBook, formatPath, lineNameOf, namedLines, nextMoves, pathFromRoot } from '../core/tree';
 import {
@@ -264,7 +265,7 @@ export function Simulator({ opening, initialMoves }: Props) {
     return (
       <div className="sim-setup">
         <section className="sim-card">
-          <h2>🎮 Simulatore</h2>
+          <h2><Icon name="sim" /> Simulatore</h2>
           <p className="muted">
             Gioca la tua apertura contro Stockfish. Finché c'è teoria l'avversario segue il repertorio; quando la linea finisce
             continua Stockfish al livello che scegli. Il coach ti consiglia le mosse e alla fine c'è la revisione della partita.
@@ -273,7 +274,7 @@ export function Simulator({ opening, initialMoves }: Props) {
           <label className="sim-field">
             <span>Linea da giocare</span>
             <select value={lineId} onChange={(e) => setLineId(e.target.value)}>
-              <option value="">🎲 A caso (prima le linee che conosci meno)</option>
+              <option value="">A caso (prima le linee che conosci meno)</option>
               {lines.map(({ node, depth }) => (
                 <option key={node.id} value={node.id}>
                   {'  '.repeat(depth)}
@@ -316,7 +317,7 @@ export function Simulator({ opening, initialMoves }: Props) {
             {(
               [
                 ['off', 'Nessuno', 'partita vera, senza aiuti'],
-                ['request', 'Su richiesta', 'col pulsante 💡: prima il pezzo, poi la mossa'],
+                ['request', 'Su richiesta', 'col pulsante Suggerimento: prima il pezzo, poi la mossa'],
                 ['always', 'Sempre visibili', 'le 3 mosse migliori a ogni turno'],
               ] as [HintMode, string, string][]
             ).map(([id, label, desc]) => (
@@ -339,7 +340,7 @@ export function Simulator({ opening, initialMoves }: Props) {
           </label>
 
           <button className="primary sim-start" onClick={() => start()}>
-            ▶ Inizia la partita
+            <Icon name="play" /> Inizia la partita
           </button>
         </section>
 
@@ -446,22 +447,22 @@ export function Simulator({ opening, initialMoves }: Props) {
         />
         {reviewing ? (
           <div className="controls">
-            <button onClick={() => setCursor(0)} title="Inizio">⏮</button>
-            <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)">◀</button>
-            <button onClick={() => setCursor((c) => Math.min(moves.length, c + 1))} title="Avanti (→)">▶</button>
-            <button onClick={() => setCursor(moves.length)} title="Fine">⏭</button>
+            <button onClick={() => setCursor(0)} title="Inizio"><Icon name="first" /></button>
+            <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)"><Icon name="prev" /></button>
+            <button onClick={() => setCursor((c) => Math.min(moves.length, c + 1))} title="Avanti (→)"><Icon name="next" /></button>
+            <button onClick={() => setCursor(moves.length)} title="Fine"><Icon name="last" /></button>
           </div>
         ) : (
           <div className="controls">
             {settings.hints !== 'off' && (
               <button onClick={() => setHintStage((s) => Math.min(2, s + 1))} disabled={!myTurn || outcome.over || hintStage >= 2}>
-                💡 {hintStage === 0 ? 'Suggerimento' : 'Mostra la mossa'}
+                <Icon name="hint" /> {hintStage === 0 ? 'Suggerimento' : 'Mostra la mossa'}
               </button>
             )}
             <button onClick={() => takeBack()} disabled={myLast < 0}>
-              ↶ Annulla mossa
+              <Icon name="undo" /> Annulla mossa
             </button>
-            <button onClick={() => finish()}>{outcome.over ? '📊 Revisione partita' : '🏁 Termina e analizza'}</button>
+            <button onClick={() => finish()}>{outcome.over ? <><Icon name="analysis" /> Revisione partita</> : <><Icon name="flag" /> Termina e analizza</>}</button>
             {settings.hints !== 'off' && (
               <label className="toggle-inline">
                 <input type="checkbox" checked={settings.arrows} onChange={(e) => setSettings({ ...settings, arrows: e.target.checked })} /> Frecce
@@ -477,19 +478,19 @@ export function Simulator({ opening, initialMoves }: Props) {
         {!reviewing && (
           <div className={`book-status ${book ? 'in' : 'out'}`}>
             {book
-              ? `📗 Teoria${lineNameOf(pathFromRoot(book)) ? ` — ${lineNameOf(pathFromRoot(book))}` : ''}`
-              : `⚔️ Contro Stockfish ${game?.elo} (${eloLabel(game?.elo ?? 0)})`}
+              ? <><Icon name="inBook" /> Teoria{lineNameOf(pathFromRoot(book)) ? ` — ${lineNameOf(pathFromRoot(book))}` : ''}</>
+              : <><Icon name="swords" /> Contro Stockfish {game?.elo} ({eloLabel(game?.elo ?? 0)})</>}
           </div>
         )}
         {!reviewing && theoryJustEnded && !outcome.over && (
-          <p className="feedback">📕 Fine della teoria: da qui l'avversario gioca con Stockfish. Ora tocca a te trovare il piano!</p>
+          <p className="feedback"><Icon name="outOfBook" /> Fine della teoria: da qui l'avversario gioca con Stockfish. Ora tocca a te trovare il piano!</p>
         )}
 
         {!reviewing && outcome.over && (
           <div className="feedback done">
-            🏁 {outcome.text}.{' '}
+            <Icon name="flag" /> {outcome.text}.{' '}
             <button className="primary" onClick={() => finish()}>
-              📊 Revisione partita
+              <Icon name="analysis" /> Revisione partita
             </button>
           </div>
         )}
@@ -591,15 +592,15 @@ export function Simulator({ opening, initialMoves }: Props) {
         {reviewing && (
           <div className="controls">
             <button className="primary" onClick={() => start(startMoves)}>
-              🔄 Nuova partita
+              <Icon name="restart" /> Nuova partita
             </button>
-            <button onClick={() => { setPhase('setup'); setMoves([]); }}>⚙️ Impostazioni</button>
-            <button onClick={copyPgn}>{copied ? '✓ PGN copiato' : '📋 Copia PGN'}</button>
+            <button onClick={() => { setPhase('setup'); setMoves([]); }}><Icon name="settings" /> Impostazioni</button>
+            <button onClick={copyPgn}>{copied ? <><Icon name="check" /> PGN copiato</> : <><Icon name="copy" /> Copia PGN</>}</button>
           </div>
         )}
         {!reviewing && (
           <button className="link" onClick={() => { opponentEngine.cancelAll(); engine.cancelAll(); setPhase('setup'); setMoves([]); }}>
-            ⚙️ Cambia linea o livello
+            <Icon name="settings" /> Cambia linea o livello
           </button>
         )}
       </div>
@@ -646,7 +647,7 @@ function MoveFeedback({
       {node?.comment && <p className="small">{node.comment}</p>}
       {deviated && (
         <p className="small">
-          📕 Hai lasciato il repertorio: la teoria prevede <strong>{expected.map((n) => n.san).join(' o ')}</strong>.
+          <Icon name="outOfBook" /> Hai lasciato il repertorio: la teoria prevede <strong>{expected.map((n) => n.san).join(' o ')}</strong>.
         </p>
       )}
       {!p.book && bestSan && quality && quality !== 'migliore' && (
@@ -657,7 +658,7 @@ function MoveFeedback({
       )}
       {(bad || deviated) && (
         <div className="controls">
-          <button onClick={onRetry}>↶ Riprova</button>
+          <button onClick={onRetry}><Icon name="undo" /> Riprova</button>
           <WhyButton fen={p.fenBefore} san={p.san} expected={expected} />
         </div>
       )}

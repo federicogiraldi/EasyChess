@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Icon } from './Icon';
 import { coachLines, type CoachLine } from '../engine/simEngine';
 import { formatScore } from '../engine/stockfish';
 import '../modes/simulator.css';
@@ -18,7 +19,7 @@ export function EngineTips({ fen, onSimulate }: { fen: string; onSimulate: () =>
 
   return (
     <div className="engine-tips">
-      <h3>🤖 Dopo la teoria, Stockfish consiglia</h3>
+      <h3><Icon name="bot" /> Dopo la teoria, Stockfish consiglia</h3>
       {!here && <p className="muted small">Stockfish sta analizzando…</p>}
       {here?.map((l, i) => (
         <div key={l.uci} className="coach-line">
@@ -31,7 +32,7 @@ export function EngineTips({ fen, onSimulate }: { fen: string; onSimulate: () =>
       ))}
       {here && <p className="muted small">Valutazioni dal punto di vista del Bianco.</p>}
       <button className="primary" onClick={onSimulate}>
-        🎮 Gioca da qui contro Stockfish
+        <Icon name="sim" /> Gioca da qui contro Stockfish
       </button>
     </div>
   );

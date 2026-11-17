@@ -1,4 +1,5 @@
 import type { OpeningNode } from '../model/types';
+import { Icon } from './Icon';
 import type { CoachLine } from '../engine/simEngine';
 import { formatScore } from '../engine/stockfish';
 
@@ -25,7 +26,7 @@ export function CoachPanel({ book, lines, onPlay, onFocus, arrowChips }: Props) 
   const focus = (uci: string | null) => () => onFocus?.(uci);
   return (
     <div className="coach">
-      <h3>💡 Mosse consigliate</h3>
+      <h3><Icon name="hint" /> Mosse consigliate</h3>
       {book.length > 0 && (
         <div className="coach-book">
           {book.map((n) => (
@@ -39,7 +40,7 @@ export function CoachPanel({ book, lines, onPlay, onFocus, arrowChips }: Props) 
               onBlur={focus(null)}
             >
               <span className="coach-move">
-                {arrowChips && <span className="arrow-chip" style={{ background: BOOK_ARROW_COLOR }} />}📖 {n.san}
+                {arrowChips && <span className="arrow-chip" style={{ background: BOOK_ARROW_COLOR }} />}<Icon name="explore" /> {n.san}
               </span>
               <span className="coach-info">{n.comment ?? 'Mossa del tuo repertorio'}</span>
             </button>

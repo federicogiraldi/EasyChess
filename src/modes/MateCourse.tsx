@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Icon } from '../components/Icon';
 import { Chess } from 'chess.js';
 import { MATE_LESSONS, type MateStep } from '../core/mateCourse';
 import { bestMove, defend, distance, movesToMate, randomStart, solve, type Piece } from '../core/endgame';
@@ -97,8 +98,8 @@ export function MateCourse() {
         </h3>
         {MATE_LESSONS.map((l, i) => (
           <button key={l.id} className={`line-item ${i === lessonIdx ? 'on-path' : ''}`} onClick={() => goTo(i)}>
-            <span className="lesson-check">{progress.done.includes(l.id) ? '✓' : `${i + 1}.`}</span>{' '}
-            {l.piece === 'q' ? '♕ ' : l.piece === 'r' ? '♖ ' : ''}
+            <span className="lesson-check">{progress.done.includes(l.id) ? <Icon name="check" /> : `${i + 1}.`}</span>{' '}
+            {l.piece === 'q' ? <><Icon name="queen" />{' '}</> : l.piece === 'r' ? <><Icon name="rook" />{' '}</> : null}
             {l.title}
           </button>
         ))}
@@ -121,15 +122,15 @@ export function MateCourse() {
         finished={
           finished ? (
             <div className="lesson-done">
-              <h2>✓ Lezione completata</h2>
+              <h2><Icon name="check" /> Lezione completata</h2>
               <p>{lesson.title}</p>
               <div className="actions">
                 {lessonIdx < MATE_LESSONS.length - 1 && (
                   <button className="primary" onClick={() => goTo(lessonIdx + 1)}>
-                    Prossima lezione →
+                    Prossima lezione <Icon name="arrowRight" />
                   </button>
                 )}
-                <button onClick={() => goTo(lessonIdx)}>↻ Rifai la lezione</button>
+                <button onClick={() => goTo(lessonIdx)}><Icon name="restart" /> Rifai la lezione</button>
               </div>
             </div>
           ) : null
@@ -137,7 +138,7 @@ export function MateCourse() {
         canBack={stepIdx > 0}
         onBack={() => goTo(lessonIdx, stepIdx - 1)}
         onNext={next}
-        nextLabel={isLastStep ? 'Completa la lezione ✓' : 'Avanti ▶'}
+        nextLabel={isLastStep ? <>Completa la lezione <Icon name="check" /></> : <>Avanti <Icon name="next" /></>}
         onRestart={() => setRound((r) => r + 1)}
       />
     </div>
@@ -151,7 +152,7 @@ interface StepProps {
   canBack: boolean;
   onBack: () => void;
   onNext: () => void;
-  nextLabel: string;
+  nextLabel: ReactNode;
   onRestart: () => void;
 }
 
@@ -191,7 +192,7 @@ function Shell({
             {children}
             <div className="controls">
               <button onClick={onBack} disabled={!canBack}>
-                ◀ Indietro
+                <Icon name="prev" /> Indietro
               </button>
               {extraControls}
               <button className="primary" onClick={onNext} disabled={!complete}>
@@ -304,17 +305,17 @@ function Mate1Step(props: StepProps & { step: Extract<MateStep, { kind: 'mate1' 
       extraControls={
         after && !solved ? (
           <button className="primary" onClick={() => setAfter(null)}>
-            ↻ Riprova
+            <Icon name="restart" /> Riprova
           </button>
         ) : !after && !hint ? (
-          <button onClick={() => setHint(true)}>💡 Aiuto</button>
+          <button onClick={() => setHint(true)}><Icon name="hint" /> Aiuto</button>
         ) : null
       }
     >
       <RichText text={step.text} />
       {result ? (
         <div className={`feedback ${result.mate ? 'done' : 'wrong'}`}>
-          {result.mate ? '✓ Scacco matto! Ben fatto.' : <RichText text={result.text} />}
+          {result.mate ? <><Icon name="check" /> Scacco matto! Ben fatto.</> : <RichText text={result.text} />}
         </div>
       ) : (
         <div className="feedback info">
@@ -447,15 +448,15 @@ function PlayStep(props: StepProps & { step: Extract<MateStep, { kind: 'play' }>
         <>
           {over !== 'mate' && (
             <button onClick={undo} disabled={plies.length < 2}>
-              ↶ Annulla
+              <Icon name="undo" /> Annulla
             </button>
           )}
           {!over && (
             <button onClick={askHint} disabled={!whiteToMove || !!hint}>
-              💡 Suggerimento
+              <Icon name="hint" /> Suggerimento
             </button>
           )}
-          <button onClick={onRestart}>{step.fen ? '↻ Ricomincia' : '🎲 Nuova posizione'}</button>
+          <button onClick={onRestart}>{step.fen ? <><Icon name="restart" /> Ricomincia</> : <><Icon name="dice" /> Nuova posizione</>}</button>
         </>
       }
     >
@@ -470,7 +471,7 @@ function PlayStep(props: StepProps & { step: Extract<MateStep, { kind: 'play' }>
         </div>
         <div>
           <div className="muted small">Matto perfetto in</div>
-          <div className="big">{over === 'mate' ? '✓' : toMate !== null ? movesToMate(toMate) : '–'}</div>
+          <div className="big">{over === 'mate' ? <Icon name="check" /> : toMate !== null ? movesToMate(toMate) : '–'}</div>
         </div>
       </div>
       <div className={`feedback ${status.kind}`}>
@@ -478,7 +479,7 @@ function PlayStep(props: StepProps & { step: Extract<MateStep, { kind: 'play' }>
       </div>
       {over === 'draw' && (
         <button className="primary" onClick={undo}>
-          ↶ Riprova la mossa
+          <Icon name="undo" /> Riprova la mossa
         </button>
       )}
     </Shell>

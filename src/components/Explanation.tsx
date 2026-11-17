@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Icon } from './Icon';
 import { useVariationPreview } from './VariationPreview';
 import type { OpeningNode } from '../model/types';
 import { judgeMove, QUALITY_INFO, type Verdict } from '../engine/judge';
@@ -30,7 +31,7 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
         </span>
         <span className="muted small">valutazione {fmt(verdict.playedScore)} per chi ha mosso</span>
       </div>
-      {verdict.inRepertoire && <p className="exp-ok">✓ È una mossa del tuo repertorio.</p>}
+      {verdict.inRepertoire && <p className="exp-ok"><Icon name="check" /> È una mossa del tuo repertorio.</p>}
       {verdict.against.length > 0 && (
         <ul className="exp-list against">
           {verdict.against.map((r) => (
@@ -61,11 +62,11 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
           {preview && b.pv.length > 0 && (
             <div className="exp-show">
               <button className={showing === 'good' ? 'primary' : ''} onClick={() => showLine('good')}>
-                ♟ Mostra {b.san} sulla scacchiera
+                <Icon name="drill" /> Mostra {b.san} sulla scacchiera
               </button>
               {canShowPlayed && (
                 <button className={showing === 'bad' ? 'primary' : ''} onClick={() => showLine('bad')}>
-                  ♟ Cosa succede dopo {verdict.playedSan}
+                  <Icon name="drill" /> Cosa succede dopo {verdict.playedSan}
                 </button>
               )}
             </div>
@@ -92,7 +93,7 @@ export function WhyButton({ fen, san, expected }: { fen: string; san: string; ex
         setState('loading');
         judgeMove(fen, san, expected).then(setState, (e: Error) => setState(e));
       }}>
-        🔬 Perché {san} è peggio?
+        <Icon name="lab" /> Perché {san} è peggio?
       </button>
     );
   }

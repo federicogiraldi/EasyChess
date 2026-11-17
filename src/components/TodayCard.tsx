@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Icon } from './Icon';
 import type { Opening } from '../model/types';
 import { exportCards, useProgress } from '../core/progress';
 import { dailyQueue, doneToday, GOAL_OPTIONS, loadActivity, loadGoal, saveGoal, streak } from '../core/daily';
@@ -31,7 +32,7 @@ export function TodayCard({ openings, onStart, onMistakes }: Props) {
       <div className="today-head">
         <h2>Oggi</h2>
         <span className={`streak${days ? '' : ' none'}`} title="Giorni di fila con l'obiettivo raggiunto">
-          🔥 {days ? `${days} ${days === 1 ? 'giorno' : 'giorni'} di fila` : 'nessuna serie'}
+          <Icon name="flame" /> {days ? `${days} ${days === 1 ? 'giorno' : 'giorni'} di fila` : 'nessuna serie'}
         </span>
       </div>
 
@@ -40,7 +41,7 @@ export function TodayCard({ openings, onStart, onMistakes }: Props) {
           <div className="bar" style={{ width: `${width}%` }} />
         </div>
         <span className="small">
-          {reached ? `✓ Obiettivo raggiunto: ${done} risposte` : `${done} / ${goal} risposte`}
+          {reached ? <><Icon name="check" /> Obiettivo raggiunto: {done} risposte</> : `${done} / ${goal} risposte`}
         </span>
         <label className="goal-select small muted">
           Obiettivo
@@ -77,10 +78,10 @@ export function TodayCard({ openings, onStart, onMistakes }: Props) {
       <div className="actions">
         {queue.items.length > 0 && (
           <button className="primary" onClick={onStart}>
-            ▶ Ripasso di oggi ({queue.items.length})
+            <Icon name="play" /> Ripasso di oggi ({queue.items.length})
           </button>
         )}
-        {mistakes > 0 && <button onClick={onMistakes}>🧩 Rivedi {mistakes} {mistakes === 1 ? 'problema sbagliato' : 'problemi sbagliati'}</button>}
+        {mistakes > 0 && <button onClick={onMistakes}><Icon name="puzzle" /> Rivedi {mistakes} {mistakes === 1 ? 'problema sbagliato' : 'problemi sbagliati'}</button>}
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { withIcons } from './Icon';
 
 /** Markdown minimo: paragrafi, elenchi "- ", **grassetto** e *corsivo*. */
 export function RichText({ text }: { text: string }) {
@@ -26,6 +27,6 @@ function inline(text: string): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
     if (part.startsWith('*') && part.endsWith('*') && part.length > 2) return <em key={i}>{part.slice(1, -1)}</em>;
-    return part;
+    return <span key={i}>{withIcons(part)}</span>;
   });
 }

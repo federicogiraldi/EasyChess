@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ChangeEvent } from 'react';
+import { Icon, type IconName } from './components/Icon';
 import { builtinSources, loadOpenings, type PgnSource } from './openings';
 import { parseOpening } from './core/pgnToTree';
 import { exportCards, replaceCards } from './core/progress';
@@ -25,26 +26,26 @@ import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
 
-const MODES: { id: Mode; label: string }[] = [
-  { id: 'course', label: '🎓 Corso' },
-  { id: 'explore', label: '📖 Esplora' },
-  { id: 'drill', label: '♟ Allenamento' },
-  { id: 'review', label: '🔁 Ripasso' },
-  { id: 'quiz', label: '❓ Quiz' },
-  { id: 'sim', label: '🎮 Simulatore' },
-  { id: 'lab', label: '🔬 Laboratorio' },
+const MODES: { id: Mode; label: string; icon: IconName }[] = [
+  { id: 'course', label: 'Corso', icon: 'course' },
+  { id: 'explore', label: 'Esplora', icon: 'explore' },
+  { id: 'drill', label: 'Allenamento', icon: 'drill' },
+  { id: 'review', label: 'Ripasso', icon: 'review' },
+  { id: 'quiz', label: 'Quiz', icon: 'quiz' },
+  { id: 'sim', label: 'Simulatore', icon: 'sim' },
+  { id: 'lab', label: 'Laboratorio', icon: 'lab' },
 ];
 
 /** 'today' (Ripasso di oggi) non ha una voce nel menu: ci si arriva dalla home. */
 type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress' | 'today' | 'settings';
 
 /** Menu principale: ogni sezione ha la sua pagina, così la home resta dedicata alle aperture. */
-const SECTIONS: { id: Section; label: string }[] = [
-  { id: 'openings', label: '♞ Aperture' },
-  { id: 'mates', label: '♚ Matti' },
-  { id: 'puzzles', label: '🧩 Problemi' },
-  { id: 'analysis', label: '📊 Analisi' },
-  { id: 'progress', label: '📈 Progressi' },
+const SECTIONS: { id: Section; label: string; icon: IconName }[] = [
+  { id: 'openings', label: 'Aperture', icon: 'knight' },
+  { id: 'mates', label: 'Matti', icon: 'king' },
+  { id: 'puzzles', label: 'Problemi', icon: 'puzzle' },
+  { id: 'analysis', label: 'Analisi', icon: 'analysis' },
+  { id: 'progress', label: 'Progressi', icon: 'progress' },
 ];
 
 const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, ''), s.source).id;
@@ -136,7 +137,7 @@ export default function App() {
               setSection('openings');
             }}
           >
-            <span className="logo">♞</span> EasyChess
+            <span className="logo"><Icon name="knight" /></span> EasyChess
           </button>
           {!route && (
             <nav className="tabs sections">
@@ -150,7 +151,7 @@ export default function App() {
                     window.scrollTo({ top: 0 });
                   }}
                 >
-                  {sec.label}
+                  <Icon name={sec.icon} /> {sec.label}
                 </button>
               ))}
             </nav>
@@ -165,7 +166,7 @@ export default function App() {
                     className={m.id === route.mode ? 'active' : ''}
                     onClick={() => setRoute({ openingId: route.openingId, mode: m.id })}
                   >
-                    {m.label}
+                    <Icon name={m.icon} /> {m.label}
                   </button>
                 ))}
               </nav>
@@ -181,7 +182,7 @@ export default function App() {
               window.scrollTo({ top: 0 });
             }}
           >
-            ⚙️
+            <Icon name="settings" />
           </button>
           <Account />
         </header>
@@ -266,7 +267,7 @@ export default function App() {
               />
               <section className="sim-card home-analysis">
                 <div>
-                  <h3>🧩 Problemi</h3>
+                  <h3><Icon name="puzzle" /> Problemi</h3>
                   <p className="muted small">Quasi 100.000 problemi di tattica, senza limiti giornalieri e anche offline: col tuo punteggio, per tema e con il ripasso degli errori.</p>
                 </div>
                 <button className="primary" onClick={() => setSection('puzzles')}>
@@ -275,7 +276,7 @@ export default function App() {
               </section>
               <section className="sim-card home-analysis">
                 <div>
-                  <h3>📊 Analisi delle tue partite</h3>
+                  <h3><Icon name="analysis" /> Analisi delle tue partite</h3>
                   <p className="muted small">Carica le partite da chess.com (o un PGN) e Stockfish le analizza, confrontandole con il tuo repertorio.</p>
                 </div>
                 <button className="primary" onClick={() => setSection('analysis')}>
@@ -284,13 +285,13 @@ export default function App() {
               </section>
               <section className="tools">
                 <label className="button">
-                  ➕ Importa apertura (.pgn)
+                  <Icon name="plus" /> Importa apertura (.pgn)
                   {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
                   <input type="file" onChange={importPgn} hidden />
                 </label>
-                <button onClick={exportProgress}>💾 Esporta progressi</button>
+                <button onClick={exportProgress}><Icon name="save" /> Esporta progressi</button>
                 <label className="button">
-                  📂 Ripristina progressi
+                  <Icon name="folder" /> Ripristina progressi
                   <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
                 </label>
               </section>

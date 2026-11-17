@@ -1,4 +1,5 @@
 import { BOARD_THEMES, updateSettings, useSettings, type Settings } from '../core/settings';
+import { Icon } from '../components/Icon';
 import { playSound, type SoundName } from '../core/sound';
 import { Board } from '../components/Board';
 import './settings.css';
@@ -111,7 +112,7 @@ export function SettingsPage() {
               <div className="actions">
                 {TRY_SOUNDS.map((t) => (
                   <button key={t.id} disabled={!s.sound} onClick={() => playSound(t.id)}>
-                    🔊 {t.label}
+                    <Icon name="sound" /> {t.label}
                   </button>
                 ))}
               </div>

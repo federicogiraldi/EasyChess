@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { Icon } from '../components/Icon';
 import type { Arrow, Opening } from '../model/types';
 import {
   archiveLabel,
@@ -37,7 +38,7 @@ interface Props {
 
 const BEST_ARROW = 'rgba(37, 99, 235, 0.8)';
 
-/** 📊 Analisi: importa le tue partite (chess.com o PGN) e analizzale con Stockfish. */
+/** Analisi: importa le tue partite (chess.com o PGN) e analizzale con Stockfish. */
 export function Analysis({ openings, onOpenMode }: Props) {
   const [game, setGame] = useState<AnalyzedGame | null>(null);
   const [library, setLibrary] = useState<AnalyzedGame[]>(loadLibrary);
@@ -72,7 +73,7 @@ export function Analysis({ openings, onOpenMode }: Props) {
   return (
     <div className="analysis-home">
       <section className="hero">
-        <h1>📊 Analisi delle partite</h1>
+        <h1><Icon name="analysis" /> Analisi delle partite</h1>
         <p className="muted">
           Carica le tue partite di chess.com (o qualsiasi PGN) e Stockfish le analizza: precisione, errori, mosse migliori e il
           confronto con il tuo repertorio.
@@ -109,8 +110,8 @@ function GameRow({ g, myWhite, analyzed, onOpen }: { g: ImportedGame; myWhite?: 
       <span className={`game-result ${out ?? ''}`}>{out === 'vinta' ? 'V' : out === 'persa' ? 'P' : out === 'patta' ? '½' : '·'}</span>
       <span className="game-main">
         <span className="game-players">
-          <span className={myWhite === true ? 'me' : ''}>⚪ {g.white}{g.whiteElo ? ` (${g.whiteElo})` : ''}</span>
-          <span className={myWhite === false ? 'me' : ''}>⚫ {g.black}{g.blackElo ? ` (${g.blackElo})` : ''}</span>
+          <span className={myWhite === true ? 'me' : ''}><Icon name="white" /> {g.white}{g.whiteElo ? ` (${g.whiteElo})` : ''}</span>
+          <span className={myWhite === false ? 'me' : ''}><Icon name="black" /> {g.black}{g.blackElo ? ` (${g.blackElo})` : ''}</span>
         </span>
         <span className="muted small">
           {[g.date && new Date(g.date).toLocaleDateString('it-IT'), g.timeClass && (TIME_CLASS[g.timeClass] ?? g.timeClass), `${Math.ceil(g.moves.length / 2)} mosse`, g.openingName]
@@ -118,7 +119,7 @@ function GameRow({ g, myWhite, analyzed, onOpen }: { g: ImportedGame; myWhite?: 
             .join(' · ')}
         </span>
       </span>
-      <span className="game-cta small">{meAcc !== undefined ? `${meAcc.toFixed(1)}%` : analyzed ? 'Rivedi' : 'Analizza →'}</span>
+      <span className="game-cta small">{meAcc !== undefined ? `${meAcc.toFixed(1)}%` : analyzed ? 'Rivedi' : <>Analizza <Icon name="arrowRight" /></>}</span>
     </button>
   );
 }
@@ -169,7 +170,7 @@ function ChessComImport({
 
   return (
     <section className="sim-card">
-      <h3>♟ Da chess.com</h3>
+      <h3><Icon name="knight" /> Da chess.com</h3>
       <p className="small muted">Scrivi il tuo nome utente: le partite pubbliche si caricano da sole, senza esportare niente.</p>
       <form
         className="cc-form"
@@ -236,7 +237,7 @@ function PgnImport({ onOpen }: { onOpen: (g: ImportedGame) => void }) {
 
   return (
     <section className="sim-card">
-      <h3>📋 Incolla o apri un PGN</h3>
+      <h3><Icon name="paste" /> Incolla o apri un PGN</h3>
       <textarea
         className="pgn-input"
         value={text}
@@ -251,7 +252,7 @@ function PgnImport({ onOpen }: { onOpen: (g: ImportedGame) => void }) {
           Analizza
         </button>
         <label className="button">
-          📂 Apri file .pgn
+          <Icon name="folder" /> Apri file .pgn
           {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili */}
           <input type="file" onChange={onFile} hidden />
         </label>
@@ -277,7 +278,7 @@ function PgnImport({ onOpen }: { onOpen: (g: ImportedGame) => void }) {
             Tocca il pulsante <b>Condividi</b> e scegli <b>PGN</b>.
           </li>
           <li>
-            Tocca <b>Copia</b>, torna qui e incolla nel riquadro sopra (oppure salva il file e aprilo con 📂).
+            Tocca <b>Copia</b>, torna qui e incolla nel riquadro sopra (oppure salva il file e aprilo con <Icon name="folder" />).
           </li>
         </ol>
         <p>
@@ -421,11 +422,11 @@ function GameAnalysis({
           lastMove={ply ? { from: ply.uci.slice(0, 2), to: ply.uci.slice(2, 4) } : undefined}
         />
         <div className="controls">
-          <button onClick={() => setCursor(0)} title="Inizio">⏮</button>
-          <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)">◀</button>
-          <button onClick={() => setCursor((c) => Math.min(plies.length, c + 1))} title="Avanti (→)">▶</button>
-          <button onClick={() => setCursor(plies.length)} title="Fine">⏭</button>
-          <button onClick={onBack}>← Le mie partite</button>
+          <button onClick={() => setCursor(0)} title="Inizio"><Icon name="first" /></button>
+          <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)"><Icon name="prev" /></button>
+          <button onClick={() => setCursor((c) => Math.min(plies.length, c + 1))} title="Avanti (→)"><Icon name="next" /></button>
+          <button onClick={() => setCursor(plies.length)} title="Fine"><Icon name="last" /></button>
+          <button onClick={onBack}><Icon name="arrowLeft" /> Le mie partite</button>
         </div>
       </div>
 
@@ -433,8 +434,8 @@ function GameAnalysis({
         <div className="analysis-head">
           <div>
             <strong>
-              ⚪ {game.white}
-              {game.whiteElo ? ` (${game.whiteElo})` : ''} – ⚫ {game.black}
+              <Icon name="white" /> {game.white}
+              {game.whiteElo ? ` (${game.whiteElo})` : ''} – <Icon name="black" /> {game.black}
               {game.blackElo ? ` (${game.blackElo})` : ''}
             </strong>
             <div className="muted small">
@@ -452,10 +453,10 @@ function GameAnalysis({
           <div className="seg" role="group" aria-label="Con che colore giocavi">
             <span className="muted small">Io ero:</span>
             <button className={myWhite === true ? 'active' : ''} onClick={() => onChange({ ...game, myWhite: true })}>
-              ⚪ Bianco
+              <Icon name="white" /> Bianco
             </button>
             <button className={myWhite === false ? 'active' : ''} onClick={() => onChange({ ...game, myWhite: false })}>
-              ⚫ Nero
+              <Icon name="black" /> Nero
             </button>
           </div>
         </div>
@@ -467,26 +468,26 @@ function GameAnalysis({
         {match && (
           <div className={`book-status ${deviationByMe ? 'out' : 'in'}`}>
             {!deviation ? (
-              <>📗 Tutta la partita è nel tuo repertorio ({match.opening.name}).</>
+              <><Icon name="inBook" /> Tutta la partita è nel tuo repertorio ({match.opening.name}).</>
             ) : deviationByMe ? (
               <>
-                📕 {match.opening.name}
+                <Icon name="outOfBook" /> {match.opening.name}
                 {lineName ? ` — ${lineName}` : ''}: sei uscito dal repertorio con <strong>{moveNo(firstOut)}</strong>
                 {expectedThere.length > 0 && <> (prevedeva {expectedThere.map((n) => n.san).join(' o ')})</>}.
               </>
             ) : (
               <>
-                📗 {match.opening.name}
+                <Icon name="inBook" /> {match.opening.name}
                 {lineName ? ` — ${lineName}` : ''}: hai seguito il repertorio; l'avversario ne è uscito con <strong>{moveNo(firstOut)}</strong>.
               </>
             )}
             <div className="controls book-actions">
               {deviation && <button onClick={() => setCursor(firstOut + 1)}>Vai alla mossa</button>}
               <button onClick={() => onOpenMode(match.opening.id, 'lab', game.moves.slice(0, firstOut === -1 ? plies.length : firstOut))}>
-                🔬 Laboratorio da qui
+                <Icon name="lab" /> Laboratorio da qui
               </button>
               <button onClick={() => onOpenMode(match.opening.id, 'sim', game.moves.slice(0, firstOut === -1 ? plies.length : firstOut))}>
-                🎮 Rigioca da qui
+                <Icon name="sim" /> Rigioca da qui
               </button>
             </div>
           </div>
@@ -494,8 +495,8 @@ function GameAnalysis({
 
         <ReviewSummary
           result={resultText(game)}
-          meLabel={meName ? `${meName} (tu)` : `⚪ ${game.white}`}
-          oppLabel={oppName ?? `⚫ ${game.black}`}
+          meLabel={meName ? `${meName} (tu)` : game.white}
+          oppLabel={oppName ?? game.black}
           meAcc={ready ? accuracyOf(myWhite ?? true) : undefined}
           oppAcc={ready ? accuracyOf(!(myWhite ?? true)) : undefined}
           progress={`${analyzed}/${fens.length}`}

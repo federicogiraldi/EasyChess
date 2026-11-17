@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Icon } from './Icon';
 import type { OpeningNode } from '../model/types';
 import { describeMove } from '../engine/reasons';
 
@@ -26,7 +27,7 @@ export function CommentPanel({ node, lineName, fallback }: Props) {
       )}
       {motifs.length > 0 && (
         <div className="move-motifs">
-          <div className="move-motifs-head">🔍 Cosa fa {node.san}</div>
+          <div className="move-motifs-head"><Icon name="search" /> Cosa fa {node.san}</div>
           <ul>
             {motifs.map((m) => (
               <li key={m}>{m}</li>

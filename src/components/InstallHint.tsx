@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from './Icon';
 import { isIOS, isStandalone } from '../core/device';
 import { load, save } from '../core/storage';
 
@@ -16,7 +17,7 @@ export function InstallHint() {
   return (
     <div className="install-hint" role="note">
       <span className="install-icon" aria-hidden>
-        📲
+        <Icon name="install" />
       </span>
       <div>
         <strong>Installa EasyChess su questo dispositivo</strong>
@@ -26,7 +27,7 @@ export function InstallHint() {
         </p>
       </div>
       <button className="install-close" onClick={close} aria-label="Chiudi">
-        ✕
+        <Icon name="close" />
       </button>
     </div>
   );

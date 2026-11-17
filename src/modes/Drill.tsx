@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Icon, withIcons } from '../components/Icon';
 import type { Opening, OpeningNode } from '../model/types';
 import { lineNameOf, moveLabel, namedLines, nextMoves, pathFromRoot } from '../core/tree';
 import { checkMove, gradePosition, pickOpponentMove, solutionArrows } from '../core/training';
@@ -99,21 +100,21 @@ export function Drill({ opening, initialLine }: { opening: Opening; initialLine?
               </option>
             ))}
           </select>
-          <button onClick={() => restart()}>↻ Ricomincia</button>
+          <button onClick={() => restart()}><Icon name="restart" /> Ricomincia</button>
         </div>
       </div>
 
       <div className="side">
-        <div className={`feedback ${feedback.kind}`}>{feedback.text}</div>
+        <div className={`feedback ${feedback.kind}`}>{withIcons(feedback.text)}</div>
         {wrongHere && wrongSan && <WhyButton fen={current.fen} san={wrongSan} expected={next} />}
         {feedback.kind === 'done' && (
           <button className="primary" onClick={() => restart()}>
-            Prossima linea →
+            Prossima linea <Icon name="arrowRight" />
           </button>
         )}
         <div className="stats-row">
-          <span>✓ {stats.correct}</span>
-          <span>✗ {stats.mistakes}</span>
+          <span><Icon name="check" /> {stats.correct}</span>
+          <span><Icon name="wrong" /> {stats.mistakes}</span>
           <span>Linee: {stats.lines}</span>
         </div>
         <MoveList path={path} />

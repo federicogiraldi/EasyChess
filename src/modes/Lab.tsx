@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Icon } from '../components/Icon';
 import { Chess } from 'chess.js';
 import type { Arrow, Opening } from '../model/types';
 import { findInBook, lineNameOf, nextMoves, pathFromRoot } from '../core/tree';
@@ -169,9 +170,9 @@ export function Lab({ opening, initialMoves = [] }: Props) {
           lastMove={lastMove ? { from: lastMove.from, to: lastMove.to } : undefined}
         />
         <div className="controls">
-          <button onClick={() => setCursor(0)} title="Inizio">⏮</button>
-          <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)">◀</button>
-          <button onClick={() => setCursor((c) => Math.min(moves.length, c + 1))} title="Avanti (→)">▶</button>
+          <button onClick={() => setCursor(0)} title="Inizio"><Icon name="first" /></button>
+          <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)"><Icon name="prev" /></button>
+          <button onClick={() => setCursor((c) => Math.min(moves.length, c + 1))} title="Avanti (→)"><Icon name="next" /></button>
           <button
             onClick={() => {
               setMoves(moves.slice(0, Math.max(0, cursor - 1)));
@@ -179,13 +180,13 @@ export function Lab({ opening, initialMoves = [] }: Props) {
             }}
             disabled={cursor === 0}
           >
-            ↶ Annulla mossa
+            <Icon name="undo" /> Annulla mossa
           </button>
           <button
             onClick={() => ev?.best && play(new Chess(fen).move({ from: ev.best.slice(0, 2), to: ev.best.slice(2, 4), promotion: 'q' }).san)}
             disabled={!ev?.best}
           >
-            ⚡ Gioca la migliore
+            <Icon name="zap" /> Gioca la migliore
           </button>
         </div>
         <div className="controls">
@@ -206,9 +207,9 @@ export function Lab({ opening, initialMoves = [] }: Props) {
         <div className={`book-status ${book && bookMoves.length ? 'in' : 'out'}`}>
           {outOfBook === -1 || outOfBook >= cursor
             ? book && bookMoves.length
-              ? `📗 Nel repertorio${lineName ? ` — ${lineName}` : ''}`
-              : '📗 Fine della linea del repertorio'
-            : `📕 Fuori dal repertorio dalla mossa ${moveText(outOfBook, moves[outOfBook])}`}
+              ? <><Icon name="inBook" /> Nel repertorio{lineName ? ` — ${lineName}` : ''}</>
+              : <><Icon name="inBook" /> Fine della linea del repertorio</>
+            : <><Icon name="outOfBook" /> Fuori dal repertorio dalla mossa {moveText(outOfBook, moves[outOfBook])}</>}
         </div>
 
         <div className="moves">
@@ -238,7 +239,7 @@ export function Lab({ opening, initialMoves = [] }: Props) {
         {lastVerdict && lastVerdict !== 'loading' && !(lastVerdict instanceof Error) && <ExplanationCard verdict={lastVerdict} />}
         {judged < cursor && cursor > 0 && (
           <button className="why" onClick={() => judge(cursor - 1, moves)}>
-            🔬 Analizza {moves[cursor - 1]}
+            <Icon name="lab" /> Analizza {moves[cursor - 1]}
           </button>
         )}
         {ev && <p className="muted small">Linea di Stockfish: {ev.line}</p>}

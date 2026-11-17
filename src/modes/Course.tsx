@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Icon } from '../components/Icon';
 import { Chess } from 'chess.js';
 import type { Opening, OpeningNode } from '../model/types';
 import type { Course as CourseData } from '../core/course';
@@ -139,7 +140,7 @@ export function Course({ opening, onDrillLine }: Props) {
         <h3>Lezioni · {progress.done.length}/{lessons.length}</h3>
         {lessons.map((l, i) => (
           <button key={i} className={`line-item ${i === lessonIdx ? 'on-path' : ''}`} onClick={() => goTo(i)}>
-            <span className="lesson-check">{progress.done.includes(i) ? '✓' : `${i + 1}.`}</span> {l.title}
+            <span className="lesson-check">{progress.done.includes(i) ? <Icon name="check" /> : `${i + 1}.`}</span> {l.title}
           </button>
         ))}
       </nav>
@@ -159,16 +160,16 @@ export function Course({ opening, onDrillLine }: Props) {
       <div className="side">
         {finished ? (
           <div className="lesson-done">
-            <h2>✓ Lezione completata</h2>
+            <h2><Icon name="check" /> Lezione completata</h2>
             <p>{lesson.title}</p>
             <div className="actions">
               {lessonIdx < lessons.length - 1 && (
                 <button className="primary" onClick={() => goTo(lessonIdx + 1)}>
-                  Prossima lezione →
+                  Prossima lezione <Icon name="arrowRight" />
                 </button>
               )}
-              <button onClick={() => onDrillLine(lesson.line)}>♟ Allenati su questa linea</button>
-              <button onClick={() => goTo(lessonIdx)}>↻ Rifai la lezione</button>
+              <button onClick={() => onDrillLine(lesson.line)}><Icon name="drill" /> Allenati su questa linea</button>
+              <button onClick={() => goTo(lessonIdx)}><Icon name="restart" /> Rifai la lezione</button>
             </div>
           </div>
         ) : (
@@ -186,12 +187,12 @@ export function Course({ opening, onDrillLine }: Props) {
             {step.play.length > 0 && (
               <div className={`feedback ${wrongSan ? 'wrong' : playing ? 'info' : 'ok'}`}>
                 {wrongSan
-                  ? `✗ ${wrongSan} non è la mossa giusta. La freccia verde ti mostra quella corretta: giocala.`
+                  ? <><Icon name="wrong" /> {wrongSan} non è la mossa giusta. La freccia verde ti mostra quella corretta: giocala.</>
                   : playing
                     ? myTurn
                       ? `Tocca a te: gioca la mossa ${opening.color === 'white' ? 'del Bianco' : 'del Nero'}.`
                       : 'Il tuo avversario sta muovendo…'
-                    : '✓ Ben fatto!'}
+                    : <><Icon name="check" /> Ben fatto!</>}
               </div>
             )}
             {wrongSan && expected && <WhyButton fen={fen} san={wrongSan} expected={[expectedNode(opening, fen, expected)]} />}
@@ -219,15 +220,15 @@ export function Course({ opening, onDrillLine }: Props) {
 
             <div className="controls">
               <button onClick={() => goTo(lessonIdx, stepIdx - 1)} disabled={stepIdx === 0}>
-                ◀ Indietro
+                <Icon name="prev" /> Indietro
               </button>
               {playing && myTurn && !demo && (
                 <button onClick={() => setDemo(true)} title="Gioca le mosse al posto tuo">
-                  👀 Mostrami
+                  <Icon name="eye" /> Mostrami
                 </button>
               )}
               <button className="primary" onClick={next} disabled={!complete}>
-                {isLastStep ? 'Completa la lezione ✓' : 'Avanti ▶'}
+                {isLastStep ? <>Completa la lezione <Icon name="check" /></> : <>Avanti <Icon name="next" /></>}
               </button>
             </div>
           </>

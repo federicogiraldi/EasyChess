@@ -1,12 +1,13 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type FormEvent, type ReactNode } from 'react';
+import { Icon } from './Icon';
 import { signIn, signOut, signUp, syncNow, useSync, type SyncStatus } from '../core/sync';
 
-const STATUS: Record<SyncStatus, string> = {
+const STATUS: Record<SyncStatus, ReactNode> = {
   off: '',
-  syncing: '⟳ Sincronizzo…',
-  ok: '✓ Sincronizzato',
-  offline: '⏸ Offline: sincronizzo appena torna la rete',
-  error: '⚠ Sincronizzazione non riuscita, riprovo più tardi',
+  syncing: <><Icon name="sync" className="spin" /> Sincronizzo…</>,
+  ok: <><Icon name="check" /> Sincronizzato</>,
+  offline: <><Icon name="offline" /> Offline: sincronizzo appena torna la rete</>,
+  error: <><Icon name="warning" /> Sincronizzazione non riuscita, riprovo più tardi</>,
 };
 
 /** Pulsante account nella barra in alto + finestra di accesso. */
@@ -21,17 +22,17 @@ export function Account() {
         {session ? (
           <>
             <span className="avatar">{email?.[0]?.toUpperCase() ?? '?'}</span>
-            {status === 'syncing' ? '⟳' : status === 'offline' ? '⏸' : status === 'error' ? '⚠' : ''}
+            {status === 'syncing' ? <Icon name="sync" className="spin" /> : status === 'offline' ? <Icon name="offline" /> : status === 'error' ? <Icon name="warning" /> : null}
           </>
         ) : (
-          '👤 Accedi'
+          <><Icon name="user" /> Accedi</>
         )}
       </button>
       {open && (
         <div className="modal-backdrop" onClick={() => setOpen(false)}>
           <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close link" onClick={() => setOpen(false)} aria-label="Chiudi">
-              ✕
+              <Icon name="close" />
             </button>
             {session ? <SignedIn email={email ?? ''} status={status} onDone={() => setOpen(false)} /> : <SignInForm onDone={() => setOpen(false)} />}
           </div>

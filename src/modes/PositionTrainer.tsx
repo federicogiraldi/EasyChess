@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Icon } from '../components/Icon';
 import type { Opening, OpeningNode } from '../model/types';
 import { cardPositions, lineNameOf, moveLabel, nextMoves, pathFromRoot, type CardPosition } from '../core/tree';
 import { checkMove, gradePosition, solutionArrows } from '../core/training';
@@ -125,20 +126,20 @@ export function PositionTrainer(props: Props) {
       <div className="side">
         <div className="stats-row">
           {mode === 'quiz' ? <span>Quiz</span> : <span>Da fare: {remaining}</span>}
-          <span>✓ {score.correct}</span>
-          <span>✗ {score.wrong}</span>
+          <span><Icon name="check" /> {score.correct}</span>
+          <span><Icon name="wrong" /> {score.wrong}</span>
           {mode !== 'quiz' && <span>{isNew ? 'Nuova' : 'Ripasso'}</span>}
           {mode === 'daily' && <span className="daily-opening">{opening.name}</span>}
         </div>
         <div className={`feedback ${phase === 'ask' ? 'info' : phase === 'wrong' ? 'wrong' : 'ok'}`}>
           {phase === 'ask' && 'Trova la mossa del tuo repertorio.'}
-          {phase === 'wrong' && `✗ ${wrongSan} non è nel repertorio. Giusta: ${expected.map(moveLabel).join(' oppure ')} — giocala.`}
-          {phase === 'solved' && `✓ ${moveLabel(answer!)}`}
+          {phase === 'wrong' && <><Icon name="wrong" /> {wrongSan} non è nel repertorio. Giusta: {expected.map(moveLabel).join(' oppure ')} — giocala.</>}
+          {phase === 'solved' && <><Icon name="check" /> {moveLabel(answer!)}</>}
         </div>
         {phase === 'wrong' && wrongSan && <WhyButton fen={position.fen} san={wrongSan} expected={expected} />}
         {phase === 'solved' && (
           <button className="primary" onClick={advance}>
-            Avanti → <span className="muted small">(Invio)</span>
+            Avanti <Icon name="arrowRight" /> <span className="muted small">(Invio)</span>
           </button>
         )}
         <MoveList path={shownPath} />
@@ -155,7 +156,7 @@ function SessionEnd({ opening, score, empty }: { opening: Opening; score: { corr
     .sort((a, b) => a - b)[0];
   return (
     <div className="session-end">
-      <h2>{empty ? 'Niente da ripassare adesso 🎉' : 'Sessione completata!'}</h2>
+      <h2>{empty ? <>Niente da ripassare adesso <Icon name="party" /></> : 'Sessione completata!'}</h2>
       {!empty && (
         <p>
           Risposte giuste al primo colpo: <strong>{score.correct}</strong> · errori: <strong>{score.wrong}</strong>
