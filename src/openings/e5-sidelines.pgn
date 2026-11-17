@@ -1,0 +1,38 @@
+[Opening "Difese minori dopo 1.e4 e5"]
+[Id "e5-sidelines"]
+[Color "white"]
+[Description "Quando dopo 1.e4 e5 2.Nf3 il Nero non gioca 2...Nc6: Difesa Russa (Petrov) con 5.Nc3, il Gambetto Stafford, la Philidor, il Gambetto Lettone, il Controgambetto dell'Elefante e la Difesa Damiano. Poche linee, piani semplici e molte trappole da conoscere."]
+
+{ Dopo 1.e4 e5 2.Nf3 quasi sempre il Nero gioca 2...Nc6, e lì hai già l'Italiana e il Gambetto Scozzese. Ma a volte l'avversario sceglie altro: difende e5 con ...d6, contrattacca con ...Nf6 o tenta un gambetto. Queste linee ti dicono cosa fare, e soprattutto quali trappole evitare e quali tendere. }
+1. e4 e5 2. Nf3 { [%line 1.e4 e5 2.Nf3] Il cavallo attacca e5. [%cal Gf3e5] }
+2... Nf6 { [%line Difesa Russa: 2...Nf6] La Difesa Russa (o Petrov): invece di difendere e5, il Nero attacca e4. [%cal Rf6e4] }
+3. Nxe5 { Prendi per primo. } 3... d6 { La mossa giusta: prima caccia il cavallo, poi riprende il pedone. [%key Petrov: dopo 3...d6 4.Nf3 Nxe4 gioca 5.Nc3] }
+4. Nf3 Nxe4 5. Nc3 { Il cavallo attacca il cavallo e4: niente teoria, si cambia. [%cal Gc3e4] } 5... Nxc3 6. dxc3 { Riprendi verso il centro: le colonne si aprono e i tuoi pezzi escono veloci. }
+6... Be7 7. Be3 O-O 8. Qd2 Nd7 9. O-O-O { Arrocchi sul lato opposto: piano con h4, g4 e attacco al re nero. [%key Arrocco lungo e attacco con i pedoni h e g] [%cal Gh2h4,Gg2g4] } *
+
+1. e4 e5 2. Nf3 Nf6 3. Nxe5 Nxe4 { [%line Petrov: 3...Nxe4?] Errore comune: il Nero copia le tue mosse. } 4. Qe2 { La donna attacca il cavallo e4, e sulla colonna e c'è il re nero. [%cal Ge2e4,Ge4e8] }
+4... Qe7 { L'unica difesa. } 5. Qxe4 d6 6. d4 { Il cavallo e5 è difeso: hai un pedone in più. } 6... dxe5 7. dxe5 { Pedone in più e posizione aperta. } *
+
+1. e4 e5 2. Nf3 Nf6 3. Nxe5 Nxe4 4. Qe2 Nf6 { [%line Petrov: trappola 4...Nf6??] Il cavallo si ritira… } 5. Nc6+ { …e lo scacco di scoperta della donna vince la donna nera, attaccata dal cavallo. [%key Scacco di scoperta: Nc6+ vince la donna] [%cal Gc6d8,Ge2e8] } *
+
+1. e4 e5 2. Nf3 Nf6 3. Nxe5 Nc6 { [%line Gambetto Stafford: 3...Nc6] Un gambetto pieno di trappole. } 4. Nxc6 dxc6 5. d3 { La mossa più sicura: difende e4 e apre l'alfiere c1. Non cercare di più. [%key Contro lo Stafford: d3, Be2 e niente fretta di arroccare] }
+5... Bc5 { L'alfiere punta su f2. [%cal Rc5f2] } 6. Be2 { Copre la diagonale h5-e8 e prepara l'arrocco. } 6... h5 { Il Nero minaccia ...Ng4 e attacchi su f2. } 7. c3 { Prepara d4 per cacciare l'alfiere c5. [%cal Gd3d4,Rc5f2] } *
+
+1. e4 e5 2. Nf3 d6 { [%line Difesa Philidor: 2...d6] Il Nero difende e5 con il pedone. } 3. d4 { Attacchi subito il centro. } 3... exd4 4. Nxd4 { Il cavallo è centralizzato. } 4... Nf6 5. Nc3 Be7 6. Be2 O-O 7. O-O { Più spazio e sviluppo semplice. Piani: f4, Bf3, Re1. [%key Philidor: d4, sviluppo e più spazio] } *
+
+1. e4 e5 2. Nf3 d6 3. d4 Nf6 { [%line Philidor: 3...Nf6] } 4. Nc3 Nbd7 5. Bc4 { L'alfiere punta su f7. [%cal Gc4f7] } 5... Be7 6. O-O O-O *
+
+1. e4 e5 2. Nf3 d6 3. d4 Nd7 { [%line Philidor: 3...Nd7] } 4. Bc4 c6 5. O-O { Sviluppo veloce. Il Nero è solido ma passivo. } *
+
+1. e4 e5 2. Nf3 d6 3. d4 Bg4 { [%line Philidor: 3...Bg4?] L'alfiere inchioda il cavallo. } 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 { La donna e l'alfiere puntano su f7. [%cal Gf3f7,Gc4f7] }
+6... Nf6 7. Qb3 { Doppio attacco: b7 e f7. Vinci un pedone. [%key Doppio attacco Qb3 su b7 e f7] [%cal Gb3b7,Gb3f7] } *
+
+1. e4 e5 2. Nf3 f5 { [%line Gambetto Lettone: 2...f5] Un gambetto rischioso. } 3. Nxe5 Qf6 4. d4 { Il centro. } 4... d6 5. Nc4 fxe4 6. Nc3 Qg6 7. f3 { Elimini il pedone e4 e apri il gioco: sei molto più sviluppato. [%key Contro il Lettone: Nxe5, d4 e sviluppo rapido] } *
+
+1. e4 e5 2. Nf3 d5 { [%line Controgambetto dell'Elefante: 2...d5] } 3. exd5 e4 4. Qe2 { La donna attacca e4 e il cavallo f3 resta al suo posto. [%cal Ge2e4] } 4... Nf6 5. d3 { Hai un pedone in più. } *
+
+1. e4 e5 2. Nf3 d5 3. exd5 Qxd5 { [%line Elefante: 3...Qxd5] } 4. Nc3 { Cacci la donna con tempo. } 4... Qe6 5. Bb5+ { Lo scacco toglie al Nero la casa c6 per il cavallo. } *
+
+1. e4 e5 2. Nf3 f6 { [%line Difesa Damiano: 2...f6] Una difesa debole: indebolisce la diagonale del re. } 3. Nxe5 { Si può prendere! } 3... fxe5 { [%line Damiano: 3...fxe5?] } 4. Qh5+ { Il re nero è esposto. [%cal Gh5e8] } 4... g6 5. Qxe5+ { Attacchi re e torre h8 insieme: vinci la torre. [%key Damiano: Nxe5! e Qh5+] [%cal Ge5h8,Ge5e8] } *
+
+1. e4 e5 2. Nf3 f6 3. Nxe5 Qe7 { [%line Damiano: 3...Qe7] La risposta migliore del Nero. } 4. Nf3 Qxe4+ 5. Be2 { Il Nero ha recuperato il pedone, ma ha la donna in gioco troppo presto e il re indebolito: arrocchi e svilupperai con tempo. } *
