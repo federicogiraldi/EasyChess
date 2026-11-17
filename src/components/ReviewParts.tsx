@@ -1,6 +1,7 @@
 import type { OpeningNode } from '../model/types';
 import { Icon } from './Icon';
-import { SIM_QUALITY, SIM_QUALITY_ORDER, type PosEval, type SimPly, type SimQuality } from '../core/simulation';
+import type { PosEval, SimPly } from '../core/simulation';
+import { SIM_QUALITY, SIM_QUALITY_ORDER, type SimQuality } from '../core/quality';
 import { sanFromUci } from '../engine/simEngine';
 import { formatScore } from '../engine/stockfish';
 import { WhyButton } from './Explanation';

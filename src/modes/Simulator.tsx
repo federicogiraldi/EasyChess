@@ -17,19 +17,19 @@ import {
   saveSettings,
   SIM_ELO_MAX,
   SIM_ELO_MIN,
-  SIM_QUALITY,
   toPgn,
   winPercent,
   type HintMode,
   type PosEval,
   type SimGame,
   type SimPly,
-  type SimQuality,
   type SimSettings,
 } from '../core/simulation';
+import { SIM_QUALITY, type SimQuality } from '../core/quality';
 import { coachLines, evalPosition, opponentMove, sanFromUci, type CoachLine } from '../engine/simEngine';
 import { engine, opponentEngine } from '../engine/stockfish';
-import { Board, sanOf } from '../components/Board';
+import { Board } from '../components/Board';
+import { sanOf } from '../core/moves';
 import { EvalBar, WhyButton } from '../components/Explanation';
 import { EvalGraph } from '../components/EvalGraph';
 import { KeyMoments, ReviewMove, ReviewSummary } from '../components/ReviewParts';

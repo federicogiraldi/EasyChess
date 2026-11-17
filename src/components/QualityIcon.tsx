@@ -1,4 +1,4 @@
-import { SIM_QUALITY, type SimQuality } from '../core/simulation';
+import { SIM_QUALITY, type SimQuality } from '../core/quality';
 
 /**
  * Icona della qualità di una mossa: cerchio colorato con un simbolo bianco

@@ -2,23 +2,10 @@ import { Chess } from 'chess.js';
 import type { Opening, OpeningNode } from '../model/types';
 import { findInBook, nextMoves, normalizeFen, pathFromRoot } from './tree';
 import { pickOpponentMove } from './training';
-import { qualityFromLoss, type Quality } from '../engine/judge';
+import { qualityFromLoss } from '../engine/judge';
 import { winChance, type EngineLine } from '../engine/stockfish';
 import { load, save } from './storage';
-
-/** Come su chess.com: le mosse di teoria hanno la loro categoria. */
-export type SimQuality = Quality | 'libro';
-
-export const SIM_QUALITY: Record<SimQuality, { label: string; symbol: string; icon: string; color: string }> = {
-  libro: { label: 'Libro', symbol: '', icon: '📖', color: '#a8865c' },
-  migliore: { label: 'Migliore', symbol: '!', icon: '★', color: '#5c9b2f' },
-  buona: { label: 'Buona', symbol: '', icon: '✓', color: '#77915f' },
-  imprecisione: { label: 'Imprecisione', symbol: '?!', icon: '?!', color: '#e0a82e' },
-  errore: { label: 'Errore', symbol: '?', icon: '?', color: '#e5762c' },
-  grave: { label: 'Errore grave', symbol: '??', icon: '??', color: '#d43a2f' },
-};
-
-export const SIM_QUALITY_ORDER: SimQuality[] = ['libro', 'migliore', 'buona', 'imprecisione', 'errore', 'grave'];
+import type { SimQuality } from './quality';
 
 /** Valutazione di una posizione dal punto di vista del Bianco, con la mossa migliore. */
 export interface PosEval {

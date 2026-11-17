@@ -25,7 +25,8 @@ import { THEME_GROUPS, themeName } from '../core/puzzleThemes';
 import { load, save } from '../core/storage';
 import { bumpActivity } from '../core/daily';
 import { playSound } from '../core/sound';
-import { Board, sanOf } from '../components/Board';
+import { Board } from '../components/Board';
+import { sanOf } from '../core/moves';
 import { WhyButton } from '../components/Explanation';
 import './puzzles.css';
 
