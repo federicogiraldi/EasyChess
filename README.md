@@ -28,7 +28,7 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 
 L'interfaccia è adattata al touch: tocca un pezzo e poi la casa (oppure trascinalo), schede scorrevoli su iPhone, scacchiera che sta sempre nello schermo anche in orizzontale, margini per notch e barra Home. Su iPhone Stockfish analizza un po' meno in profondità per rispondere più in fretta e consumare meno batteria.
 
-Per portare i progressi dal PC: **💾 Esporta progressi** sul PC → manda il file all'iPhone (AirDrop, iCloud Drive, mail) → **📂 Ripristina progressi** nell'app. Sull'iPhone/iPad "Esporta" apre il foglio di condivisione (Salva su File, AirDrop…). Nota: Safari e l'app sulla schermata Home hanno progressi separati, usa sempre l'icona.
+Per portare i progressi dal PC: **Esporta progressi** (in fondo alla home) sul PC → manda il file all'iPhone (AirDrop, iCloud Drive, mail) → **Ripristina progressi** nell'app. Sull'iPhone/iPad "Esporta" apre il foglio di condivisione (Salva su File, AirDrop…). Nota: Safari e l'app sulla schermata Home hanno progressi separati, usa sempre l'icona.
 
 ### Account e sincronizzazione
 
@@ -36,7 +36,7 @@ Con **👤 Accedi** (in alto a destra) crei un account con email e password: i p
 
 Backend: progetto Supabase gratuito **EasyChess** (tabella `user_data`, una riga per chiave salvata, con RLS: ogni account vede solo le proprie righe). Codice in `src/core/sync.ts` e `src/core/merge.ts`. La conferma via email è disattivata (il servizio mail gratuito di Supabase non invia ad altri indirizzi). Il progetto gratuito va in pausa solo dopo 7 giorni senza alcun uso: in quel caso si riattiva dalla dashboard, e l'app intanto funziona offline.
 
-Senza account, i progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **💾 Esporta progressi** e **📂 Ripristina progressi** in home.
+Senza account, i progressi sono salvati nel browser e sono separati per indirizzo: per portarli dalla versione locale a quella online (o tra dispositivi) usa **Esporta progressi** e **Ripristina progressi** in fondo alla home (sotto *Importa aperture e backup dei progressi*).
 
 ## Avvio dal desktop
 
@@ -72,7 +72,7 @@ EasyChess è una **PWA** (`vite-plugin-pwa`), come LearnWeb: un service worker m
 
 ### 📊 Analisi delle tue partite
 
-Dalla home, **Analizza le mie partite**:
+Dal menu (o dalla home), **Analisi**:
 
 - **Da chess.com**: scrivi il tuo nome utente e le partite pubbliche si caricano da sole, mese per mese (API pubblica di chess.com, serve internet).
 - **Da PGN**: incolla il PGN o apri un file (anche con più partite). Dall'app di chess.com: apri la partita → **Condividi** → **PGN** → **Copia**, poi incolla.
@@ -92,7 +92,7 @@ Nella spiegazione, **♟ Mostra … sulla scacchiera** gioca sulla scacchiera tu
 
 ### 🧩 Problemi
 
-Dalla home, **Risolvi problemi**: quasi 100.000 problemi di tattica senza limiti giornalieri, presi dal [database pubblico di Lichess](https://database.lichess.org/#puzzles) (licenza CC0) e inclusi nell'app, quindi funzionano anche offline.
+Dal menu (o dalla home), **Problemi**: quasi 100.000 problemi di tattica senza limiti giornalieri, presi dal [database pubblico di Lichess](https://database.lichess.org/#puzzles) (licenza CC0) e inclusi nell'app, quindi funzionano anche offline.
 
 - **🎯 Misti**: problemi vicini al tuo punteggio (parte da 1500 e si assesta in fretta nei primi problemi), con la difficoltà regolabile.
 - **🏷 Per tema**: forchette, inchiodature, matti in 2, finali di torri…
@@ -109,6 +109,14 @@ Dall'icona **⚙️** in alto a destra (accanto ad Accedi):
 - **Tema**: come il sistema, chiaro o scuro.
 
 Le impostazioni si sincronizzano fra i dispositivi come i progressi. Codice in `src/core/settings.ts` e `src/core/sound.ts`.
+
+### 🏠 La home
+
+- **Oggi** e **Continua da dove eri**: l'ultima apertura e modalità che hai aperto (anche da un altro dispositivo, se hai l'account), con il pulsante per riprendere e il passo consigliato.
+- **Le tue aperture**, raggruppate per colore e prima mossa (*Col Bianco · 1.e4*, *Col Nero · contro 1.d4*…), con il filtro Tutte / Bianco / Nero. Ogni scheda mostra le mosse che identificano l'apertura, un anello con la percentuale imparata, linee, posizioni, corso e ultima volta che l'hai allenata. Il pulsante grande è il passo consigliato: prima il corso, poi il ripasso delle posizioni in scadenza, poi le posizioni nuove, poi l'allenamento. Sotto ci sono le altre modalità.
+- Scorciatoie a **Problemi**, **Finali**, **Analisi** e **Progressi**; in fondo, chiuso, **Importa aperture e backup dei progressi**.
+
+Codice in `src/components/Home.tsx` e `src/core/home.ts`.
 
 ### 🔥 Oggi: Ripasso di oggi, obiettivo e serie
 
