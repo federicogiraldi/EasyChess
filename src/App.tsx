@@ -1,14 +1,17 @@
-import { useEffect, useMemo, useState, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useReducer, useState, type ChangeEvent } from 'react';
 import { Icon, type IconName } from './components/Icon';
 import { builtinSources, loadOpenings, type PgnSource } from './openings';
 import { parseOpening } from './core/pgnToTree';
-import { exportCards, replaceCards } from './core/progress';
+import { exportCards, replaceCards, useProgress } from './core/progress';
 import { load, save } from './core/storage';
 import { saveFile } from './core/device';
 import { InstallHint } from './components/InstallHint';
 import { Account } from './components/Account';
 import { ContinueCard, MODES, OpeningGrid, Shortcuts } from './components/Home';
-import { saveLastVisit } from './core/home';
+import { loadLastVisit, saveLastVisit } from './core/home';
+import { Onboarding } from './components/Onboarding';
+import { isOnboardingDone, loadMyOpenings, needsOnboarding } from './core/onboarding';
+import { courseProgress } from './modes/Course';
 import { Explore } from './modes/Explore';
 import { Drill } from './modes/Drill';
 import { Review } from './modes/Review';
@@ -53,6 +56,12 @@ export default function App() {
   const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [section, setSection] = useState<Section>('openings');
+  /** Presentazione riaperta dalla home ("Scegli le aperture che giochi"). */
+  const [reopenOnboarding, setReopenOnboarding] = useState(false);
+  /** Ridisegna dopo la fine della presentazione (lo stato "fatta" è in storage, non in React). */
+  const [, rerender] = useReducer((x: number) => x + 1, 0);
+  // Si ricalcola quando arrivano progressi (anche dalla sincronizzazione): allora la presentazione sparisce.
+  useProgress();
   const analysis = section === 'analysis';
   const puzzles = section === 'puzzles';
   const mates = section === 'mates';
@@ -73,6 +82,13 @@ export default function App() {
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
+  const firstLaunch = needsOnboarding({
+    done: isOnboardingDone(),
+    cards: Object.keys(exportCards()).length,
+    lessons: openings.reduce((n, o) => n + courseProgress(o.id).done.length, 0),
+    visited: loadLastVisit() !== null,
+  });
+  const showOnboarding = !route && section === 'openings' && (firstLaunch || reopenOnboarding);
 
   // Sul telefono le schede scorrono in orizzontale: porta in vista quella attiva (es. Esplora → Laboratorio).
   useEffect(() => {
@@ -134,6 +150,7 @@ export default function App() {
             onClick={() => {
               setRoute(null);
               setSection('openings');
+              setReopenOnboarding(false);
             }}
           >
             <span className="logo"><Icon name="knight" /></span> EasyChess
@@ -147,6 +164,7 @@ export default function App() {
                   onClick={() => {
                     setSection(sec.id);
                     setPuzzleStart(undefined);
+                    setReopenOnboarding(false);
                     window.scrollTo({ top: 0 });
                   }}
                 >
@@ -215,6 +233,17 @@ export default function App() {
                 setRoute(mode === 'lab' ? { openingId, mode, labMoves: moves } : { openingId, mode, simMoves: moves });
               }}
             />
+          ) : showOnboarding ? (
+            <Onboarding
+              openings={openings}
+              reopened={reopenOnboarding}
+              onDone={(courseOf) => {
+                setReopenOnboarding(false);
+                rerender();
+                if (courseOf) setRoute({ openingId: courseOf, mode: 'course' });
+                window.scrollTo({ top: 0 });
+              }}
+            />
           ) : opening && route ? (
             <div key={`${opening.id}-${route.mode}`}>
               {route.mode === 'explore' && (
@@ -266,6 +295,11 @@ export default function App() {
                 errors={errors}
                 onOpen={(openingId, mode) => setRoute({ openingId, mode })}
                 onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
+                mine={loadMyOpenings()}
+                onChooseMine={() => {
+                  setReopenOnboarding(true);
+                  window.scrollTo({ top: 0 });
+                }}
               />
               <Shortcuts
                 onSection={(sec) => {

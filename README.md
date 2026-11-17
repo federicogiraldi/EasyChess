@@ -113,6 +113,16 @@ Nei **Problemi**, "Perché è peggio?" confronta la tua mossa con la soluzione (
 
 Le impostazioni (tranne la precisione di Stockfish) si sincronizzano fra i dispositivi come i progressi. Codice in `src/core/settings.ts` e `src/core/sound.ts`.
 
+### 👋 Primo avvio
+
+Chi apre l'app per la prima volta (senza progressi sul dispositivo) vede una presentazione in tre passi:
+
+1. **Le tue aperture**: scegli quelle che giochi; in home compare il filtro **Le mie**, che diventa quello predefinito.
+2. **Il ripasso**: come funziona la ripetizione spaziata e quante risposte al giorno vuoi dare (10, 20, 30 o 50).
+3. **Il primo corso**: propone il corso di un'apertura scelta (prima col Nero) e lo apre.
+
+Si può saltare. Se accedi all'account e arrivano i progressi da un altro dispositivo, sparisce da sola. Per cambiare le aperture scelte: **Cambia le aperture che giochi** in home. Codice in `src/components/Onboarding.tsx` e `src/core/onboarding.ts`.
+
 ### 🏠 La home
 
 - **Oggi** e **Continua da dove eri**: l'ultima apertura e modalità che hai aperto (anche da un altro dispositivo, se hai l'account), con il pulsante per riprendere e il passo consigliato.
