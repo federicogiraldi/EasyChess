@@ -2,6 +2,7 @@ import { useSyncExternalStore } from 'react';
 import { grade, type CardState } from './srs';
 import { load, save } from './storage';
 import { bumpActivity } from './daily';
+import { playSound } from './sound';
 
 /** Stato SRS di tutte le card, condiviso fra le modalità e salvato in localStorage. */
 let cards: Record<string, CardState> = load('cards', {});
@@ -21,6 +22,7 @@ export function getCard(key: string): CardState | undefined {
 export function recordAnswer(key: string, correct: boolean) {
   cards = { ...cards, [key]: grade(cards[key], correct) };
   bumpActivity();
+  if (!correct) playSound('wrong');
   emit();
 }
 

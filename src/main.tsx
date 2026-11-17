@@ -5,6 +5,10 @@ import { registerSW } from 'virtual:pwa-register';
 import { requestPersistentStorage } from './core/device';
 import { initSync } from './core/sync';
 import './styles.css';
+import { applySettings } from './core/settings';
+
+// Tema e colori della scacchiera subito, prima ancora della sincronizzazione (niente lampo di colori sbagliati).
+applySettings();
 
 // Service worker: rende l'app installabile e utilizzabile offline (anche Stockfish).
 registerSW({ immediate: true });

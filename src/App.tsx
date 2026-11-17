@@ -20,6 +20,7 @@ import { MateCourse } from './modes/MateCourse';
 import { ProgressPage } from './modes/Progress';
 import { DailyReview } from './modes/DailyReview';
 import { TodayCard } from './components/TodayCard';
+import { SettingsPage } from './modes/SettingsPage';
 import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
@@ -35,7 +36,7 @@ const MODES: { id: Mode; label: string }[] = [
 ];
 
 /** 'today' (Ripasso di oggi) non ha una voce nel menu: ci si arriva dalla home. */
-type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress' | 'today';
+type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress' | 'today' | 'settings';
 
 /** Menu principale: ogni sezione ha la sua pagina, così la home resta dedicata alle aperture. */
 const SECTIONS: { id: Section; label: string }[] = [
@@ -170,11 +171,25 @@ export default function App() {
               </nav>
             </>
           )}
+          <button
+            className={`settings-btn${section === 'settings' && !route ? ' active' : ''}`}
+            title="Impostazioni"
+            aria-label="Impostazioni"
+            onClick={() => {
+              setRoute(null);
+              setSection('settings');
+              window.scrollTo({ top: 0 });
+            }}
+          >
+            ⚙️
+          </button>
           <Account />
         </header>
 
         <main>
-          {today && !route ? (
+          {section === 'settings' && !route ? (
+            <SettingsPage />
+          ) : today && !route ? (
             <DailyReview openings={openings} onHome={goHome} onMistakes={openMistakes} />
           ) : progress && !route ? (
             <ProgressPage

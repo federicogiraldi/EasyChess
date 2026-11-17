@@ -5,6 +5,8 @@ import type { Arrow, Highlight, Side } from '../model/types';
 import { useVariationPreview, VariationBar } from './VariationPreview';
 import { QualityIcon } from './QualityIcon';
 import type { SimQuality } from '../core/simulation';
+import { moveSound, playSound } from '../core/sound';
+import { ANIMATION_MS, useSettings } from '../core/settings';
 
 type ChessboardProps = Parameters<typeof Chessboard>[0];
 
@@ -32,14 +34,15 @@ interface Premove {
   to: string;
 }
 
-/** true se `next` si ottiene da `prev` con una sola mossa legale (cioè l'avversario ha appena risposto). */
-function isOneMoveAfter(prev: string, next: string): boolean {
+/** La mossa legale che porta da `prev` a `next`, se c'è (cioè la posizione è avanzata di una mossa). */
+function moveBetween(prev: string, next: string) {
+  if (prev === next) return undefined;
   const target = next.split(' ').slice(0, 4).join(' ');
   try {
     const chess = new Chess(prev);
-    return chess.moves({ verbose: true }).some((m) => m.after.split(' ').slice(0, 4).join(' ') === target);
+    return chess.moves({ verbose: true }).find((m) => m.after.split(' ').slice(0, 4).join(' ') === target);
   } catch {
-    return false;
+    return undefined;
   }
 }
 
@@ -72,6 +75,7 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
   const prevFen = useRef(fen);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(480);
+  const settings = useSettings();
 
   const me = premoveColor === 'white' ? 'w' : premoveColor === 'black' ? 'b' : null;
   const sideToMove = fen.split(' ')[1];
@@ -81,6 +85,9 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
   useEffect(() => {
     const before = prevFen.current;
     prevFen.current = fen;
+    // Suono della mossa: solo quando la posizione avanza di una mossa (non per salti di linea o passi indietro).
+    const played = moveBetween(before, fen);
+    if (played) playSound(moveSound(played));
     setSelected((s) => {
       if (!s || !me) return null;
       const p = new Chess(fen).get(s as never);
@@ -88,7 +95,7 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
     });
     if (!premove) return;
     setPremove(null);
-    if (!onMove || sideToMove !== me || !isOneMoveAfter(before, fen)) return;
+    if (!onMove || sideToMove !== me || !played) return;
     const pm = premove;
     // Piccola pausa per lasciar vedere la risposta dell'avversario.
     const t = setTimeout(() => onMove(pm.from, pm.to), 120);
@@ -157,7 +164,8 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
     position: fen,
     boardOrientation: orientation,
     boardWidth: width,
-    animationDuration: 200,
+    animationDuration: ANIMATION_MS[settings.animation],
+    showBoardNotation: settings.coordinates,
     arePiecesDraggable: !!onMove,
     isDraggablePiece: ({ piece }) => !me || piece[0] === me,
     areArrowsAllowed: true,

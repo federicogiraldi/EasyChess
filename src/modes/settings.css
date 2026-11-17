@@ -1,0 +1,27 @@
+.settings-page { display: flex; flex-direction: column; gap: 18px; }
+.settings-page .hero { margin-bottom: 0; }
+.settings-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 360px); gap: 18px; align-items: start; }
+.settings-list { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.settings-list .panel-block { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+.settings-list .panel-block h2 { font-size: 1.2em; }
+.settings-preview { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 8px; }
+
+.setting { display: flex; flex-direction: column; gap: 8px; }
+.setting.disabled { opacity: 0.5; }
+.setting-label { font-weight: 600; display: block; }
+.toggle-row { flex-direction: row; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
+.toggle-row > span { display: flex; flex-direction: column; gap: 2px; }
+.toggle-row input[type='checkbox'] { width: 22px; height: 22px; accent-color: var(--accent); flex-shrink: 0; }
+.setting input[type='range'] { width: min(320px, 100%); accent-color: var(--accent); }
+
+.segmented { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.segmented button.active, .board-theme.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+.board-themes { display: flex; flex-wrap: wrap; gap: 8px; }
+.board-theme { flex-direction: column; gap: 6px; padding: 8px 10px; min-width: 88px; }
+.swatch { display: grid; grid-template-columns: repeat(2, 20px); grid-template-rows: repeat(2, 20px); border-radius: 4px; overflow: hidden; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15); }
+
+@media (max-width: 760px) {
+  .settings-layout { grid-template-columns: 1fr; }
+  .settings-preview { position: static; order: -1; max-width: 320px; }
+}

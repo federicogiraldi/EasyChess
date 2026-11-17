@@ -23,6 +23,7 @@ import {
 import { THEME_GROUPS, themeName } from '../core/puzzleThemes';
 import { load, save } from '../core/storage';
 import { bumpActivity } from '../core/daily';
+import { playSound } from '../core/sound';
 import { Board, sanOf } from '../components/Board';
 import { WhyButton } from '../components/Explanation';
 import './puzzles.css';
@@ -152,6 +153,7 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
     seen.current.add(puzzle.id);
     saveSeen(seen.current);
     bumpActivity();
+    playSound(win ? 'success' : 'wrong');
     if (rated && !(win && hinted)) {
       const before = stats.rating;
       const next = updateRating(stats, puzzle.rating, win);
