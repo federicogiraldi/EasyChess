@@ -79,6 +79,13 @@ Dalla home, **Analizza le mie partite**:
 
 Stockfish analizza ogni posizione: precisione tua e dell'avversario, mosse classificate (📖 Libro, ★ Migliore, Buona, ?!, ?, ??), grafico della valutazione, freccia con la mossa migliore, momenti chiave e "Perché … è peggio?" con la variante sulla scacchiera. Se la partita segue un'apertura del tuo repertorio ti dice chi ne è uscito e dove (e cosa prevedeva), con i pulsanti per aprire il Laboratorio o rigiocare da lì contro Stockfish. Le partite analizzate restano in un archivio (ultime 50).
 
+**Buchi del repertorio**: sotto l'importazione, l'app confronta tutte le tue partite (quelle analizzate e, se vuoi, gli ultimi 3 mesi da chess.com) con il repertorio del colore con cui giocavi, senza bisogno di Stockfish. Ti mostra:
+
+- le **mosse dell'avversario che il repertorio non copre**, ordinate per quante volte sono capitate (e quante partite hai perso), con il pulsante per studiarle nel Laboratorio;
+- i punti in cui **sei uscito tu dal repertorio**, con la mossa prevista e il pulsante per rimettere quella posizione nel Ripasso di oggi.
+
+La fine normale di una linea preparata non conta come buco, e nemmeno una mossa diversa che entro poche mosse rientra nel repertorio per trasposizione.
+
 In Allenamento, Ripasso, Quiz e Corso, quando sbagli compare il pulsante **🔬 Perché … è peggio?** con la stessa analisi.
 
 Nella spiegazione, **♟ Mostra … sulla scacchiera** gioca sulla scacchiera tutta la variante consigliata (e **♟ Cosa succede dopo …** quella della tua mossa): la sequenza parte da sola, poi la scorri con ◀ ▶ (o le frecce della tastiera, o cliccando le mosse) e con **↩ Torna alla posizione** (o Esc) ritrovi la partita dove l'avevi lasciata. Funziona in tutte le modalità.
