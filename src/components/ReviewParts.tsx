@@ -1,3 +1,4 @@
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import type { OpeningNode } from '../model/types';
 import { Icon } from './Icon';
 import type { PosEval, SimPly } from '../core/simulation';
@@ -149,6 +150,70 @@ export function KeyMoments({
           </button>
         ))
       )}
+    </div>
+  );
+}
+
+/** Pulsanti per scorrere la partita: inizio, indietro, avanti, fine (più eventuali pulsanti in coda). */
+export function ReviewNav({ last, setCursor, children }: { last: number; setCursor: Dispatch<SetStateAction<number>>; children?: ReactNode }) {
+  return (
+    <div className="controls">
+      <button onClick={() => setCursor(0)} title="Inizio"><Icon name="first" /></button>
+      <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)"><Icon name="prev" /></button>
+      <button onClick={() => setCursor((c) => Math.min(last, c + 1))} title="Avanti (→)"><Icon name="next" /></button>
+      <button onClick={() => setCursor(last)} title="Fine"><Icon name="last" /></button>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Elenco delle mosse con il colore della loro qualità. Le mosse sono cliccabili solo se c'è `onSelect`;
+ * la numerazione parte dalla posizione iniziale (anche se tocca al Nero).
+ */
+export function QualityMoves({
+  plies,
+  qualities,
+  startFen,
+  cursor,
+  onSelect,
+  bookTitle = 'Libro',
+  empty,
+}: {
+  plies: SimPly[];
+  qualities: (SimQuality | undefined)[];
+  startFen: string;
+  /** Mossa evidenziata (1 = la prima); niente evidenziazione se undefined. */
+  cursor?: number;
+  onSelect?: (index: number) => void;
+  bookTitle?: string;
+  empty?: ReactNode;
+}) {
+  const [, side, , , , full] = startFen.split(' ');
+  const startsBlack = side === 'b';
+  return (
+    <div className="moves">
+      {plies.length === 0 && empty}
+      {plies.map((p, i) => {
+        const q = qualities[i];
+        const info = q ? SIM_QUALITY[q] : undefined;
+        const k = i + (startsBlack ? 1 : 0);
+        const num = Number(full ?? 1) + Math.floor(k / 2);
+        return (
+          <span key={i} className="move-wrap">
+            {(k % 2 === 0 || i === 0) && <span className="move-num">{num}.{k % 2 === 1 ? '..' : ''}</span>}
+            <button
+              className={`move ${i + 1 === cursor ? 'active' : ''}`}
+              onClick={() => onSelect?.(i + 1)}
+              style={info && q !== 'libro' && q !== 'buona' && q !== 'migliore' ? { color: info.color, fontWeight: 700 } : undefined}
+            >
+              {q === 'libro' && <span className="sim-book-dot" title={bookTitle} />}
+              {p.san}
+              {info?.symbol}
+            </button>
+          </span>
+        );
+      })}
     </div>
   );
 }

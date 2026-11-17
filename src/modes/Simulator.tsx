@@ -1,40 +1,34 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '../components/Icon';
-import type { Arrow, Opening, OpeningNode } from '../model/types';
-import { findInBook, formatPath, lineNameOf, namedLines, nextMoves, pathFromRoot } from '../core/tree';
+import type { Arrow, Opening } from '../model/types';
+import { findInBook, lineNameOf, namedLines, nextMoves, pathFromRoot } from '../core/tree';
 import {
   bookNode,
   bookReply,
   buildPlies,
-  classifyMove,
   eloLabel,
-  gameAccuracy,
   loadHistory,
   loadSettings,
-  moveAccuracy,
   outcomeOf,
   saveGame,
   saveSettings,
-  SIM_ELO_MAX,
-  SIM_ELO_MIN,
   toPgn,
-  winPercent,
-  type HintMode,
-  type PosEval,
   type SimGame,
-  type SimPly,
   type SimSettings,
 } from '../core/simulation';
-import { SIM_QUALITY, type SimQuality } from '../core/quality';
-import { coachLines, evalPosition, opponentMove, sanFromUci, type CoachLine } from '../engine/simEngine';
+import { SIM_QUALITY } from '../core/quality';
+import { accuracyOf, errorMarks, qualitiesOf, winCurve } from '../core/review';
+import { coachLines, opponentMove, sanFromUci, type CoachLine } from '../engine/simEngine';
 import { engine, opponentEngine } from '../engine/stockfish';
 import { Board } from '../components/Board';
 import { sanOf } from '../core/moves';
-import { EvalBar, WhyButton } from '../components/Explanation';
+import { EvalBar } from '../components/Explanation';
 import { EvalGraph } from '../components/EvalGraph';
-import { KeyMoments, ReviewMove, ReviewSummary } from '../components/ReviewParts';
-import { QualityIcon } from '../components/QualityIcon';
+import { KeyMoments, QualityMoves, ReviewMove, ReviewNav, ReviewSummary } from '../components/ReviewParts';
 import { BOOK_ARROW_COLOR, CoachPanel, ENGINE_ARROW_COLORS } from '../components/CoachPanel';
+import { useMoveKeys, usePositionEvals } from '../components/useReview';
+import { MoveFeedback } from './simulator/MoveFeedback';
+import { SimSetup } from './simulator/SimSetup';
 import './simulator.css';
 
 interface Props {
@@ -64,14 +58,12 @@ export function Simulator({ opening, initialMoves }: Props) {
   const [startMoves, setStartMoves] = useState<string[]>(initialMoves ?? []);
   const [moves, setMoves] = useState<string[]>([]);
   const [game, setGame] = useState<SimGame | null>(null);
-  const [evals, setEvals] = useState<Record<string, PosEval>>({});
   const [cursor, setCursor] = useState(0);
   const [hintStage, setHintStage] = useState(0);
   const [coach, setCoach] = useState<{ fen: string; lines: CoachLine[] } | null>(null);
   const [history, setHistory] = useState<SimGame[]>(loadHistory);
   const [copied, setCopied] = useState(false);
   const [focusUci, setFocusUci] = useState<string | null>(null);
-  const pending = useRef(new Set<string>());
 
   const setSettings = (s: SimSettings) => {
     setSettingsState(s);
@@ -98,18 +90,8 @@ export function Simulator({ opening, initialMoves }: Props) {
 
   // ---------------------------------------------------------------- valutazioni
   // Ogni posizione della partita viene valutata una volta (in ordine): servono per barra, etichette e revisione.
-  useEffect(() => {
-    if (phase === 'setup') return;
-    const todo = phase === 'review' ? fens : fens.slice(-2);
-    for (const f of todo) {
-      if (evals[f] || pending.current.has(f)) continue;
-      pending.current.add(f);
-      evalPosition(f).then(
-        (e) => setEvals((s) => ({ ...s, [f]: e })),
-        () => {},
-      ).finally(() => pending.current.delete(f));
-    }
-  }, [phase, fens, evals]);
+  const toEval = useMemo(() => (phase === 'setup' ? [] : phase === 'review' ? fens : fens.slice(-2)), [phase, fens]);
+  const evals = usePositionEvals(toEval);
 
   // ---------------------------------------------------------------- avversario
   useEffect(() => {
@@ -149,49 +131,23 @@ export function Simulator({ opening, initialMoves }: Props) {
   const coachHere = coach?.fen === fen ? coach.lines : null;
 
   // ---------------------------------------------------------------- revisione
-  const quality = (i: number, p: SimPly): SimQuality | undefined => {
-    if (p.book) return 'libro';
-    const before = evals[fens[i]];
-    const after = evals[fens[i + 1]];
-    return before && after ? classifyMove(before, after, p.uci, p.white) : undefined;
-  };
-  const qualities = plies.map((p, i) => quality(i, p));
+  const qualities = qualitiesOf(plies, fens, evals);
   const analyzed = fens.filter((f) => evals[f]).length;
   const reviewReady = phase === 'review' && analyzed === fens.length;
 
-  const accuracyOf = (white: boolean) =>
-    gameAccuracy(
-      plies.flatMap((p, i) => {
-        if (p.white !== white || p.book) return [];
-        const b = evals[fens[i]];
-        const a = evals[fens[i + 1]];
-        if (!b || !a) return [];
-        const wp = (s: number) => (white ? winPercent(s) : 100 - winPercent(s));
-        return [moveAccuracy(wp(b.scoreWhite), wp(a.scoreWhite))];
-      }),
-    );
+  const accuracy = (white: boolean) => accuracyOf(plies, fens, evals, white);
 
   // Salva la precisione nello storico quando l'analisi è completa.
   useEffect(() => {
     if (!reviewReady || !game) return;
-    const g = { ...game, accuracy: { me: accuracyOf(myWhite), opp: accuracyOf(!myWhite) } };
+    const g = { ...game, accuracy: { me: accuracy(myWhite), opp: accuracy(!myWhite) } };
     saveGame(g);
     setHistory(loadHistory());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewReady, game?.id]);
 
   // Frecce della tastiera nella revisione.
-  useEffect(() => {
-    if (phase !== 'review') return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') setCursor((c) => Math.max(0, c - 1));
-      else if (e.key === 'ArrowRight') setCursor((c) => Math.min(moves.length, c + 1));
-      else return;
-      e.preventDefault();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [phase, moves.length]);
+  useMoveKeys(phase === 'review', moves.length, setCursor);
 
   // ---------------------------------------------------------------- azioni
   const start = (from: string[] = startMoves) => {
@@ -263,113 +219,20 @@ export function Simulator({ opening, initialMoves }: Props) {
   // ================================================================ SETUP
   if (phase === 'setup') {
     return (
-      <div className="sim-setup">
-        <section className="sim-card">
-          <h2><Icon name="sim" /> Simulatore</h2>
-          <p className="muted">
-            Gioca la tua apertura contro Stockfish. Finché c'è teoria l'avversario segue il repertorio; quando la linea finisce
-            continua Stockfish al livello che scegli. Il coach ti consiglia le mosse e alla fine c'è la revisione della partita.
-          </p>
-
-          <label className="sim-field">
-            <span>Linea da giocare</span>
-            <select value={lineId} onChange={(e) => setLineId(e.target.value)}>
-              <option value="">A caso (prima le linee che conosci meno)</option>
-              {lines.map(({ node, depth }) => (
-                <option key={node.id} value={node.id}>
-                  {'  '.repeat(depth)}
-                  {node.lineName}
-                </option>
-              ))}
-            </select>
-          </label>
-          {target && <p className="muted small">{formatPath(pathFromRoot(target))}</p>}
-
-          {startMoves.length > 0 && (
-            <p className="sim-start-from small">
-              Partenza dalla posizione di Esplora: <strong>{formatPath(pathFromRoot(findInBook(opening.root, buildPlies(opening, startMoves).at(-1)!.fenAfter) ?? opening.root)) || startMoves.join(' ')}</strong>{' '}
-              <button className="link" onClick={() => setStartMoves([])}>
-                parti dall'inizio
-              </button>
-            </p>
-          )}
-
-          <label className="sim-field">
-            <span>
-              Avversario: <strong>Stockfish {settings.elo}</strong> <span className="muted">· {eloLabel(settings.elo)}</span>
-            </span>
-            <input
-              type="range"
-              min={SIM_ELO_MIN}
-              max={SIM_ELO_MAX}
-              step={50}
-              value={settings.elo}
-              onChange={(e) => setSettings({ ...settings, elo: Number(e.target.value) })}
-            />
-            <span className="sim-elo-scale muted small">
-              <span>{SIM_ELO_MIN}</span>
-              <span>{SIM_ELO_MAX}</span>
-            </span>
-          </label>
-
-          <fieldset className="sim-field">
-            <legend>Suggerimenti del coach</legend>
-            {(
-              [
-                ['off', 'Nessuno', 'partita vera, senza aiuti'],
-                ['request', 'Su richiesta', 'col pulsante Suggerimento: prima il pezzo, poi la mossa'],
-                ['always', 'Sempre visibili', 'le 3 mosse migliori a ogni turno'],
-              ] as [HintMode, string, string][]
-            ).map(([id, label, desc]) => (
-              <label key={id} className="sim-radio">
-                <input type="radio" name="hints" checked={settings.hints === id} onChange={() => setSettings({ ...settings, hints: id })} />
-                <span>
-                  {label} <span className="muted small">— {desc}</span>
-                </span>
-              </label>
-            ))}
-          </fieldset>
-
-          <label className="toggle-inline">
-            <input type="checkbox" checked={settings.evalBar} onChange={(e) => setSettings({ ...settings, evalBar: e.target.checked })} /> Mostra la barra di
-            valutazione durante la partita
-          </label>
-          <label className="toggle-inline">
-            <input type="checkbox" checked={settings.arrows} onChange={(e) => setSettings({ ...settings, arrows: e.target.checked })} /> Frecce sulla
-            scacchiera per le mosse consigliate (come l'engine di chess.com)
-          </label>
-
-          <button className="primary sim-start" onClick={() => start()}>
-            <Icon name="play" /> Inizia la partita
-          </button>
-        </section>
-
-        {history.filter((g) => g.openingId === opening.id).length > 0 && (
-          <section className="sim-card">
-            <h3>Partite recenti</h3>
-            <div className="sim-history">
-              {history
-                .filter((g) => g.openingId === opening.id)
-                .slice(0, 10)
-                .map((g) => (
-                  <button key={g.id} className="sim-history-row" onClick={() => openFromHistory(g)}>
-                    <span>
-                      <strong>{g.lineName ?? opening.name}</strong>
-                      <span className="muted small">
-                        {' '}
-                        · Stockfish {g.elo} · {new Date(g.date).toLocaleDateString('it-IT')}
-                      </span>
-                    </span>
-                    <span className="small">
-                      {g.result}
-                      {g.accuracy?.me !== undefined && <> · precisione {g.accuracy.me.toFixed(1)}</>}
-                    </span>
-                  </button>
-                ))}
-            </div>
-          </section>
-        )}
-      </div>
+      <SimSetup
+        opening={opening}
+        lines={lines}
+        lineId={lineId}
+        setLineId={setLineId}
+        target={target}
+        startMoves={startMoves}
+        clearStartMoves={() => setStartMoves([])}
+        settings={settings}
+        setSettings={setSettings}
+        history={history}
+        start={() => start()}
+        openFromHistory={openFromHistory}
+      />
     );
   }
 
@@ -446,12 +309,7 @@ export function Simulator({ opening, initialMoves }: Props) {
           lastMove={lastPly ? { from: lastPly.uci.slice(0, 2), to: lastPly.uci.slice(2, 4) } : undefined}
         />
         {reviewing ? (
-          <div className="controls">
-            <button onClick={() => setCursor(0)} title="Inizio"><Icon name="first" /></button>
-            <button onClick={() => setCursor((c) => Math.max(0, c - 1))} title="Indietro (←)"><Icon name="prev" /></button>
-            <button onClick={() => setCursor((c) => Math.min(moves.length, c + 1))} title="Avanti (→)"><Icon name="next" /></button>
-            <button onClick={() => setCursor(moves.length)} title="Fine"><Icon name="last" /></button>
-          </div>
+          <ReviewNav last={moves.length} setCursor={setCursor} />
         ) : (
           <div className="controls">
             {settings.hints !== 'off' && (
@@ -522,8 +380,8 @@ export function Simulator({ opening, initialMoves }: Props) {
           <ReviewSummary
             result={game?.result ?? ''}
             oppLabel={`Stockfish ${game?.elo ?? 0}`}
-            meAcc={reviewReady ? accuracyOf(myWhite) : undefined}
-            oppAcc={reviewReady ? accuracyOf(!myWhite) : undefined}
+            meAcc={reviewReady ? accuracy(myWhite) : undefined}
+            oppAcc={reviewReady ? accuracy(!myWhite) : undefined}
             progress={`${analyzed}/${fens.length}`}
             ready={reviewReady}
             plies={plies}
@@ -533,37 +391,21 @@ export function Simulator({ opening, initialMoves }: Props) {
         )}
         {reviewing && (
           <EvalGraph
-            values={fens.map((f) => (evals[f] ? winPercent(evals[f].scoreWhite) : undefined))}
+            values={winCurve(fens, evals)}
             cursor={cursor}
             onSelect={setCursor}
-            marks={plies.flatMap((_p, i) => {
-              const q = qualities[i];
-              return q === 'errore' || q === 'grave' ? [{ index: i + 1, color: SIM_QUALITY[q].color }] : [];
-            })}
+            marks={errorMarks(qualities)}
           />
         )}
 
-        <div className="moves">
-          {moves.length === 0 && <span className="muted">Posizione iniziale</span>}
-          {plies.map((p, i) => {
-            const q = qualities[i];
-            const info = q ? SIM_QUALITY[q] : undefined;
-            return (
-              <span key={i} className="move-wrap">
-                {i % 2 === 0 && <span className="move-num">{i / 2 + 1}.</span>}
-                <button
-                  className={`move ${reviewing && i + 1 === cursor ? 'active' : ''}`}
-                  onClick={() => reviewing && setCursor(i + 1)}
-                  style={info && q !== 'libro' && q !== 'buona' && q !== 'migliore' ? { color: info.color, fontWeight: 700 } : undefined}
-                >
-                  {q === 'libro' && <span className="sim-book-dot" title="Libro" />}
-                  {p.san}
-                  {info?.symbol}
-                </button>
-              </span>
-            );
-          })}
-        </div>
+        <QualityMoves
+          plies={plies}
+          qualities={qualities}
+          startFen={opening.root.fen}
+          cursor={reviewing ? cursor : undefined}
+          onSelect={reviewing ? setCursor : undefined}
+          empty={<span className="muted">Posizione iniziale</span>}
+        />
 
         {reviewing && lastPly && (
           <ReviewMove
@@ -608,60 +450,3 @@ export function Simulator({ opening, initialMoves }: Props) {
   );
 }
 
-// ------------------------------------------------------------------ sottocomponenti
-
-function MoveFeedback({
-  opening,
-  plies,
-  index,
-  quality,
-  before,
-  onRetry,
-}: {
-  opening: Opening;
-  plies: SimPly[];
-  index: number;
-  quality?: SimQuality;
-  before?: PosEval;
-  onRetry: () => void;
-}) {
-  const p = plies[index];
-  const bookBefore = bookNode(opening, plies.slice(0, index));
-  const expected: OpeningNode[] = bookBefore ? nextMoves(bookBefore) : [];
-  const deviated = !p.book && expected.length > 0;
-  const info = quality ? SIM_QUALITY[quality] : undefined;
-  const node = p.book ? findInBook(opening.root, p.fenAfter) : undefined;
-  const bestSan = before?.best && before.best !== p.uci ? sanFromUci(p.fenBefore, before.best) : undefined;
-  const bad = quality === 'imprecisione' || quality === 'errore' || quality === 'grave';
-
-  return (
-    <div className={`sim-feedback ${bad || deviated ? 'bad' : 'good'}`} style={info ? { borderLeftColor: info.color } : undefined}>
-      <div className="sim-feedback-head">
-        {quality ? <QualityIcon q={quality} /> : <span className="sim-q-icon">…</span>}
-        <strong>
-          {p.san}
-          {info?.symbol}
-        </strong>
-        <span>{info ? info.label : 'Stockfish sta valutando…'}</span>
-      </div>
-      {node?.comment && <p className="small">{node.comment}</p>}
-      {deviated && (
-        <p className="small">
-          <Icon name="outOfBook" /> Hai lasciato il repertorio: la teoria prevede <strong>{expected.map((n) => n.san).join(' o ')}</strong>.
-        </p>
-      )}
-      {!p.book && bestSan && quality && quality !== 'migliore' && (
-        <p className="small">
-          Stockfish preferiva <strong>{bestSan}</strong>
-          {before?.line ? <span className="muted"> ({before.line})</span> : null}.
-        </p>
-      )}
-      {(bad || deviated) && (
-        <div className="controls">
-          <button onClick={onRetry}><Icon name="undo" /> Riprova</button>
-          <WhyButton fen={p.fenBefore} san={p.san} expected={expected} />
-        </div>
-      )}
-    </div>
-  );
-}
