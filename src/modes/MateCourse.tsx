@@ -276,7 +276,7 @@ function QuizStep(props: StepProps & { step: Extract<MateStep, { kind: 'quiz' }>
           </button>
         ))}
         {pick !== null && (
-          <div className={`feedback ${step.options[pick].correct ? 'ok' : 'wrong'}`}>
+          <div key={pick} className={`feedback ${step.options[pick].correct ? 'ok' : 'wrong'}`}>
             {step.options[pick].explain}
             {!step.options[pick].correct && ' Riprova.'}
           </div>
@@ -352,7 +352,7 @@ function Mate1Step(props: StepProps & { step: Extract<MateStep, { kind: 'mate1' 
     >
       <RichText text={step.text} />
       {result ? (
-        <div className={`feedback ${result.mate ? 'done' : 'wrong'}`}>
+        <div key={String(result.mate)} className={`feedback ${result.mate ? 'done' : 'wrong'}`}>
           {result.mate ? <><Icon name="check" /> Scacco matto! Ben fatto.</> : <RichText text={result.text} />}
         </div>
       ) : (
@@ -512,7 +512,7 @@ function PlayStep(props: StepProps & { step: Extract<MateStep, { kind: 'play' }>
           <div className="big">{over === 'mate' ? <Icon name="check" /> : toMate !== null ? movesToMate(toMate) : '–'}</div>
         </div>
       </div>
-      <div className={`feedback ${status.kind}`}>
+      <div key={status.text} className={`feedback ${status.kind}`}>
         <RichText text={status.text} />
       </div>
       {over === 'draw' && (
@@ -681,7 +681,7 @@ function KpkStep(props: StepProps & { step: Extract<MateStep, { kind: 'kpk' }> }
           </div>
         </div>
       </div>
-      <div className={`feedback ${status.kind}`}>
+      <div key={status.text} className={`feedback ${status.kind}`}>
         <RichText text={status.text} />
       </div>
       {over === 'lost' && (
@@ -788,7 +788,7 @@ function LineStep(props: StepProps & { step: Extract<MateStep, { kind: 'line' }>
     >
       <RichText text={step.text} />
       {note && <p className="line-note">{note}</p>}
-      <div className={`feedback ${status.kind}`}>
+      <div key={status.text} className={`feedback ${status.kind}`}>
         <RichText text={status.text} />
       </div>
     </Shell>

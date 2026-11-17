@@ -104,7 +104,7 @@ Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il
 
 Dall'icona **⚙️** in alto a destra (accanto ad Accedi):
 
-- **Scacchiera**: cinque combinazioni di colori (Classica, Verde, Azzurra, Grigia, Legno scuro), coordinate sì/no, animazione dei pezzi normale, veloce o nessuna. A destra c'è un'anteprima.
+- **Scacchiera**: cinque combinazioni di colori (Classica, Verde, Azzurra, Grigia, Legno scuro), coordinate sì/no, animazioni normali, veloci o nessuna (con *Nessuna* si fermano anche quelle dell'interfaccia: riquadri delle risposte che vibrano se sbagli e si illuminano se indovini, cambi di pagina, schede che si sollevano). Con "Riduci movimento" attivo nel sistema le animazioni sono sempre spente. A destra c'è un'anteprima.
 - **Suoni**: mosse, catture, arrocchi, scacchi, risposte sbagliate e problemi risolti, con volume e pulsanti per provarli. Sono generati dall'app (Web Audio), quindi funzionano anche offline.
 - **Analisi di Stockfish**: precisione *Veloce* (motore leggero, profondità 14), *Bilanciata* (leggero, profondità 18, predefinita) o *Massima* (Stockfish 17.1 completo con la rete neurale grande, profondità 20: circa 80 MB scaricati la prima volta e poi in cache offline; ogni spiegazione richiede più tempo, su iPad anche 10–15 secondi). Se il dispositivo non riesce ad avviare il motore completo si torna a quello leggero. Questa scelta resta sul dispositivo e non si sincronizza.
 - **Tema**: come il sistema, chiaro o scuro.

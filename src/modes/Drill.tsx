@@ -105,7 +105,7 @@ export function Drill({ opening, initialLine }: { opening: Opening; initialLine?
       </div>
 
       <div className="side">
-        <div className={`feedback ${feedback.kind}`}>{withIcons(feedback.text)}</div>
+        <div key={feedback.text} className={`feedback ${feedback.kind}`}>{withIcons(feedback.text)}</div>
         {wrongHere && wrongSan && <WhyButton fen={current.fen} san={wrongSan} expected={next} />}
         {feedback.kind === 'done' && (
           <button className="primary" onClick={() => restart()}>
