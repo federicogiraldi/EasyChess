@@ -12,6 +12,8 @@ const ITA = op('ita', 'white', '1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 *\n1. e4 e5
 const ALAPIN = op('alapin', 'white', '1. e4 c5 2. c3 *');
 const LONDON = op('london', 'white', '1. d4 d5 2. Bf4 *\n1. d4 Nf6 2. Bf4 *');
 const KIA = op('kia', 'white', '1. Nf3 d5 2. g3 *\n1. Nf3 Nf6 2. g3 *');
+const RARE = op('rare', 'black', '1. b3 d5 *\n1. f4 d5 *');
+const ENGLISH = op('english', 'black', '1. c4 c6 *');
 
 describe('home', () => {
   it('le mosse che identificano un’apertura si fermano alla prima diramazione', () => {
@@ -24,13 +26,15 @@ describe('home', () => {
   });
 
   it('raggruppa per colore e prima mossa', () => {
-    const groups = groupOpenings([SLAV, KIA, CK, LONDON, ITA, ALAPIN]);
+    const groups = groupOpenings([RARE, SLAV, KIA, CK, ENGLISH, LONDON, ITA, ALAPIN]);
     expect(groups.map((g) => [g.title, g.openings.map((o) => o.id)])).toEqual([
       ['Col Bianco · 1.e4', ['ita', 'alapin']],
       ['Col Bianco · 1.d4', ['london']],
       ['Col Bianco · 1.Nf3', ['kia']],
       ['Col Nero · contro 1.e4', ['ck']],
       ['Col Nero · contro 1.d4', ['slav']],
+      ['Col Nero · contro 1.c4', ['english']],
+      ['Col Nero · contro altre prime mosse', ['rare']],
     ]);
   });
 
