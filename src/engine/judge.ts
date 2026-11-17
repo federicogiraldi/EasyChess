@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js';
 import type { OpeningNode } from '../model/types';
-import { ANALYSIS_DEPTH, EVAL_DEPTH, engine, winChance, type EngineLine } from './stockfish';
+import { analysisDepth, evalDepth, engine, winChance, type EngineLine } from './stockfish';
 import { reasonsAgainst, reasonsFor, sanLine } from './reasons';
 
 export type Quality = 'migliore' | 'buona' | 'imprecisione' | 'errore' | 'grave';
@@ -41,7 +41,8 @@ export interface Verdict {
     line: string;
     /** Variante della mossa migliore (UCI, inizia con la mossa stessa). */
     pv: string[];
-    source: 'repertorio' | 'engine';
+    /** repertorio = mossa del repertorio; soluzione = soluzione di un problema; engine = scelta di Stockfish. */
+    source: 'repertorio' | 'engine' | 'soluzione';
     node?: OpeningNode;
     reasons: string[];
   };
@@ -52,37 +53,42 @@ export interface Verdict {
   mateWhite?: number;
 }
 
-// Stessa profondità su PC e telefono: sul telefono l'analisi richiede qualche secondo in più, ma i giudizi non cambiano.
-const DEPTH = ANALYSIS_DEPTH;
 
 function toUci(fen: string, san: string): string {
   const m = new Chess(fen).move(san);
   return m.from + m.to + (m.promotion ?? '');
 }
 
-async function lineFor(fen: string, uci: string, known: EngineLine[]): Promise<EngineLine> {
-  const hit = known.find((l) => l.move === uci);
+async function lineFor(fen: string, uci: string, known: EngineLine[], depth = analysisDepth()): Promise<EngineLine> {
+  const hit = known.find((l) => l.move === uci && l.depth >= depth);
   if (hit) return hit;
-  const [line] = await engine.analyze(fen, { depth: DEPTH, searchMoves: [uci] });
+  const [line] = await engine.analyze(fen, { depth, searchMoves: [uci] });
   return line ?? { move: uci, score: 0, pv: [uci], depth: 0 };
 }
+
+/** Semimosse in più per confrontare mossa giocata e soluzione di un problema: le combinazioni sono spesso profonde. */
+const PUZZLE_EXTRA_DEPTH = 2;
 
 /**
  * Valuta `playedSan` nella posizione `fen`.
  * `repertoire` sono le mosse previste dal repertorio in questa posizione (se ce ne sono).
+ * Con `solution: true` la mossa prevista è la soluzione di un problema: le due mosse si confrontano
+ * con una ricerca più profonda e la spiegazione parla di "soluzione", non di repertorio.
  */
-export async function judgeMove(fen: string, playedSan: string, repertoire: OpeningNode[] = []): Promise<Verdict> {
+export async function judgeMove(fen: string, playedSan: string, repertoire: OpeningNode[] = [], opts: { solution?: boolean } = {}): Promise<Verdict> {
   const white = fen.split(' ')[1] === 'w';
   const playedUci = toUci(fen, playedSan);
-  const top = await engine.analyze(fen, { depth: DEPTH, multiPv: 3 });
-  const played = await lineFor(fen, playedUci, top);
+  // Nei problemi la mossa da confrontare è nota (la soluzione): basta la linea migliore, molto più veloce di tre.
+  const top = await engine.analyze(fen, { depth: analysisDepth(), multiPv: opts.solution ? 1 : 3 });
+  const deep = opts.solution ? analysisDepth() + PUZZLE_EXTRA_DEPTH : analysisDepth();
+  const played = await lineFor(fen, playedUci, top, deep);
 
   const inRepertoire = repertoire.some((n) => n.san === playedSan);
   let betterNode: OpeningNode | undefined;
   let betterLine: EngineLine | undefined;
   if (repertoire.length > 0 && !inRepertoire) {
     // Tra le mosse del repertorio, quella che l'engine preferisce.
-    const lines = await Promise.all(repertoire.map((n) => lineFor(fen, toUci(fen, n.san), top)));
+    const lines = await Promise.all(repertoire.map((n) => lineFor(fen, toUci(fen, n.san), top, deep)));
     const i = lines.reduce((best, l, j) => (l.score > lines[best].score ? j : best), 0);
     betterNode = repertoire[i];
     betterLine = lines[i];
@@ -92,7 +98,8 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
   const bestScore = Math.max(played.score, top[0]?.score ?? played.score, betterLine?.score ?? -Infinity);
   const loss = winChance(bestScore) - winChance(played.score);
-  const quality = qualityFromLoss(loss, top[0]?.move === playedUci);
+  // In un problema la mossa giocata non è la soluzione: non la chiamo "migliore" anche se l'engine, a questa profondità, la preferisce.
+  const quality = qualityFromLoss(loss, top[0]?.move === playedUci && !(opts.solution && betterNode));
 
   const after = new Chess(fen);
   after.move(playedSan);
@@ -111,7 +118,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
       score: betterLine.score,
       line: sanLine(fen, betterLine.pv, 6),
       pv: betterLine.pv,
-      source: betterNode ? 'repertorio' : 'engine',
+      source: betterNode ? (opts.solution ? 'soluzione' : 'repertorio') : 'engine',
       node: betterNode,
       reasons: reasonsFor(fen, betterLine.pv),
     },
@@ -122,7 +129,7 @@ export async function judgeMove(fen: string, playedSan: string, repertoire: Open
 
 /** Valutazione della posizione dal punto di vista del Bianco + mossa migliore. */
 export async function evaluate(fen: string) {
-  const [line] = await engine.analyze(fen, { depth: EVAL_DEPTH });
+  const [line] = await engine.analyze(fen, { depth: evalDepth() });
   const white = fen.split(' ')[1] === 'w';
   if (!line) return { scoreWhite: 0, best: undefined as string | undefined, line: '' };
   return {

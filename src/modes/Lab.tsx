@@ -7,7 +7,7 @@ import { evaluate, judgeMove, QUALITY_INFO, type Verdict } from '../engine/judge
 import { Board, sanOf } from '../components/Board';
 import { AnalysisProgress, EvalBar, ExplanationCard } from '../components/Explanation';
 import { ENGINE_ARROW_COLORS } from '../components/CoachPanel';
-import { EVAL_DEPTH, engine } from '../engine/stockfish';
+import { evalDepth, engine } from '../engine/stockfish';
 
 interface Props {
   opening: Opening;
@@ -129,7 +129,7 @@ export function Lab({ opening, initialMoves = [] }: Props) {
   useEffect(() => {
     if (!showBest || top?.fen === fen) return;
     let alive = true;
-    engine.analyze(fen, { depth: EVAL_DEPTH, multiPv: 3 }).then((l) => alive && setTop({ fen, moves: l.map((x) => x.move) }), () => {});
+    engine.analyze(fen, { depth: evalDepth(), multiPv: 3 }).then((l) => alive && setTop({ fen, moves: l.map((x) => x.move) }), () => {});
     return () => {
       alive = false;
     };

@@ -362,7 +362,7 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
         </div>
 
         <div className={`feedback ${feedback.kind}`}>{withIcons(feedback.text)}</div>
-        {wrong && <WhyButton fen={wrong.fen} san={wrong.san} expected={[solutionNode(wrong.fen, wrong.expected)]} />}
+        {wrong && <WhyButton fen={wrong.fen} san={wrong.san} expected={[solutionNode(wrong.fen, wrong.expected)]} solution />}
 
         {puzzle && finished && (
           <div className="puzzle-info">

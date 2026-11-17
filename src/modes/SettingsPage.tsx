@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { BOARD_THEMES, updateSettings, useSettings, type Settings } from '../core/settings';
 import { Icon } from '../components/Icon';
 import { playSound, type SoundName } from '../core/sound';
 import { Board } from '../components/Board';
+import { engine, getEngineLevel, setEngineLevel, type EngineLevel } from '../engine/stockfish';
 import './settings.css';
 
 const PREVIEW_FEN = 'r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3';
@@ -25,6 +27,55 @@ const TRY_SOUNDS: { id: SoundName; label: string }[] = [
   { id: 'wrong', label: 'Errore' },
   { id: 'success', label: 'Problema risolto' },
 ];
+
+const ENGINE_TEXT: Record<EngineLevel, string> = {
+  fast: 'Risposte in un attimo, ma nelle posizioni tattiche può sbagliare valutazione.',
+  balanced: 'Il compromesso di sempre: motore leggero (7 MB) a profondità 18.',
+  max: "Stockfish 17.1 completo, con la rete neurale grande, a profondità 20: non si perde un colpo, ma scarica circa 80 MB la prima volta (poi funziona offline) e ogni spiegazione richiede più tempo: qualche secondo sul PC, anche 10–15 secondi su iPad e telefono.",
+};
+
+/** Precisione di Stockfish: vale solo per questo dispositivo (il motore completo è un download grosso). */
+function EngineSetting() {
+  const [level, setLevel] = useState(getEngineLevel);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'failed'>('idle');
+  const choose = (next: EngineLevel) => {
+    setLevel(next);
+    setEngineLevel(next);
+    if (next !== 'max') return setStatus('idle');
+    setStatus('loading');
+    engine.warmup().then(
+      () => setStatus(engine.usingBuild === 'full' ? 'ready' : 'failed'),
+      () => setStatus('failed'),
+    );
+  };
+  return (
+    <section className="panel-block">
+      <h2>Analisi di Stockfish</h2>
+      <div className="setting">
+        <span className="setting-label">Precisione</span>
+        <Choice
+          label="Precisione di Stockfish"
+          value={level}
+          onChange={choose}
+          options={[
+            { id: 'fast', label: 'Veloce' },
+            { id: 'balanced', label: 'Bilanciata' },
+            { id: 'max', label: 'Massima' },
+          ]}
+        />
+        <span className="muted small">{ENGINE_TEXT[level]}</span>
+        {status === 'loading' && <span className="small"><Icon name="sync" className="spin" /> Scarico e avvio Stockfish completo…</span>}
+        {status === 'ready' && <span className="small"><Icon name="check" /> Stockfish completo pronto.</span>}
+        {status === 'failed' && (
+          <span className="small">
+            <Icon name="warning" /> Questo dispositivo non è riuscito ad avviare Stockfish completo (memoria o rete): per ora uso quello leggero alla massima profondità.
+          </span>
+        )}
+        <span className="muted small">Vale per spiegazioni, Laboratorio, analisi delle partite e coach. Si imposta separatamente su ogni dispositivo.</span>
+      </div>
+    </section>
+  );
+}
 
 export function SettingsPage() {
   const s = useSettings();
@@ -118,6 +169,8 @@ export function SettingsPage() {
               </div>
             </div>
           </section>
+
+          <EngineSetting />
 
           <section className="panel-block">
             <h2>Aspetto</h2>
