@@ -17,7 +17,7 @@ import { Course } from './modes/Course';
 import { Simulator } from './modes/Simulator';
 import { Analysis } from './modes/Analysis';
 import { Puzzles } from './modes/Puzzles';
-import { MateCourse } from './modes/MateCourse';
+import { Endgames } from './modes/MateCourse';
 import { ProgressPage } from './modes/Progress';
 import { DailyReview } from './modes/DailyReview';
 import { TodayCard } from './components/TodayCard';
@@ -42,7 +42,7 @@ type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress' | 'tod
 /** Menu principale: ogni sezione ha la sua pagina, così la home resta dedicata alle aperture. */
 const SECTIONS: { id: Section; label: string; icon: IconName }[] = [
   { id: 'openings', label: 'Aperture', icon: 'knight' },
-  { id: 'mates', label: 'Matti', icon: 'king' },
+  { id: 'mates', label: 'Finali', icon: 'king' },
   { id: 'puzzles', label: 'Problemi', icon: 'puzzle' },
   { id: 'analysis', label: 'Analisi', icon: 'analysis' },
   { id: 'progress', label: 'Progressi', icon: 'progress' },
@@ -205,7 +205,7 @@ export default function App() {
               }}
             />
           ) : mates && !route ? (
-            <MateCourse />
+            <Endgames />
           ) : puzzles && !route ? (
             <Puzzles key={puzzleStart ?? 'normal'} initialSource={puzzleStart} />
           ) : analysis && !route ? (

@@ -13,7 +13,7 @@ const BLUE = 'rgba(37, 99, 235, 0.7)';
 const BOX = 'rgba(37, 99, 235, 0.55)';
 
 export type MateStep =
-  | { kind: 'read'; text: string; fen: string; arrows?: Arrow[]; highlights?: Highlight[] }
+  | { kind: 'read'; text: string; fen: string; arrows?: Arrow[]; highlights?: Highlight[]; orientation?: 'white' | 'black' }
   | {
       kind: 'quiz';
       text: string;
@@ -21,16 +21,30 @@ export type MateStep =
       question: string;
       options: { text: string; correct?: boolean; explain: string }[];
       arrows?: Arrow[];
+      highlights?: Highlight[];
+      orientation?: 'white' | 'black';
     }
   /** Trova il matto in una mossa (va bene qualunque matto). */
   | { kind: 'mate1'; text: string; fen: string }
   /** Gioca fino al matto contro il Re nero. `fen` fissa, oppure posizione casuale con matto tra min e max mosse. */
-  | { kind: 'play'; text: string; piece: Piece; fen?: string; min?: number; max?: number };
+  | { kind: 'play'; text: string; piece: Piece; fen?: string; min?: number; max?: number }
+  /**
+   * Re + pedone contro Re contro la tabella esatta (kpk.ts). goal 'win': giochi col Bianco e devi promuovere;
+   * goal 'draw': giochi col Nero e non devi perdere (il pedone cade, stallo, o resisti per `moves` mosse).
+   */
+  | { kind: 'kpk'; text: string; fen: string; goal: 'win' | 'draw'; moves?: number }
+  /**
+   * Una sequenza da giocare a memoria: tu muovi il colore che ha il tratto nella FEN, l'altro risponde da solo.
+   * Più mosse giuste separate da "|" (es. "Rh6|Rg6"); `notes[i]` è il commento dopo la semimossa i.
+   */
+  | { kind: 'line'; text: string; fen: string; moves: string[]; notes?: (string | undefined)[] };
 
 export interface MateLesson {
   id: string;
   title: string;
   piece?: Piece;
+  /** Icona nell'elenco delle lezioni (altrimenti quella del pezzo). */
+  icon?: 'pawn' | 'rook' | 'king';
   steps: MateStep[];
 }
 
@@ -262,14 +276,27 @@ export const MATE_LESSONS: MateLesson[] = [
   },
 ];
 
+export interface MateCourseDef {
+  id: string;
+  title: string;
+  /** Chiave in cui si salvano i progressi (sincronizzata fra i dispositivi). */
+  storageKey: string;
+  lessons: MateLesson[];
+}
+
+export const MATE_COURSE: MateCourseDef = { id: 'mates', title: 'Come dare matto', storageKey: 'mates:progress', lessons: MATE_LESSONS };
+
 /** Controlla che le posizioni del corso siano legali e coerenti (usato nei test). */
-export function checkLessons(): string[] {
+export function checkLessons(lessons: MateLesson[] = MATE_LESSONS): string[] {
   const errors: string[] = [];
-  for (const l of MATE_LESSONS)
+  for (const l of lessons)
     l.steps.forEach((s, i) => {
       if (!('fen' in s) || !s.fen) return;
       try {
-        new Chess(s.fen);
+        const c = new Chess(s.fen);
+        if (s.kind === 'line')
+          // la linea principale (prima alternativa di ogni mossa) dev'essere giocabile
+          s.moves.forEach((m) => c.move(m.split('|')[0]));
       } catch (e) {
         errors.push(`${l.id}#${i}: ${e instanceof Error ? e.message : e}`);
       }

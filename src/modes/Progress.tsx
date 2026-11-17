@@ -1,4 +1,5 @@
 import { useMemo, type ReactNode } from 'react';
+import { ENDGAME_LESSONS } from '../core/endgameCourse';
 import { Icon } from '../components/Icon';
 import type { Opening } from '../model/types';
 import type { Mode } from '../App';
@@ -110,6 +111,7 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
   const courseDone = summaries.reduce((n, s) => n + s.courseDone, 0);
   const courseTotal = summaries.reduce((n, s) => n + s.courseTotal, 0);
   const mates = load<{ done: number[] }>('mates:progress', { done: [] }).done.length;
+  const endgames = load<{ done: string[] }>('endgames:progress', { done: [] }).done.length;
 
   const stats = loadStats() ?? DEFAULT_STATS;
   const history = loadRatingHistory();
@@ -147,7 +149,7 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
         />
         <Tile label="Serie di giorni" value={<><Icon name="flame" /> {days}</>} sub={`oggi ${today}/${goal} risposte`} />
         <Tile label="Allenate in 7 giorni" value={String(week)} sub="posizioni ripassate" />
-        <Tile label="Lezioni completate" value={`${courseDone + mates}/${courseTotal + MATE_LESSONS.length}`} sub={`aperture ${courseDone}/${courseTotal} · matti ${mates}/${MATE_LESSONS.length}`} />
+        <Tile label="Lezioni completate" value={`${courseDone + mates + endgames}/${courseTotal + MATE_LESSONS.length + ENDGAME_LESSONS.length}`} sub={`aperture ${courseDone}/${courseTotal} · finali ${mates + endgames}/${MATE_LESSONS.length + ENDGAME_LESSONS.length}`} />
         <Tile
           label="Punteggio problemi"
           value={stats.games ? String(stats.rating) : '—'}

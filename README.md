@@ -131,15 +131,22 @@ Dal menu in alto, **📈 Progressi**: una pagina con tutto il tuo percorso.
 
 Lo storico del punteggio parte dal primo problema risolto dopo l'aggiornamento e si sincronizza fra i dispositivi come il resto dei progressi.
 
-### ♚ Come dare matto
+### ♚ Finali: come dare matto
 
-Dal menu in alto, **♚ Matti**: un mini-corso per principianti sul matto con **Re + Donna** e **Re + Torre** contro Re, con l'attenzione allo **stallo**.
+Dal menu in alto, **Finali** → **Come dare matto**: un mini-corso per principianti sul matto con **Re + Donna** e **Re + Torre** contro Re, con l'attenzione allo **stallo**.
 
 - **Matto o stallo?**: la differenza spiegata sulla scacchiera, con quiz.
 - **I matti finali** (Donna e Torre): matti in una mossa, con trappole di stallo. Se sbagli vedi la posizione che hai ottenuto e perché non è matto (stallo, pezzo indifeso, il Re scappa in…).
 - **Il metodo** (la scatola, la mossa del cavallo, l'opposizione) e poi **partite vere** contro il Re nero, da posizioni fisse o casuali.
 
 Nelle partite il Re nero si difende **in modo perfetto**: i due finali sono risolti per intero dentro l'app (analisi retrograda in `src/core/endgame.ts`, qualche decimo di secondo, niente Stockfish). Per questo il contatore **"Matto perfetto in N"** è esatto, ogni mossa viene giudicata (ottima / più lenta / stallo / pezzo perso), 💡 suggerisce una mossa ottima, ↶ annulla, e alla fine le stelle confrontano le tue mosse con il matto più veloce. Vale la regola delle 50 mosse.
+
+### Finali di pedoni e torri
+
+Sempre in **Finali**, il secondo corso: 7 lezioni sui finali che capitano davvero.
+
+- **La regola del quadrato**, **l'opposizione**, **le case chiave**, **difendersi col Re davanti** e **il pedone di Torre**: Re e pedone contro Re, con spiegazione, quiz e partite da giocare (col Bianco per vincere, col Nero per pattare). Il finale è risolto per intero dentro l'app (`src/core/kpk.ts`, analisi retrograda in meno di mezzo secondo): l'avversario gioca perfetto, ogni tua mossa viene giudicata subito (se butti via la vittoria o perdi la patta lo sai alla mossa, e puoi riprovarla) e il contatore dice in quante mosse arriva la promozione.
+- **Torre: la posizione di Lucena** (costruire il ponte) e **la difesa di Philidor** (Torre in sesta, poi scacchi da dietro): il piano spiegato e poi la sequenza da giocare, controllata con Stockfish.
 
 ### Come nascono le spiegazioni
 
