@@ -1,0 +1,46 @@
+[Opening "Scandinava (1...d5)"]
+[Id "scandinavian"]
+[Color "black"]
+[Description "Una seconda arma contro 1.e4, con pochissima teoria: 1...d5, la donna riprende in d5 e va in a5; poi ...Nf6, ...c6 e ...Bf5. La struttura è quella della tua Caro-Kann."]
+
+{ Contro 1.e4 hai già la Caro-Kann. La Scandinava è un'alternativa diretta: il Nero attacca e4 subito, alla prima mossa. Dopo 2.exd5 la donna riprende e, quando il cavallo c3 la attacca, si rifugia in a5. Poi lo schieramento è sempre lo stesso: ...Nf6, ...c6, ...Bf5 ed ...e6. Una struttura alla Caro-Kann, ma con meno teoria da ricordare. }
+1. e4 d5 { [%line Scandinava] Attacca e4 subito. Il Bianco quasi sempre prende in d5. [%key Lo schieramento: ...Qa5, ...Nf6, ...c6, ...Bf5, ...e6] [%cal Gd5e4] } *
+
+; ===================== 3.Nc3 Qa5: LA LINEA PRINCIPALE =====================
+1. e4 d5 2. exd5 Qxd5 { La donna riprende. È al centro presto, ma il Bianco non ha un modo semplice per sfruttarlo. }
+3. Nc3 { [%line Linea principale: 3.Nc3 Qa5] Il cavallo si sviluppa attaccando la donna. [%cal Rc3d5] } 3... Qa5 { La donna si ritira in a5: lontana dai pezzi bianchi, inchioda il cavallo c3 e controlla la diagonale a5-e1. [%key Contro Nc3 la donna va in a5] [%cal Ga5e1] }
+4. d4 Nf6 { Sviluppa e controlla e4. } 5. Nf3 c6 { Ecco la struttura della Caro-Kann: il pedone c6 dà alla donna una casa di ritirata in c7 e toglie al Bianco la casa b5. [%cal Ga5c7] }
+6. Bc4 Bf5 { L'alfiere esce PRIMA di ...e6, proprio come nella Caro-Kann. [%key Alfiere c8 fuori prima di ...e6] [%cal Gc8f5] }
+7. Bd2 { Il Bianco toglie l'inchiodatura del cavallo c3 e minaccia Nd5. } 7... e6 { Ora l'alfiere f8 è libero e il re si prepara ad arroccare. }
+8. Qe2 { [%line Principale: 8.Qe2] Il Bianco prepara l'arrocco lungo. } 8... Bb4 { L'alfiere inchioda il cavallo c3: ...Bxc3 rovinerà il controllo del Bianco su d5 ed e4. [%cal Gb4c3] }
+9. O-O-O Nbd7 10. a3 Bxc3 11. Bxc3 Qc7 { La donna torna in c7, al sicuro. Il Nero arrocca corto e gioca ...Nd5 o ...b5 contro il re bianco. Posizione solida e pari. [%key Dopo ...Bxc3 la donna si rifugia in c7] [%cal Gb7b5] } *
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. d4 Nf6 5. Nf3 c6 6. Bc4 Bf5 7. Bd2 e6 8. Nd5 { [%line Principale: 8.Nd5] Il cavallo attacca la donna sfruttando la scoperta dell'alfiere d2. [%cal Rd2a5] } 8... Qd8 { Non 8...cxd5?? 9.Bxa5: la donna era attaccata dall'alfiere d2. [%key Attento al cavallo in d5: la donna è sulla diagonale dell'alfiere d2] }
+9. Nxf6+ Qxf6 { La donna riprende ed è attiva in f6. } 10. Qe2 Nd7 { Sviluppo completo: piano ...Bd6, ...O-O e la rottura ...c5 o ...e5. } *
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. d4 Nf6 5. Nf3 c6 6. Bc4 Bf5 7. Ne5 { [%line Contro 7.Ne5] Il Bianco prepara g4 per cacciare l'alfiere. } 7... e6 8. g4 Bg6 9. h4 Nbd7 { Contro l'attacco il Nero sviluppa i pezzi: il cavallo e5 va cambiato, e gli avanzamenti sull'ala lasciano buchi nel campo bianco. [%key Contro g4–h4: sviluppa e cambia il cavallo e5] } *
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. d4 Nf6 5. Bc4 { [%line Contro 5.Bc4] } 5... Bf5 6. Bd2 c6 7. Nd5 Qd8 { Stessa idea: la donna si toglie dalla diagonale dell'alfiere d2. } 8. Nxf6+ exf6 { Qui si riprende di pedone: l'alfiere f8 respira e la struttura resta compatta. Piano: ...Bd6, ...O-O e ...Re8. } *
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. Nf3 { [%line Contro 4.Nf3] } 4... Nf6 5. d4 { Traspone nella linea principale. } *
+
+1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. Bc4 { [%line Contro 4.Bc4 e 5.d3] } 4... Nf6 5. d3 ( 5. d4 { Traspone nella linea con 5.Bc4. } ) 5... Bg4 { Con il pedone in d3 il Bianco ha chiuso il suo centro: l'alfiere va in g4 con tempo sulla donna d1. [%cal Gg4d1] }
+6. f3 Bf5 7. Bd2 Qb6 { La donna lascia la diagonale dell'alfiere d2 e punta su b2 e g1. } 8. Nge2 e6 { Sviluppo normale: ...Nc6 o ...Nbd7, ...Be7 e arrocco. Il pedone f3 ha indebolito il re bianco. } *
+
+; ===================== 3.Nf3 =====================
+1. e4 d5 2. exd5 Qxd5 3. Nf3 { [%line Contro 3.Nf3] Il Bianco rimanda Nc3: la donna resta in d5. } 3... Nf6 4. d4 Bg4 { L'alfiere inchioda il cavallo f3, che difende d4. [%cal Gg4f3,Rf3d4] }
+5. Be2 Nc6 { Tutti i pezzi puntano su d4. [%key Contro 3.Nf3: ...Nf6, ...Bg4, ...Nc6 e arrocco lungo] [%cal Gc6d4,Gd5d4] }
+6. O-O ( 6. c4 { Il pedone caccia la donna. } 6... Qf5 7. d5 Bxf3 8. Bxf3 Ne5 { Il cavallo salta in e5 con tempo sull'alfiere f3 e minaccia ...Nxc4. [%cal Ge5c4,Ge5f3] } ) ( 6. Be3 O-O-O { Il re va sul lato di donna e la torre punta subito su d4. } ) 6... O-O-O { L'arrocco lungo mette la torre sulla colonna d, contro d4. [%cal Gd8d4] }
+7. c4 Qh5 { La donna si sposta sul lato di re, dove punta il cavallo f3 inchiodato. [%cal Gh5f3] } 8. d5 Ne5 { Il cavallo trova la casa e5: ora il Bianco deve stare attento a ...Nxf3+ e ...Bxf3. } *
+
+; ===================== 3.d4 =====================
+1. e4 d5 2. exd5 Qxd5 3. d4 { [%line Contro 3.d4] Senza Nc3 la donna non è attaccata: c'è tempo per un colpo al centro. } 3... e5 { Attacca d4 subito: il Nero apre il gioco prima che il Bianco si sviluppi. [%key Contro 3.d4: ...e5!] [%cal Ge5d4] }
+4. Nf3 ( 4. dxe5 Qxd1+ 5. Kxd1 Nc6 { Il re bianco ha perso l'arrocco e il pedone e5 cadrà. } 6. Nf3 Bg4 7. Be2 O-O-O+ { Arrocco con scacco: tutti i pezzi neri sono attivi. È il tipo di finale che ti piace. } ) ( 4. Nc3 Bb4 { Inchioda il cavallo e tiene la tensione al centro. } 5. Nf3 Nc6 6. Bd2 ( 6. Be2 e4 { Il pedone caccia il cavallo f3 e guadagna spazio. } ) ( 6. dxe5 Qxd1+ 7. Kxd1 Bg4 { Finale comodo: il pedone e5 è debole e il re bianco è al centro. } ) 6... Bxc3 7. Bxc3 e4 { Il cavallo f3 deve spostarsi. Spazio e sviluppo per il Nero. } ) ( 4. c4 Qxd4 { Il pedone d4 non era più difeso. } 5. Qxd4 exd4 6. Nf3 c5 { Il Nero ha un pedone in più e lo difende con ...c5. } ) 4... exd4 5. Qxd4 ( 5. Nxd4 Nf6 6. Nc3 Bb4 { Sviluppo veloce: l'alfiere inchioda il cavallo c3. } ) 5... Qxd4 6. Nxd4 Nf6 7. Bc4 Bc5 { Le donne sono state cambiate: posizione simmetrica e pari, con sviluppo facile. } *
+
+; ===================== DEVIAZIONI AL 2° TRATTO =====================
+1. e4 d5 2. e5 { [%line Contro 2.e5] Il Bianco spinge invece di prendere. La struttura è quella della Caro-Kann Avanzata. } 2... Bf5 { Sempre lo stesso principio: l'alfiere esce prima di ...e6. } 3. d4 e6 4. Nf3 c5 { La rottura contro d4, come nella Caro-Kann Avanzata. Qui però il pedone c arriva in c5 in una sola mossa: un tempo in più per il Nero. [%cal Gc5d4] }
+5. c3 Nc6 6. Be2 Qb6 { Pressione su d4 e su b2. [%key Contro la catena e5–d4: ...c5, ...Nc6, ...Qb6] [%cal Gb6d4,Gc6d4] } *
+
+1. e4 d5 2. Nc3 { [%line Contro 2.Nc3] Il Bianco non prende e difende e4. } 2... d4 { Il pedone avanza e caccia il cavallo: il Nero guadagna spazio. } 3. Nce2 e5 { Sostiene d4 e prende il centro. } 4. Ng3 Be6 { L'alfiere controlla c4 e a2. } 5. Nf3 f6 { Difende e5 con un pedone: il centro nero è solidissimo. } 6. Bb5+ c6 7. Ba4 Nd7 { Piano: ...Bd6, ...Ne7 e arrocco. Il Nero ha più spazio. } *
+
+1. e4 d5 2. d3 { [%line Contro 2.d3] } 2... dxe4 3. dxe4 Qxd1+ 4. Kxd1 e5 { Le donne sono sparite e il re bianco non può più arroccare. Finale semplice e un po' più comodo per il Nero. } *

@@ -25,26 +25,32 @@ export interface OpeningGroup {
 }
 
 const firstMoveName = (san: string) => `1.${san}`;
+const OTHER = 'altre';
 
 /**
  * Raggruppa le aperture: prima quelle col Bianco (per la prima mossa che gioco), poi quelle col Nero
- * (per la prima mossa dell'avversario). I gruppi più piccoli col Bianco si uniscono in "altre prime mosse".
+ * (per la prima mossa dell'avversario). Un'apertura col Nero che risponde a più prime mosse (le
+ * prime mosse rare) va in "contro altre prime mosse", in fondo.
  */
 export function groupOpenings(openings: Opening[]): OpeningGroup[] {
   const groups: OpeningGroup[] = [];
   for (const side of ['white', 'black'] as const) {
     const bySan = new Map<string, Opening[]>();
     for (const op of openings.filter((o) => o.color === side)) {
-      const san = op.root.children[0]?.san ?? '?';
+      // col Nero, un'apertura che risponde a più prime mosse del Bianco va in "altre prime mosse"
+      const san = side === 'black' && op.root.children.length > 1 ? OTHER : (op.root.children[0]?.san ?? '?');
       bySan.set(san, [...(bySan.get(san) ?? []), op]);
     }
     // e4 e d4 per primi, poi il resto in ordine di numero di aperture
-    const order = (s: string) => (s === 'e4' ? 0 : s === 'd4' ? 1 : 2);
+    const order = (s: string) => (s === 'e4' ? 0 : s === 'd4' ? 1 : s === OTHER ? 3 : 2);
     const sans = [...bySan.keys()].sort((a, b) => order(a) - order(b) || bySan.get(b)!.length - bySan.get(a)!.length);
     for (const san of sans) {
       groups.push({
         id: `${side}-${san}`,
-        title: side === 'white' ? `Col Bianco · ${firstMoveName(san)}` : `Col Nero · contro ${firstMoveName(san)}`,
+        title:
+          san === OTHER
+            ? 'Col Nero · contro altre prime mosse'
+            : side === 'white' ? `Col Bianco · ${firstMoveName(san)}` : `Col Nero · contro ${firstMoveName(san)}`,
         side,
         openings: bySan.get(san)!,
       });

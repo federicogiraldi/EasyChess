@@ -1,0 +1,43 @@
+[Opening "Nero contro le prime mosse rare"]
+[Id "rare-first-moves"]
+[Color "black"]
+[Description "Le risposte alle prime mosse meno comuni: 1.b3, 1.f4 (Bird), 1.g3, 1.b4 (Polacca) e 1.Nc3. Quasi sempre 1...d5 e sviluppo semplice; contro la Bird il fianchetto ...g6, contro la Polacca 1...e5."]
+
+{ Ogni tanto il Bianco apre con una mossa rara per portarti fuori dalla teoria. Non serve memorizzare molto: occupa il centro con 1...d5, sviluppa l'alfiere c8 prima di ...e6 e arrocca. Ecco le poche eccezioni da sapere: contro la Bird (1.f4) il fianchetto ...g6 è la scelta più semplice; contro la Polacca (1.b4) il pedone b4 si attacca subito con ...e5 e ...Bxb4. }
+
+; ===================== 1.b3 (LARSEN) =====================
+1. b3 { [%line Contro 1.b3 (Larsen)] Il Bianco fianchetta l'alfiere di donna, che punta su e5 e g7. } 1... d5 2. Bb2 Nf6 { Sviluppa e controlla e4. }
+3. Nf3 Bf5 { L'alfiere controlla e4: il Bianco non può spingerlo facilmente. [%key Contro i fianchetti di donna: alfiere in f5, poi ...e6 e ...h6] [%cal Gf5e4] } 4. e3 e6 5. Be2 h6 { La casa h7 per l'alfiere, nel caso di Nh4. }
+6. O-O Nbd7 7. c4 c6 { Struttura solida: d5 è difeso due volte. Piano: ...Bd6, ...O-O e ...Qe7. } *
+
+1. b3 d5 2. Bb2 Nf6 3. e3 Bf5 4. Nf3 { Traspone nella linea con 3.Nf3. } *
+
+; ===================== 1.f4 (BIRD) =====================
+1. f4 { [%line Contro 1.f4 (Bird)] Il Bianco controlla e5 come in una Olandese a colori invertiti. } 1... d5 2. Nf3 Nf6 3. e3 g6 { Il fianchetto: l'alfiere in g7 punta sulla diagonale lunga, indebolita dalla spinta f4. [%key Contro la Bird: ...d5, ...Nf6, ...g6, ...Bg7, arrocco e ...c5] [%cal Gf8g7] }
+4. Be2 Bg7 5. O-O O-O 6. d3 c5 { Spazio sul lato di donna: ...Nc6, ...b5 e ...d4. } 7. Qe1 Nc6 { Il Bianco prepara Qh4 e l'attacco sul re, ma il Nero ha già tutti i pezzi sviluppati e prende spazio con ...d4 o ...Qc7 ed ...e5. } *
+
+1. f4 d5 2. Nf3 Nf6 3. g3 { [%line Bird con 3.g3] } 3... g6 4. Bg2 Bg7 5. O-O O-O 6. d3 c5 7. c3 Nc6 { Stesso schieramento: ...c5, ...Nc6 e poi ...d4 o ...Qc7 ed ...e5. } *
+
+1. f4 d5 2. Nf3 Nf6 3. b3 { [%line Bird con 3.b3] } 3... g6 4. Bb2 Bg7 5. e3 O-O { L'alfiere g7 neutralizza quello in b2. Piano: ...c5 e ...Nc6. } *
+
+1. f4 d5 2. e4 { [%line Bird con 2.e4 (gambetto)] Il Bianco sacrifica un pedone. } 2... dxe4 3. Nc3 Nf6 4. d3 exd3 { Il pedone in più si restituisce, ma il Nero si sviluppa con tempo. } 5. Bxd3 Nc6 6. Nf3 Nb4 { Il cavallo attacca l'alfiere d3: il Nero prende la coppia degli alfieri e il Bianco resta con il re indebolito da f4. [%key Contro il gambetto: prendi, restituisci e sviluppati con tempo] } *
+
+; ===================== 1.g3 =====================
+1. g3 { [%line Contro 1.g3] } 1... d5 2. Bg2 Nf6 3. Nf3 c6 4. O-O Bg4 { Lo schieramento contro l'Attacco Indiano di Re: ...c6, ...Bg4, ...Nbd7 ed ...e5. } 5. d3 Nbd7 6. Nbd2 e5 { Il Nero prende il centro con due pedoni. [%key Contro i fianchetti di re: ...c6, ...Bg4 ed ...e5] [%cal Gd5e5] }
+7. e4 dxe4 8. dxe4 Bc5 { L'alfiere punta su f2. Posizione equilibrata. } *
+
+1. g3 d5 2. Bg2 Nf6 3. d4 { [%line 1.g3 e 3.d4] } 3... Bf5 { Con d4 l'alfiere va in f5. } 4. Nf3 e6 5. O-O Be7 6. c4 c6 { È una Slava contro il fianchetto: d5 è solidissimo e tutti i pezzi sono sviluppati. } *
+
+; ===================== 1.b4 (POLACCA) =====================
+1. b4 { [%line Contro 1.b4 (Polacca)] Il pedone b4 non è difeso da nessun pezzo. } 1... e5 { Attacca subito: l'alfiere f8 guarda già b4. [%key Contro la Polacca: ...e5 e ...Bxb4] [%cal Gf8b4] }
+2. Bb2 Bxb4 { Il pedone b4 è tuo. } 3. Bxe5 Nf6 { Il Bianco ha ripreso il pedone, ma il Nero si sviluppa e arrocca subito. }
+4. c4 ( 4. Nf3 O-O 5. e3 d5 6. Be2 c5 7. O-O Nc6 8. Bb2 Bf5 { Sviluppo completo e un bel centro: il Nero sta meglio. } ) 4... O-O 5. Nf3 d5 6. e3 c5 { Pedoni centrali e pezzi attivi. } 7. cxd5 Nxd5 { Il Nero si è sviluppato più in fretta e ha un ottimo gioco. } *
+
+1. b4 e5 2. a3 { [%line Polacca con 2.a3] Il Bianco difende b4 con un pedone. } 2... d5 3. Bb2 Bd6 { L'alfiere difende e5. } 4. e3 Nf6 5. c4 c6 { Il centro è tuo: piano ...O-O, ...Nbd7 e ...Re8. } *
+
+; ===================== 1.Nc3 =====================
+1. Nc3 { [%line Contro 1.Nc3] } 1... d5 2. e4 { Il Bianco attacca d5. } 2... d4 { Il pedone avanza con tempo sul cavallo. } 3. Nce2 e5 4. Ng3 Be6 5. Nf3 f6 { Il centro nero è stabile e ampio. } 6. Bb5+ c6 7. Ba4 Nd7 { Piano: ...Bd6, ...Ne7 e arrocco. } *
+
+1. Nc3 d5 2. d4 { [%line 1.Nc3 e 2.d4 (Veresov)] } 2... Nf6 3. Bg5 Nbd7 { Prepara ...h6 senza permettere Bxf6 con pedoni doppiati. } 4. Nf3 h6 5. Bh4 e6 { Sviluppo solido: ...Be7, ...O-O e ...c5. } *
+
+1. Nc3 d5 2. Nf3 { [%line 1.Nc3 e 2.Nf3] } 2... Nf6 3. d4 Bf5 { L'alfiere esce prima di ...e6. } 4. Bf4 e6 5. e3 c6 { Il pedone c6 toglie al cavallo la casa b5. } 6. Bd3 Bxd3 7. Qxd3 Bd6 { Cambiati gli alfieri campochiaro, ...Bd6 sfida l'alfiere f4. Posizione equilibrata. } *
