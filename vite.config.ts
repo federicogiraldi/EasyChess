@@ -34,6 +34,16 @@ export default defineConfig({
         // Stockfish (engine/stockfish.wasm, ~7 MB) va in cache: il Laboratorio funziona offline.
         // E la banca problemi (public/puzzles, ~5 MB compressi): i problemi funzionano offline.
         globPatterns: ['**/*.{js,css,html,png,svg,ico,wasm}', 'puzzles/*.{txt,json}'],
+        // Stockfish completo (~80 MB) non va scaricato da tutti: entra in cache solo quando qualcuno sceglie
+        // la precisione "Massima", e da lì funziona anche offline.
+        globIgnores: ['engine-full/**'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/engine-full/'),
+            handler: 'CacheFirst',
+            options: { cacheName: 'stockfish-full', expiration: { maxEntries: 12 } },
+          },
+        ],
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         navigateFallback: 'index.html',
         cleanupOutdatedCaches: true,

@@ -8,6 +8,9 @@ import { lineNameOf, pathFromRoot } from '../core/tree';
 
 const fmt = (cp: number) => formatScore(cp);
 
+const SOURCE_HEAD = { repertorio: 'Il repertorio gioca', soluzione: 'La soluzione è', engine: 'Stockfish preferisce' } as const;
+const SOURCE_TITLE = { repertorio: 'Repertorio', soluzione: 'Soluzione', engine: 'Stockfish' } as const;
+
 export function ExplanationCard({ verdict }: { verdict: Verdict }) {
   const q = QUALITY_INFO[verdict.quality];
   const b = verdict.better;
@@ -18,7 +21,7 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
   const showing = preview?.state?.req.owner === owner ? preview.state.req.tone : undefined;
   const showLine = (tone: 'good' | 'bad') => {
     if (!preview) return;
-    if (tone === 'good' && b) preview.show({ owner, tone, startFen: verdict.fen, uci: b.pv, title: `${b.source === 'repertorio' ? 'Repertorio' : 'Stockfish'}: ${b.san}` });
+    if (tone === 'good' && b) preview.show({ owner, tone, startFen: verdict.fen, uci: b.pv, title: `${SOURCE_TITLE[b.source]}: ${b.san}` });
     if (tone === 'bad') preview.show({ owner, tone, startFen: verdict.fen, uci: verdict.playedPv, title: `La tua mossa: ${verdict.playedSan}` });
   };
   const canShowPlayed = verdict.playedPv.length > 1 && verdict.quality !== 'migliore';
@@ -42,7 +45,7 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
       {b && (
         <div className="exp-better">
           <div className="exp-better-head">
-            {b.source === 'repertorio' ? 'Il repertorio gioca' : 'Stockfish preferisce'} <strong>{b.san}</strong>{' '}
+            {SOURCE_HEAD[b.source]} <strong>{b.san}</strong>{' '}
             <span className="muted small">({fmt(b.score)})</span>
           </div>
           {b.node?.comment && (
@@ -76,6 +79,12 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
               Secondo l'engine anche la tua mossa è giocabile: il repertorio sceglie {b.san} per restare nelle strutture che stai studiando.
             </p>
           )}
+          {b.source === 'soluzione' && (verdict.quality === 'buona' || verdict.quality === 'imprecisione') && (
+            <p className="muted small">
+              Anche dopo {verdict.playedSan} la posizione resta buona, ma {b.san} è più forte: il problema chiede la mossa che vince
+              più nettamente.
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -83,7 +92,7 @@ export function ExplanationCard({ verdict }: { verdict: Verdict }) {
 }
 
 /** Pulsante "Perché?" che analizza una mossa sbagliata rispetto al repertorio. */
-export function WhyButton({ fen, san, expected }: { fen: string; san: string; expected: OpeningNode[] }) {
+export function WhyButton({ fen, san, expected, solution }: { fen: string; san: string; expected: OpeningNode[]; solution?: boolean }) {
   const [state, setState] = useState<'idle' | 'loading' | Verdict | Error>('idle');
   useEffect(() => setState('idle'), [fen, san]);
 
@@ -91,7 +100,7 @@ export function WhyButton({ fen, san, expected }: { fen: string; san: string; ex
     return (
       <button className="why" onClick={() => {
         setState('loading');
-        judgeMove(fen, san, expected).then(setState, (e: Error) => setState(e));
+        judgeMove(fen, san, expected, { solution }).then(setState, (e: Error) => setState(e));
       }}>
         <Icon name="lab" /> Perché {san} è peggio?
       </button>

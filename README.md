@@ -26,7 +26,7 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 2. Tocca **Condividi** (il quadrato con la freccia) → **Aggiungi alla schermata Home**.
 3. Apri EasyChess dall'icona: è a schermo intero come un'app, e dopo la prima apertura funziona anche **offline** (Stockfish compreso).
 
-L'interfaccia è adattata al touch: tocca un pezzo e poi la casa (oppure trascinalo), schede scorrevoli su iPhone, scacchiera che sta sempre nello schermo anche in orizzontale, margini per notch e barra Home. Su iPhone Stockfish analizza un po' meno in profondità per rispondere più in fretta e consumare meno batteria.
+L'interfaccia è adattata al touch: tocca un pezzo e poi la casa (oppure trascinalo), schede scorrevoli su iPhone, scacchiera che sta sempre nello schermo anche in orizzontale, margini per notch e barra Home. Stockfish analizza alla stessa profondità su PC e telefono (sul telefono ci mette qualche secondo in più); la precisione si sceglie nelle Impostazioni.
 
 Per portare i progressi dal PC: **Esporta progressi** (in fondo alla home) sul PC → manda il file all'iPhone (AirDrop, iCloud Drive, mail) → **Ripristina progressi** nell'app. Sull'iPhone/iPad "Esporta" apre il foglio di condivisione (Salva su File, AirDrop…). Nota: Safari e l'app sulla schermata Home hanno progressi separati, usa sempre l'icona.
 
@@ -106,9 +106,12 @@ Dall'icona **⚙️** in alto a destra (accanto ad Accedi):
 
 - **Scacchiera**: cinque combinazioni di colori (Classica, Verde, Azzurra, Grigia, Legno scuro), coordinate sì/no, animazioni normali, veloci o nessuna (con *Nessuna* si fermano anche quelle dell'interfaccia: riquadri delle risposte che vibrano se sbagli e si illuminano se indovini, cambi di pagina, schede che si sollevano). Con "Riduci movimento" attivo nel sistema le animazioni sono sempre spente. A destra c'è un'anteprima.
 - **Suoni**: mosse, catture, arrocchi, scacchi, risposte sbagliate e problemi risolti, con volume e pulsanti per provarli. Sono generati dall'app (Web Audio), quindi funzionano anche offline.
+- **Analisi di Stockfish**: precisione *Veloce* (motore leggero, profondità 14), *Bilanciata* (leggero, profondità 18, predefinita) o *Massima* (Stockfish 17.1 completo con la rete neurale grande, profondità 20: circa 80 MB scaricati la prima volta e poi in cache offline; ogni spiegazione richiede più tempo, su iPad anche 10–15 secondi). Se il dispositivo non riesce ad avviare il motore completo si torna a quello leggero. Questa scelta resta sul dispositivo e non si sincronizza.
 - **Tema**: come il sistema, chiaro o scuro.
 
-Le impostazioni si sincronizzano fra i dispositivi come i progressi. Codice in `src/core/settings.ts` e `src/core/sound.ts`.
+Nei **Problemi**, "Perché è peggio?" confronta la tua mossa con la soluzione (non col repertorio), con due semimosse di profondità in più.
+
+Le impostazioni (tranne la precisione di Stockfish) si sincronizzano fra i dispositivi come i progressi. Codice in `src/core/settings.ts` e `src/core/sound.ts`.
 
 ### 🏠 La home
 
@@ -240,4 +243,4 @@ src/
 
 - `npm test` — test di parser, albero, SRS e validazione delle aperture
 - `npm run typecheck` — controllo dei tipi TypeScript
-- Stockfish viene copiato da `node_modules/stockfish` in `public/engine/` a ogni `npm install` (`scripts/copy-engine.mjs`). Licenza GPL: vedi `public/engine/COPYING-stockfish.txt`.
+- Stockfish viene copiato da `node_modules/stockfish` in `public/engine/` (build lite) e `public/engine-full/` (build completa, ~80 MB, non nel repository) a ogni `npm install` (`scripts/copy-engine.mjs`). Licenza GPL: vedi `public/engine/COPYING-stockfish.txt`.
