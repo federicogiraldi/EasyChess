@@ -2,3 +2,7 @@
 .mates .feedback .rich p { margin: 0; }
 .mate-counter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
 .mate-counter .big { font-size: 1.6rem; font-weight: 700; line-height: 1.15; }
+
+.endgames { display: flex; flex-direction: column; gap: 14px; }
+.course-switch { align-self: flex-start; }
+.line-note { margin: 0; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--panel-2); border-radius: 4px; font-size: 0.95em; }

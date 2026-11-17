@@ -21,7 +21,7 @@ export function mergeValue(key: string, local: unknown, localAt: number, remote:
     const r = remote as { games: number };
     return l.games === r.games ? newer : l.games > r.games ? l : r;
   }
-  if (key === 'mates:progress' || key.startsWith('course:')) {
+  if (key === 'mates:progress' || key === 'endgames:progress' || key.startsWith('course:')) {
     const n = newer as { done: unknown[]; lesson: number };
     return { ...n, done: union((local as { done: unknown[] }).done ?? [], (remote as { done: unknown[] }).done ?? []) };
   }
