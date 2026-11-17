@@ -4,7 +4,7 @@ import { Chess } from 'chess.js';
 import type { Arrow, Highlight, Side } from '../model/types';
 import { useVariationPreview, VariationBar } from './VariationPreview';
 import { QualityIcon } from './QualityIcon';
-import type { SimQuality } from '../core/simulation';
+import type { SimQuality } from '../core/quality';
 import { moveSound, playSound } from '../core/sound';
 import { ANIMATION_MS, reducedMotion, useSettings } from '../core/settings';
 
@@ -192,14 +192,6 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
 }
 
 /** Prova a giocare from→to nella posizione e restituisce il SAN canonico, o null se illegale. */
-export function sanOf(fen: string, from: string, to: string): string | null {
-  try {
-    return new Chess(fen).move({ from, to, promotion: 'q' }).san;
-  } catch {
-    return null;
-  }
-}
-
 /** Posizione dell'icona: angolo in alto a destra della casa, un po' sporgente, sempre dentro la scacchiera. */
 function SquareBadge({ square, quality, width, orientation }: { square: string; quality: SimQuality; width: number; orientation: Side }) {
   const sq = width / 8;

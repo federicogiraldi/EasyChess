@@ -2,7 +2,7 @@ import type { Arrow, Opening, OpeningNode } from '../model/types';
 import { cardKey, nextMoves, walk } from './tree';
 import { getCard, recordAnswer } from './progress';
 import { isDue } from './srs';
-import { sanOf } from '../components/Board';
+import { sanOf } from './moves';
 
 export const SOLUTION_ARROW = 'rgba(21, 128, 61, 0.85)';
 

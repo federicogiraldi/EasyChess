@@ -19,7 +19,8 @@ import {
   type AnalyzedGame,
   type ImportedGame,
 } from '../core/analysis';
-import { buildPliesFrom, classifyMove, gameAccuracy, moveAccuracy, SIM_QUALITY, winPercent, type PosEval, type SimQuality } from '../core/simulation';
+import { buildPliesFrom, classifyMove, gameAccuracy, moveAccuracy, winPercent, type PosEval } from '../core/simulation';
+import { SIM_QUALITY, type SimQuality } from '../core/quality';
 import { findInBook, lineNameOf, nextMoves, pathFromRoot } from '../core/tree';
 import { evalPosition, sanFromUci } from '../engine/simEngine';
 import { engine } from '../engine/stockfish';
