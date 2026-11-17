@@ -28,7 +28,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --bg: #1d1b18;
     --panel: #272420;
     --panel-2: #312d28;
@@ -45,6 +45,24 @@
     --wrong: #f87171;
     color-scheme: dark;
   }
+}
+/* Tema scelto nelle Impostazioni: vince sul sistema operativo. */
+:root[data-theme='dark'] {
+  --bg: #1d1b18;
+  --panel: #272420;
+  --panel-2: #312d28;
+  --text: #ece6dc;
+  --muted: #a39a8d;
+  --border: #3d3832;
+  --accent: #d98a3d;
+  --accent-text: #1d1b18;
+  --mine: #4ade80;
+  --mine-bg: #1e3326;
+  --theirs: #fb923c;
+  --theirs-bg: #3a2718;
+  --wrong-bg: #3b1d1d;
+  --wrong: #f87171;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -111,6 +129,9 @@ select { font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid
 /* Account e sincronizzazione */
 .account-btn { margin-left: auto; white-space: nowrap; }
 .tabs + .account-btn { margin-left: 0; }
+.settings-btn { margin-left: auto; padding: 7px 10px; }
+.tabs + .settings-btn, .settings-btn + .account-btn { margin-left: 0; }
+.settings-btn.active { background: var(--accent); border-color: var(--accent); }
 .avatar { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--accent); color: var(--accent-text); font-weight: 700; font-size: 0.9em; }
 .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); display: grid; place-items: center; z-index: 100; padding: 16px; }
 .modal { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: min(420px, 100%); display: flex; flex-direction: column; gap: 12px; max-height: calc(100dvh - 32px); overflow: auto; }
@@ -297,6 +318,10 @@ button:disabled { opacity: 0.5; cursor: default; }
   .crumb, .account-btn, .tabs + .account-btn { order: -1; }
   .tabs + .account-btn { margin-left: auto; }
   .account-btn { padding: 5px 10px; }
+  .settings-btn { order: -1; padding: 5px 10px; }
+  /* Nome dell'apertura sulla riga del logo: si accorcia con i puntini per lasciare spazio a ⚙️ e Accedi */
+  .crumb { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tabs + .settings-btn { margin-left: auto; }
   .hero h1 { font-size: 1.5em; }
   main { padding-top: 14px; }
 }

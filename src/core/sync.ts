@@ -3,6 +3,7 @@ import { useSyncExternalStore } from 'react';
 import { applyResets, mergeValue } from './merge';
 import { getStamps, isSyncedKey, load, localKeys, onSave, setStamp, write } from './storage';
 import { reloadCards } from './progress';
+import { reloadSettings } from './settings';
 
 /**
  * Account e sincronizzazione dei progressi fra dispositivi (Supabase, piano gratuito).
@@ -114,7 +115,10 @@ async function doSync(): Promise<boolean> {
       const { error: upErr } = await supabase.from('user_data').upsert(upserts, { onConflict: 'user_id,key' });
       if (upErr) throw upErr;
     }
-    if (changedLocal) reloadCards();
+    if (changedLocal) {
+      reloadCards();
+      reloadSettings();
+    }
     set({ status: 'ok', lastSync: Date.now(), updatedFromRemote: state.updatedFromRemote || changedLocal });
     return changedLocal;
   } catch {

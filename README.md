@@ -90,6 +90,16 @@ Dalla home, **Risolvi problemi**: quasi 100.000 problemi di tattica senza limiti
 
 Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il punteggio), 👀 mostra la soluzione, e dopo una mossa sbagliata Stockfish spiega perché era peggio. All'ultima mossa vale anche un matto diverso da quello previsto. La banca si rigenera con `scripts/build-puzzles.mjs` (istruzioni nel file).
 
+### ⚙️ Impostazioni
+
+Dall'icona **⚙️** in alto a destra (accanto ad Accedi):
+
+- **Scacchiera**: cinque combinazioni di colori (Classica, Verde, Azzurra, Grigia, Legno scuro), coordinate sì/no, animazione dei pezzi normale, veloce o nessuna. A destra c'è un'anteprima.
+- **Suoni**: mosse, catture, arrocchi, scacchi, risposte sbagliate e problemi risolti, con volume e pulsanti per provarli. Sono generati dall'app (Web Audio), quindi funzionano anche offline.
+- **Tema**: come il sistema, chiaro o scuro.
+
+Le impostazioni si sincronizzano fra i dispositivi come i progressi. Codice in `src/core/settings.ts` e `src/core/sound.ts`.
+
 ### 🔥 Oggi: Ripasso di oggi, obiettivo e serie
 
 In cima alla home c'è il riquadro **Oggi**:
