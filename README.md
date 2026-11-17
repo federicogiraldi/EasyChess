@@ -90,6 +90,16 @@ Dalla home, **Risolvi problemi**: quasi 100.000 problemi di tattica senza limiti
 
 Il 💡 suggerimento evidenzia il pezzo da muovere (il problema non conta per il punteggio), 👀 mostra la soluzione, e dopo una mossa sbagliata Stockfish spiega perché era peggio. All'ultima mossa vale anche un matto diverso da quello previsto. La banca si rigenera con `scripts/build-puzzles.mjs` (istruzioni nel file).
 
+### 📈 Progressi
+
+Dal menu in alto, **📈 Progressi**: una pagina con tutto il tuo percorso.
+
+- **Riepilogo**: posizioni imparate, quante ripassarne oggi, posizioni allenate negli ultimi 7 giorni, lezioni completate (aperture e matti), punteggio dei problemi e precisione media nelle ultime partite.
+- **Aperture** divise fra Bianco e Nero: percentuale imparata, corso, ultima volta che l'hai allenata e il pulsante giusto (Ripassa, Inizia il corso, Impara nuove posizioni). In cima quelle con posizioni in scadenza.
+- **Grafici**: il punteggio dei problemi giorno per giorno e la precisione nelle ultime 20 partite (Simulatore e partite analizzate), con i valori al passaggio del mouse o al tocco.
+
+Lo storico del punteggio parte dal primo problema risolto dopo l'aggiornamento e si sincronizza fra i dispositivi come il resto dei progressi.
+
 ### ♚ Come dare matto
 
 Dal menu in alto, **♚ Matti**: un mini-corso per principianti sul matto con **Re + Donna** e **Re + Torre** contro Re, con l'attenzione allo **stallo**.
