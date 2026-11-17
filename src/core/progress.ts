@@ -26,6 +26,20 @@ export function recordAnswer(key: string, correct: boolean) {
   emit();
 }
 
+/** Mette queste schede nel ripasso di oggi (le nuove nascono già in scadenza), senza toccare le statistiche. */
+export function markForReview(keys: string[], now = Date.now()) {
+  if (keys.length === 0) return;
+  const next = { ...cards };
+  for (const key of keys) {
+    const s = next[key];
+    next[key] = s
+      ? { ...s, due: now, interval: 0, reps: 0, at: now }
+      : { due: now, interval: 0, ease: 2.5, reps: 0, lapses: 0, seen: 0, correct: 0, at: now };
+  }
+  cards = next;
+  emit();
+}
+
 export function exportCards(): Record<string, CardState> {
   return cards;
 }

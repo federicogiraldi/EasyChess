@@ -24,6 +24,7 @@ import { findInBook, lineNameOf, nextMoves, pathFromRoot } from '../core/tree';
 import { evalPosition, sanFromUci } from '../engine/simEngine';
 import { engine } from '../engine/stockfish';
 import { Board } from '../components/Board';
+import { RepertoireGaps } from '../components/RepertoireGaps';
 import { EvalBar } from '../components/Explanation';
 import { EvalGraph } from '../components/EvalGraph';
 import { KeyMoments, ReviewMove, ReviewSummary } from '../components/ReviewParts';
@@ -91,6 +92,7 @@ export function Analysis({ openings, onOpenMode }: Props) {
         />
         <PgnImport onOpen={open} />
       </div>
+      <RepertoireGaps openings={openings} library={library} username={username} onOpenLab={(id, moves) => onOpenMode(id, 'lab', moves)} />
       <Library
         games={library}
         onOpen={open}

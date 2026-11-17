@@ -31,3 +31,22 @@
 .book-actions { margin-top: 8px; font-weight: 400; }
 .home-analysis { margin-top: 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .home-analysis p { margin: 4px 0 0; }
+
+/* Buchi del repertorio */
+.gaps-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.gaps-head h3 { margin-bottom: 4px; }
+.gap-group { display: flex; flex-direction: column; gap: 8px; }
+.gap-group-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.gap-group h4 { margin: 0 0 2px; font-size: 1em; }
+.gap-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.gap-row { background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; display: flex; gap: 14px; flex-wrap: wrap; }
+.gap-main { display: flex; flex-direction: column; gap: 4px; flex: 1 1 260px; min-width: 0; }
+.gap-moves { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.gap-opp { color: var(--wrong); }
+.gap-mine { color: var(--accent); }
+.gap-lost { color: var(--wrong); }
+.gap-main .actions { margin-top: 4px; }
+.gap-board { width: min(260px, 100%); display: flex; flex-direction: column; gap: 4px; }
+.gap-legend { display: inline-block; width: 14px; height: 4px; border-radius: 2px; vertical-align: middle; }
+.gap-legend.played { background: rgba(185, 28, 28, 0.75); }
+.gap-legend.book { background: rgba(21, 128, 61, 0.8); }
