@@ -18,6 +18,8 @@ import { Analysis } from './modes/Analysis';
 import { Puzzles } from './modes/Puzzles';
 import { MateCourse } from './modes/MateCourse';
 import { ProgressPage } from './modes/Progress';
+import { DailyReview } from './modes/DailyReview';
+import { TodayCard } from './components/TodayCard';
 import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
@@ -32,7 +34,8 @@ const MODES: { id: Mode; label: string }[] = [
   { id: 'lab', label: '🔬 Laboratorio' },
 ];
 
-type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress';
+/** 'today' (Ripasso di oggi) non ha una voce nel menu: ci si arriva dalla home. */
+type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress' | 'today';
 
 /** Menu principale: ogni sezione ha la sua pagina, così la home resta dedicata alle aperture. */
 const SECTIONS: { id: Section; label: string }[] = [
@@ -54,6 +57,19 @@ export default function App() {
   const puzzles = section === 'puzzles';
   const mates = section === 'mates';
   const progress = section === 'progress';
+  const today = section === 'today';
+  /** Problemi aperti dal pulsante "Rivedi problemi sbagliati": partono dagli errori. */
+  const [puzzleStart, setPuzzleStart] = useState<'mistakes' | undefined>();
+  const goHome = () => {
+    setRoute(null);
+    setSection('openings');
+    window.scrollTo({ top: 0 });
+  };
+  const openMistakes = () => {
+    setPuzzleStart('mistakes');
+    setSection('puzzles');
+    window.scrollTo({ top: 0 });
+  };
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
@@ -129,6 +145,7 @@ export default function App() {
                   className={sec.id === section ? 'active' : ''}
                   onClick={() => {
                     setSection(sec.id);
+                    setPuzzleStart(undefined);
                     window.scrollTo({ top: 0 });
                   }}
                 >
@@ -157,7 +174,9 @@ export default function App() {
         </header>
 
         <main>
-          {progress && !route ? (
+          {today && !route ? (
+            <DailyReview openings={openings} onHome={goHome} onMistakes={openMistakes} />
+          ) : progress && !route ? (
             <ProgressPage
               openings={openings}
               onOpen={(openingId, mode) => {
@@ -172,7 +191,7 @@ export default function App() {
           ) : mates && !route ? (
             <MateCourse />
           ) : puzzles && !route ? (
-            <Puzzles />
+            <Puzzles key={puzzleStart ?? 'normal'} initialSource={puzzleStart} />
           ) : analysis && !route ? (
             <Analysis
               openings={openings}
@@ -211,6 +230,14 @@ export default function App() {
                 </p>
               </section>
               <InstallHint />
+              <TodayCard
+                openings={openings}
+                onStart={() => {
+                  setSection('today');
+                  window.scrollTo({ top: 0 });
+                }}
+                onMistakes={openMistakes}
+              />
               {message && (
                 <div className="toast" onClick={() => setMessage(null)}>
                   {message}

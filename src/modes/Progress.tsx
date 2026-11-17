@@ -10,6 +10,7 @@ import { loadHistory } from '../core/simulation';
 import { loadLibrary } from '../core/analysis';
 import { accuracySeries, average, NEW_PER_SESSION, pct, summarizeOpening, trainedSince, type OpeningSummary } from '../core/dashboard';
 import { BarChart, LineChart } from '../components/Charts';
+import { doneToday, loadActivity, loadGoal, streak } from '../core/daily';
 import './progress.css';
 
 interface Props {
@@ -101,6 +102,10 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
   const toReview = summaries.reduce((n, s) => n + s.toReview, 0);
   const dueOnly = summaries.reduce((n, s) => n + s.due, 0);
   const week = trainedSince(cards, 7, now);
+  const activity = loadActivity();
+  const goal = loadGoal();
+  const days = streak(activity, goal, now);
+  const today = doneToday(activity, now);
   const courseDone = summaries.reduce((n, s) => n + s.courseDone, 0);
   const courseTotal = summaries.reduce((n, s) => n + s.courseTotal, 0);
   const mates = load<{ done: number[] }>('mates:progress', { done: [] }).done.length;
@@ -139,6 +144,7 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
           value={String(toReview)}
           sub={dueOnly ? `${dueOnly} in scadenza, ${toReview - dueOnly} nuove` : `${toReview} nuove`}
         />
+        <Tile label="Serie di giorni" value={`🔥 ${days}`} sub={`oggi ${today}/${goal} risposte`} />
         <Tile label="Allenate in 7 giorni" value={String(week)} sub="posizioni ripassate" />
         <Tile label="Lezioni completate" value={`${courseDone + mates}/${courseTotal + MATE_LESSONS.length}`} sub={`aperture ${courseDone}/${courseTotal} · matti ${mates}/${MATE_LESSONS.length}`} />
         <Tile

@@ -22,6 +22,7 @@ import {
 } from '../core/puzzles';
 import { THEME_GROUPS, themeName } from '../core/puzzleThemes';
 import { load, save } from '../core/storage';
+import { bumpActivity } from '../core/daily';
 import { Board, sanOf } from '../components/Board';
 import { WhyButton } from '../components/Explanation';
 import './puzzles.css';
@@ -55,8 +56,11 @@ function solutionNode(fen: string, uci: string): OpeningNode {
   };
 }
 
-export function Puzzles() {
-  const [settings, setSettings] = useState<Settings>(() => load('puzzles:settings', { source: 'rated', theme: 'fork', offset: 0 }));
+export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
+  const [settings, setSettings] = useState<Settings>(() => {
+    const saved = load<Settings>('puzzles:settings', { source: 'rated', theme: 'fork', offset: 0 });
+    return initialSource ? { ...saved, source: initialSource } : saved;
+  });
   const [stats, setStats] = useState<PuzzleStats>(loadStats);
   const [mistakes, setMistakes] = useState<Mistake[]>(loadMistakes);
   const seen = useRef(loadSeen());
@@ -147,6 +151,7 @@ export function Puzzles() {
     if (!puzzle) return;
     seen.current.add(puzzle.id);
     saveSeen(seen.current);
+    bumpActivity();
     if (rated && !(win && hinted)) {
       const before = stats.rating;
       const next = updateRating(stats, puzzle.rating, win);

@@ -347,3 +347,17 @@ button:disabled { opacity: 0.5; cursor: default; }
 .move-motifs-head { font-size: 0.85em; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
 .move-motifs ul { margin: 0; padding-left: 18px; font-size: 0.92em; line-height: 1.5; }
 .analysis-progress { display: flex; flex-direction: column; gap: 6px; }
+
+/* Riquadro "Oggi" in home */
+.today-card { background: var(--panel); border: 1px solid var(--border); border-left: 5px solid var(--accent); border-radius: 12px; padding: 16px 18px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+.today-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.today-head h2 { font-size: 1.3em; }
+.streak { font-weight: 700; white-space: nowrap; }
+.streak.none { color: var(--muted); font-weight: 600; }
+.today-goal { display: grid; grid-template-columns: 1fr auto auto; gap: 6px 14px; align-items: center; }
+.today-goal .progress { grid-column: 1 / -1; height: 10px; }
+.today-goal > span { font-variant-numeric: tabular-nums; font-weight: 600; }
+.goal-select { display: inline-flex; gap: 6px; align-items: center; justify-self: end; }
+.goal-select select { font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; }
+.today-text { margin: 0; line-height: 1.45; }
+.daily-opening { color: var(--accent); }
