@@ -1,0 +1,78 @@
+[Opening "Siciliana Alapin (2.c3)"]
+[Id "alapin"]
+[Color "white"]
+[Description "Contro la Siciliana (1.e4 c5) niente teoria infinita: 2.c3 prepara d4 e costruisce il centro con c3-d4. Linee contro 2...Nf6, 2...d5, 2...e6, 2...Nc6, 2...d6, 2...g6 e 2...e5, con piani semplici e qualche trappola."]
+
+{ La Siciliana è la risposta più comune a 1.e4. Nella Siciliana aperta (2.Nf3 e 3.d4) il Nero ha decine di varianti da studiare a memoria. Con 2.c3, l'Alapin, il Bianco prepara d4 e, se il Nero cambia con ...cxd4, riprende di pedone con cxd4: ottiene il centro e si trova spesso in strutture che conosci già dal Gambetto di Donna. }
+1. e4 c5 2. c3 { [%line Alapin: 2.c3] Prepara d4: quando il Nero cambierà con ...cxd4, riprenderai di pedone e avrai due pedoni al centro. [%key 2.c3: prepara d4 e riprende di pedone in d4] [%cal Gc3d4,Gd2d4] }
+2... Nf6 { [%line Alapin: 2...Nf6] La risposta più popolare: il cavallo attacca e4. }
+3. e5 { Il pedone avanza con tempo e caccia il cavallo. [%cal Ge4e5] } 3... Nd5 4. d4 { Ora il centro: d4 sostiene e5. } 4... cxd4 5. Nf3 { Non serve riprendere subito: prima sviluppi il cavallo, poi cxd4. }
+5... Nc6 6. cxd4 { Ecco la struttura dell'Alapin: pedoni in d4 ed e5, molto spazio. [%key Struttura: pedoni d4 ed e5, il Nero attacca e5 con ...d6] }
+6... d6 { Il Nero attacca subito e5. } 7. Bc4 { L'alfiere caccia il cavallo d5. [%cal Gc4d5] } 7... Nb6 8. Bb5 { L'alfiere inchioda il cavallo c6: se ora il Nero prende in e5, riprendi con il cavallo, che da e5 attacca a sua volta il cavallo inchiodato. [%cal Gb5c6] }
+8... dxe5 9. Nxe5 Bd7 { Il Nero rompe l'inchiodatura. } 10. Nxd7 Qxd7 11. Nc3 { Sviluppo completo e pedone d4 isolato ma attivo: piano con arrocco, Be3 e Re1. Come nel Gambetto di Donna, il pedone isolato dà spazio e case per i pezzi. [%key Pedone isolato in d4: pezzi attivi, arrocco, Re1 e attacco] } *
+
+1. e4 c5 2. c3 Nf6 3. e5 Nd5 4. d4 cxd4 5. Nf3 e6 { [%line Alapin: 5...e6] Il Nero apre la diagonale all'alfiere f8. }
+6. cxd4 d6 7. Bc4 Nc6 8. O-O Be7 9. Qe2 { La donna difende il pedone e5 e va sulla colonna e: se il Nero prende in e5, riprende il pedone d4. [%cal Ge2e5] } 9... O-O 10. Nc3 { Tutti i pezzi in gioco. Piano: Rd1, Bd3 e attacco al lato di re. } *
+
+1. e4 c5 2. c3 Nf6 3. e5 Nd5 4. d4 cxd4 5. Nf3 d6 { [%line Alapin: 5...d6] } 6. Bc4 { Caccia il cavallo d5. } 6... Nb6 7. Bb3 dxe5 8. Nxe5 { Il cavallo occupa il centro e guarda f7. [%cal Ge5f7,Gb3f7] } 8... e6 9. cxd4 { Recuperi il pedone: hai il pedone d4 e i pezzi attivi. } *
+
+1. e4 c5 2. c3 Nf6 3. e5 Nd5 4. d4 d6 { [%line Alapin: 4...d6] Il Nero attacca e5 prima di cambiare in d4. }
+5. Nf3 Nc6 6. Bc4 Nb6 7. Bb5 { L'alfiere inchioda il cavallo c6, che attacca e5 e d4: senza di lui il Nero non può aumentare la pressione sul tuo centro. } *
+
+1. e4 c5 2. c3 Nf6 3. e5 Nd5 4. d4 Nc6 { [%line Alapin: 4...Nc6] } 5. Nf3 cxd4 6. cxd4 { Traspone nella linea principale. } *
+
+; ===================== 2...d5 =====================
+1. e4 c5 2. c3 d5 { [%line Alapin: 2...d5] Il Nero attacca e4 subito e porterà la donna al centro. }
+3. exd5 Qxd5 4. d4 { La donna nera è in d5, ma non può essere cacciata con Nc3 (c'è il pedone). Tu costruisci il centro con d4. [%key Contro ...Qxd5: d4, Nf3, Be2 e arrocco, poi Nc3 caccia la donna] }
+4... Nf6 5. Nf3 e6 6. Be2 { Sviluppo semplice: l'alfiere va in e2, dove non può essere attaccato. } 6... Nc6 7. O-O cxd4 8. cxd4 { Il pedone d4 è isolato, ma ora il cavallo può andare in c3 con tempo sulla donna. } 8... Be7 9. Nc3 { Caccia la donna: guadagni tempo per lo sviluppo. } 9... Qd6 *
+
+1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 Nf6 5. Nf3 Bg4 { [%line Alapin: 5...Bg4] L'alfiere inchioda il cavallo f3. }
+6. Be2 e6 7. O-O Nc6 8. h3 { Chiedi all'alfiere cosa vuole fare. } 8... Bh5 9. Be3 cxd4 10. cxd4 Be7 11. Nc3 { Caccia la donna con tempo. Piani: Qb3 contro b7, Rc1 e il pedone d4 che sostiene i cavalli in e5. [%key Contro ...Bg4: Be2, arrocco, h3 e Nc3 con tempo] } *
+
+1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 Nc6 { [%line Alapin: 4...Nc6] Il cavallo attacca d4. }
+5. Nf3 Bg4 6. Be2 cxd4 7. cxd4 e6 8. Nc3 { Con tempo sulla donna. } 8... Qa5 9. O-O { Il re è al sicuro e hai il centro. Piani: d5 al momento giusto, Be3 e Rc1. } *
+
+1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 Nc6 5. Nf3 cxd4 { [%line Alapin: 4...Nc6 5...cxd4] } 6. cxd4 { Traspone nella linea 2...Nc6. } *
+
+1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 cxd4 { [%line Alapin: 4...cxd4] } 5. cxd4 Nc6 6. Nf3 { Traspone nella linea 2...Nc6. } *
+
+1. e4 c5 2. c3 d5 3. exd5 Qxd5 4. d4 e6 { [%line Alapin: 4...e6] } 5. Nf3 Nf6 { Traspone. } *
+
+; ===================== 2...e6 =====================
+1. e4 c5 2. c3 e6 { [%line Alapin: 2...e6] Il Nero prepara ...d5, come nella Francese. }
+3. d4 d5 4. exd5 exd5 { Il Nero riprende di pedone: ora la posizione è simmetrica e aperta. }
+5. Nf3 Nc6 6. Bb5 { L'alfiere inchioda il cavallo c6, che attacca d4. [%cal Gb5c6] } 6... Bd6 7. dxc5 Bxc5 8. O-O { Ora il pedone d5 del Nero è isolato: è lui ad avere la debolezza. [%key Contro ...exd5: dxc5 e il pedone isolato è del Nero] [%csl Rd5] } 8... Nge7 9. Nbd2 { Il cavallo va in b3 per bloccare d4 davanti al pedone isolato. Piano: Nb3, Nbd4 e Re1. [%cal Gd2b3,Gb3d4] } *
+
+1. e4 c5 2. c3 e6 3. d4 d5 4. exd5 Qxd5 { [%line Alapin: 2...e6 4...Qxd5] } 5. Nf3 Nf6 { Traspone nella linea 2...d5. } *
+
+; ===================== 2...Nc6 =====================
+1. e4 c5 2. c3 Nc6 { [%line Alapin: 2...Nc6] } 3. d4 cxd4 4. cxd4 { Il centro ideale: e4 e d4. } 4... d5 { Il Nero attacca e4 subito. }
+5. exd5 Qxd5 6. Nf3 e5 { Il Nero attacca d4 e prova a liberarsi. } 7. Nc3 { Sviluppo con tempo sulla donna. } 7... Bb4 8. Bd2 Bxc3 9. Bxc3 e4 10. Ne5 { Il cavallo va al centro, sostenuto dall'alfiere c3 e dal pedone d4. Hai la coppia degli alfieri e una posizione molto comoda. [%key Contro ...e5: Nc3 con tempo e coppia degli alfieri] } *
+
+1. e4 c5 2. c3 Nc6 3. d4 d5 { [%line Alapin: 2...Nc6 3...d5] } 4. exd5 Qxd5 5. Nf3 cxd4 6. cxd4 { Traspone. } *
+
+1. e4 c5 2. c3 Nc6 3. d4 d5 4. exd5 Qxd5 5. Nf3 Bg4 { [%line Alapin: 2...Nc6 5...Bg4] } 6. Be2 { Traspone nella linea 2...d5 4...Nc6. } *
+
+; ===================== 2...d6 E LA TRAPPOLA =====================
+1. e4 c5 2. c3 d6 { [%line Alapin: 2...d6] Il Nero gioca in modo prudente. }
+3. d4 Nf6 { Attacca e4. } 4. Bd3 { Difendi e4 con l'alfiere: il centro resta intatto. [%cal Gd3e4] } 4... g6 5. Nf3 Bg7 6. O-O O-O 7. h3 { Toglie la casa g4 all'alfiere c8. Con i pedoni c3, d4 ed e4 hai il centro più forte: piano Re1, Nbd2 e Be3. [%key Contro ...d6: Bd3, Nf3, arrocco e h3, centro c3-d4-e4] } *
+
+1. e4 c5 2. c3 d6 3. d4 Nf6 4. Bd3 Nc6 { [%line Alapin: 2...d6 4...Nc6] } 5. Nf3 Bg4 { L'alfiere inchioda il cavallo f3. }
+6. d5 { Il pedone caccia il cavallo c6. Ora attenzione: se il Nero lo porta in e5... }
+6... Ne5 { [%line Alapin: 2...d6, trappola 6...Ne5?] } 7. Nxe5 { Prendi il cavallo, anche se l'alfiere g4 attacca la tua donna! [%key Trappola: Nxe5 lasciando la donna, poi Bb5+] }
+7... Bxd1 { Il Nero prende la donna... } 8. Bb5+ { ...ma arriva lo scacco: il Nero deve mettere qualcosa in d7. [%cal Gb5e8] } 8... Nd7 9. Bxd7+ Qxd7 10. Nxd7 { Hai preso donna, cavallo e alfiere: ora riprendi l'alfiere d1 e hai un pezzo in più. } *
+
+1. e4 c5 2. c3 d6 3. d4 Nf6 4. Bd3 Nc6 5. Nf3 Bg4 6. d5 Ne5 7. Nxe5 dxe5 { [%line Alapin: trappola 7...dxe5] Il Nero non cade nella trappola e riprende il cavallo. }
+8. Qb3 { La donna esce dall'attacco e colpisce b7. Hai più spazio e la coppia degli alfieri. [%cal Gb3b7] } *
+
+1. e4 c5 2. c3 d6 3. d4 Nf6 4. Bd3 Nc6 5. Nf3 Bg4 6. d5 Bxf3 { [%line Alapin: 2...d6 6...Bxf3] } 7. Qxf3 Ne5 8. Bb5+ { Scacco: il Nero deve bloccare e tu hai la coppia degli alfieri e più spazio. } *
+
+1. e4 c5 2. c3 d6 3. d4 Nf6 4. Bd3 cxd4 { [%line Alapin: 2...d6 4...cxd4] } 5. cxd4 Nc6 6. Nf3 { Centro con e4 e d4: il sogno di ogni giocatore che apre con 1.e4. } *
+
+1. e4 c5 2. c3 d6 3. d4 cxd4 { [%line Alapin: 2...d6 3...cxd4] } 4. cxd4 Nf6 5. Nc3 g6 6. Nf3 Bg7 7. Be2 O-O 8. O-O { Centro forte e sviluppo naturale: piano Be3, Qd2 e Rfd1 o Rac1. } *
+
+; ===================== 2...g6 E 2...e5 =====================
+1. e4 c5 2. c3 g6 { [%line Alapin: 2...g6] Il Nero prepara il fianchetto. } 3. d4 cxd4 4. cxd4 d5 5. e5 { Avanzi e chiudi la diagonale dell'alfiere g7. [%key Contro il fianchetto: e5 chiude l'alfiere g7] [%cal Re5g7] }
+5... Nc6 6. Nc3 Bg7 7. Bb5 { L'alfiere inchioda il cavallo c6, che vorrebbe attaccare d4. Piano: Nge2, arrocco e Be3. } *
+
+1. e4 c5 2. c3 e5 { [%line Alapin: 2...e5] Il Nero blocca il centro, ma lascia d5 debole. } 3. Nf3 Nc6 4. Bc4 { Come nell'Italiana: l'alfiere punta su f7. [%cal Gc4f7] } 4... Be7 5. d4 { Apri il centro: con c3 il pedone d4 è sostenuto e ottieni un buon vantaggio di sviluppo. } *
