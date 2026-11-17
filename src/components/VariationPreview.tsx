@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Icon } from './Icon';
 import { buildVariation, type BuiltVariation } from '../core/variation';
 
 /**
@@ -125,13 +126,13 @@ export function VariationBar() {
         ))}
       </div>
       <div className="controls">
-        <button onClick={() => api.goTo(0)} title="Inizio della variante" aria-label="Inizio della variante">⏮</button>
-        <button onClick={() => api.step(-1)} disabled={index === 0} title="Indietro (←)" aria-label="Indietro">◀</button>
-        <button onClick={() => api.step(1)} disabled={index === len} title="Avanti (→)" aria-label="Avanti">▶</button>
-        <button onClick={() => api.goTo(len)} title="Fine della variante" aria-label="Fine della variante">⏭</button>
+        <button onClick={() => api.goTo(0)} title="Inizio della variante" aria-label="Inizio della variante"><Icon name="first" /></button>
+        <button onClick={() => api.step(-1)} disabled={index === 0} title="Indietro (←)" aria-label="Indietro"><Icon name="prev" /></button>
+        <button onClick={() => api.step(1)} disabled={index === len} title="Avanti (→)" aria-label="Avanti"><Icon name="next" /></button>
+        <button onClick={() => api.goTo(len)} title="Fine della variante" aria-label="Fine della variante"><Icon name="last" /></button>
         <button onClick={api.replay} title="Rivedi tutta la sequenza">⟲ Rivedi</button>
         <button className="primary variation-back" onClick={() => api.close()} title="Torna alla posizione (Esc)">
-          ↩ Torna alla posizione
+          <Icon name="back" /> Torna alla posizione
         </button>
       </div>
     </div>

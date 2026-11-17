@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from '../components/Icon';
 import type { Opening } from '../model/types';
 import { exportCards } from '../core/progress';
 import { dailyQueue, doneToday, loadActivity, loadGoal, streak } from '../core/daily';
@@ -18,7 +19,7 @@ export function DailyReview({ openings, onHome, onMistakes }: Props) {
   if (items.length === 0) {
     return (
       <div className="session-end">
-        <h2>Niente da ripassare adesso 🎉</h2>
+        <h2>Niente da ripassare adesso <Icon name="party" /></h2>
         <p className="muted">Le posizioni che impari nei corsi e nell'Allenamento tornano qui quando è il momento di ripassarle.</p>
         <button className="primary" onClick={onHome}>
           Torna alla home
@@ -49,15 +50,15 @@ function DailyEnd({ score, onHome, onMistakes }: { score: { correct: number; wro
         Risposte giuste al primo colpo: <strong>{score.correct}</strong> · errori: <strong>{score.wrong}</strong>
       </p>
       <p>
-        {done >= goal ? `✓ Obiettivo del giorno raggiunto (${done}/${goal})` : `Obiettivo del giorno: ${done}/${goal}`}
-        {days > 0 && ` · 🔥 ${days} ${days === 1 ? 'giorno' : 'giorni'} di fila`}
+        {done >= goal ? <><Icon name="check" /> Obiettivo del giorno raggiunto ({done}/{goal})</> : `Obiettivo del giorno: ${done}/${goal}`}
+        {days > 0 && <> · <Icon name="flame" /> {days} {days === 1 ? 'giorno' : 'giorni'} di fila</>}
       </p>
       {done < goal && <p className="muted">Ti mancano {goal - done} risposte: puoi completarle con l'Allenamento, un corso o i problemi.</p>}
       <div className="actions" style={{ justifyContent: 'center' }}>
         <button className="primary" onClick={onHome}>
           Torna alla home
         </button>
-        {mistakes > 0 && <button onClick={onMistakes}>🧩 Rivedi i problemi sbagliati</button>}
+        {mistakes > 0 && <button onClick={onMistakes}><Icon name="puzzle" /> Rivedi i problemi sbagliati</button>}
       </div>
     </div>
   );

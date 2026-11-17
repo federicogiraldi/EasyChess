@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Icon, withIcons } from '../components/Icon';
 import { Chess } from 'chess.js';
 import type { OpeningNode } from '../model/types';
 import {
@@ -271,18 +272,18 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
         <div className="controls">
           {finished || error ? (
             <button className="primary" onClick={() => void nextPuzzle()} disabled={loading}>
-              Prossimo problema →
+              Prossimo problema <Icon name="arrowRight" />
             </button>
           ) : (
             <>
               <button onClick={() => setHinted(true)} disabled={!myTurn || hinted} title="Evidenzia il pezzo da muovere: il problema non conterà per il punteggio">
-                💡 Suggerimento
+                <Icon name="hint" /> Suggerimento
               </button>
               <button onClick={showSolution} disabled={!puzzle || showing || loading}>
-                👀 Soluzione
+                <Icon name="eye" /> Soluzione
               </button>
               <button onClick={() => void nextPuzzle()} disabled={loading} title="Salta questo problema">
-                ⏭ Salta
+                <Icon name="skip" /> Salta
               </button>
             </>
           )}
@@ -299,9 +300,9 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
             </div>
           </div>
           <div className="stats-row">
-            <span title="Risolti">✓ {stats.solved}</span>
-            <span title="Sbagliati">✗ {stats.failed}</span>
-            <span title="Serie attuale (record)">🔥 {stats.streak} ({stats.bestStreak})</span>
+            <span title="Risolti"><Icon name="check" /> {stats.solved}</span>
+            <span title="Sbagliati"><Icon name="wrong" /> {stats.failed}</span>
+            <span title="Serie attuale (record)"><Icon name="flame" /> {stats.streak} ({stats.bestStreak})</span>
           </div>
         </div>
 
@@ -316,7 +317,7 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
                   void nextPuzzle({ ...settings, source: src });
                 }}
               >
-                {src === 'rated' ? '🎯 Misti' : src === 'theme' ? '🏷 Per tema' : `🔁 Errori (${mistakes.length})`}
+                {src === 'rated' ? <><Icon name="target" /> Misti</> : src === 'theme' ? <><Icon name="tag" /> Per tema</> : <><Icon name="review" /> Errori ({mistakes.length})</>}
               </button>
             ))}
           </div>
@@ -360,7 +361,7 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
           )}
         </div>
 
-        <div className={`feedback ${feedback.kind}`}>{feedback.text}</div>
+        <div className={`feedback ${feedback.kind}`}>{withIcons(feedback.text)}</div>
         {wrong && <WhyButton fen={wrong.fen} san={wrong.san} expected={[solutionNode(wrong.fen, wrong.expected)]} />}
 
         {puzzle && finished && (
@@ -378,7 +379,7 @@ export function Puzzles({ initialSource }: { initialSource?: Source } = {}) {
               </div>
             )}
             <a className="muted small" href={`https://lichess.org/training/${puzzle.id}`} target="_blank" rel="noreferrer">
-              Vedi su Lichess ↗
+              Vedi su Lichess <Icon name="external" />
             </a>
           </div>
         )}

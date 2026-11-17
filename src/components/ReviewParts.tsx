@@ -1,4 +1,5 @@
 import type { OpeningNode } from '../model/types';
+import { Icon } from './Icon';
 import { SIM_QUALITY, SIM_QUALITY_ORDER, type PosEval, type SimPly, type SimQuality } from '../core/simulation';
 import { sanFromUci } from '../engine/simEngine';
 import { formatScore } from '../engine/stockfish';
@@ -110,7 +111,7 @@ export function ReviewMove({
       )}
       {mine && bad && (
         <div className="controls">
-          {onRetry && <button onClick={onRetry}>↶ Riprova da qui</button>}
+          {onRetry && <button onClick={onRetry}><Icon name="undo" /> Riprova da qui</button>}
           <WhyButton fen={ply.fenBefore} san={ply.san} expected={expected} />
         </div>
       )}
@@ -136,7 +137,7 @@ export function KeyMoments({
     <div className="sim-moments">
       <h3>Momenti chiave</h3>
       {moments.length === 0 ? (
-        <p className="muted small">Nessun errore: complimenti! 🎉</p>
+        <p className="muted small">Nessun errore: complimenti! <Icon name="party" /></p>
       ) : (
         moments.map(({ p, i, q }) => (
           <button key={i} className="sim-moment" onClick={() => onSelect(i + 1)}>

@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
+import { Icon } from '../components/Icon';
 import type { Opening } from '../model/types';
 import type { Mode } from '../App';
 import { exportCards, useProgress } from '../core/progress';
@@ -41,7 +42,7 @@ const shortDate = (iso: string) => {
   return d && m ? `${Number(d)}/${Number(m)}${y && y !== String(new Date().getFullYear()) ? `/${y.slice(2)}` : ''}` : iso;
 };
 
-function Tile({ label, value, sub }: { label: string; value: string; sub?: string }) {
+function Tile({ label, value, sub }: { label: string; value: ReactNode; sub?: string }) {
   return (
     <div className="stat-tile">
       <span className="stat-label">{label}</span>
@@ -71,16 +72,16 @@ function OpeningRow({ s, now, onOpen }: { s: OpeningSummary; now: number; onOpen
       <div className="op-actions">
         {s.due > 0 ? (
           <button className="primary" onClick={() => onOpen(s.id, 'review')}>
-            🔁 Ripassa ({s.toReview})
+            <Icon name="review" /> Ripassa ({s.toReview})
           </button>
         ) : !s.lastAt && s.courseTotal > 0 && s.courseDone === 0 ? (
-          <button onClick={() => onOpen(s.id, 'course')}>🎓 Inizia il corso</button>
+          <button onClick={() => onOpen(s.id, 'course')}><Icon name="course" /> Inizia il corso</button>
         ) : s.fresh > 0 ? (
-          <button onClick={() => onOpen(s.id, 'review')}>✨ Impara {Math.min(s.fresh, NEW_PER_SESSION)} nuove</button>
+          <button onClick={() => onOpen(s.id, 'review')}><Icon name="sparkles" /> Impara {Math.min(s.fresh, NEW_PER_SESSION)} nuove</button>
         ) : (
-          <span className="op-done">✓ Tutto ripassato</span>
+          <span className="op-done"><Icon name="check" /> Tutto ripassato</span>
         )}
-        {s.courseDone > 0 && s.courseDone < s.courseTotal && <button onClick={() => onOpen(s.id, 'course')}>🎓 Continua il corso</button>}
+        {s.courseDone > 0 && s.courseDone < s.courseTotal && <button onClick={() => onOpen(s.id, 'course')}><Icon name="course" /> Continua il corso</button>}
       </div>
     </li>
   );
@@ -144,7 +145,7 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
           value={String(toReview)}
           sub={dueOnly ? `${dueOnly} in scadenza, ${toReview - dueOnly} nuove` : `${toReview} nuove`}
         />
-        <Tile label="Serie di giorni" value={`🔥 ${days}`} sub={`oggi ${today}/${goal} risposte`} />
+        <Tile label="Serie di giorni" value={<><Icon name="flame" /> {days}</>} sub={`oggi ${today}/${goal} risposte`} />
         <Tile label="Allenate in 7 giorni" value={String(week)} sub="posizioni ripassate" />
         <Tile label="Lezioni completate" value={`${courseDone + mates}/${courseTotal + MATE_LESSONS.length}`} sub={`aperture ${courseDone}/${courseTotal} · matti ${mates}/${MATE_LESSONS.length}`} />
         <Tile
@@ -181,15 +182,15 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
             <>
               <LineChart points={ratingPoints} ariaLabel="Punteggio dei problemi nel tempo" />
               <div className="stats-row">
-                <span title="Risolti">✓ {stats.solved} risolti</span>
-                <span title="Sbagliati">✗ {stats.failed} sbagliati</span>
-                <span title="Serie migliore">🔥 record {stats.bestStreak}</span>
-                {mistakes > 0 && <span>🔁 {mistakes} errori da rivedere</span>}
+                <span title="Risolti"><Icon name="check" /> {stats.solved} risolti</span>
+                <span title="Sbagliati"><Icon name="wrong" /> {stats.failed} sbagliati</span>
+                <span title="Serie migliore"><Icon name="flame" /> record {stats.bestStreak}</span>
+                {mistakes > 0 && <span><Icon name="review" /> {mistakes} errori da rivedere</span>}
               </div>
               {history.length < 2 && <p className="muted small">Il grafico si riempie giorno dopo giorno: un punto per ogni giorno in cui risolvi problemi.</p>}
             </>
           ) : (
-            <Empty text="Risolvi qualche problema e qui vedrai il tuo punteggio crescere." action="🧩 Vai ai problemi" onClick={() => onSection('puzzles')} />
+            <Empty text="Risolvi qualche problema e qui vedrai il tuo punteggio crescere." action="Vai ai problemi" onClick={() => onSection('puzzles')} />
           )}
         </section>
 
@@ -207,7 +208,7 @@ export function ProgressPage({ openings, onOpen, onSection }: Props) {
           ) : (
             <Empty
               text="Gioca contro Stockfish nel Simulatore o analizza le tue partite di chess.com per vedere la tua precisione."
-              action="📊 Analizza le mie partite"
+              action="Analizza le mie partite"
               onClick={() => onSection('analysis')}
             />
           )}

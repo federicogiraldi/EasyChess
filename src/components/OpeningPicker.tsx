@@ -1,4 +1,5 @@
 import type { Opening } from '../model/types';
+import { Icon } from './Icon';
 import type { LoadError } from '../openings';
 import { cardPositions, countLeaves } from '../core/tree';
 import { getCard, resetOpening, useProgress } from '../core/progress';
@@ -49,17 +50,17 @@ export function OpeningPicker({ openings, errors, onOpen, onRemoveImported }: Pr
             <div className="actions">
               {op.course && (
                 <button className="primary" onClick={() => onOpen(op.id, 'course')}>
-                  🎓 Corso ({courseProgress(op.id).done.length}/{op.course.lessons.length})
+                  <Icon name="course" /> Corso ({courseProgress(op.id).done.length}/{op.course.lessons.length})
                 </button>
               )}
-              <button onClick={() => onOpen(op.id, 'explore')}>📖 Esplora</button>
-              <button onClick={() => onOpen(op.id, 'drill')}>♟ Allenamento</button>
+              <button onClick={() => onOpen(op.id, 'explore')}><Icon name="explore" /> Esplora</button>
+              <button onClick={() => onOpen(op.id, 'drill')}><Icon name="drill" /> Allenamento</button>
               <button onClick={() => onOpen(op.id, 'review')}>
-                🔁 Ripasso{toReview > 0 ? ` (${toReview})` : ''}
+                <Icon name="review" /> Ripasso{toReview > 0 ? ` (${toReview})` : ''}
               </button>
-              <button onClick={() => onOpen(op.id, 'quiz')}>❓ Quiz</button>
-              <button onClick={() => onOpen(op.id, 'sim')}>🎮 Simulatore</button>
-              <button onClick={() => onOpen(op.id, 'lab')}>🔬 Laboratorio</button>
+              <button onClick={() => onOpen(op.id, 'quiz')}><Icon name="quiz" /> Quiz</button>
+              <button onClick={() => onOpen(op.id, 'sim')}><Icon name="sim" /> Simulatore</button>
+              <button onClick={() => onOpen(op.id, 'lab')}><Icon name="lab" /> Laboratorio</button>
             </div>
             <footer className="card-footer">
               <button className="link" onClick={() => confirm(`Azzerare i progressi di "${op.name}"?`) && resetOpening(op.id)}>
@@ -76,7 +77,7 @@ export function OpeningPicker({ openings, errors, onOpen, onRemoveImported }: Pr
       })}
       {errors.map((e) => (
         <article key={e.file} className="opening-card error">
-          <h2>⚠ {e.file}</h2>
+          <h2><Icon name="warning" /> {e.file}</h2>
           <p>{e.message}</p>
           <p className="muted small">Correggi il file PGN e ricarica la pagina (oppure esegui npm run validate).</p>
         </article>

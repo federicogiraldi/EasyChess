@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Icon } from '../components/Icon';
 import type { Arrow, Opening, OpeningNode } from '../model/types';
 import { candidateLabel, lineNameOf, moveLabel, nextMoves, pathFromRoot } from '../core/tree';
 import { Board, sanOf } from '../components/Board';
@@ -66,17 +67,17 @@ export function Explore({ opening, onOpenLab, onSimulate }: Props) {
           lastMove={current.parent ? current : undefined}
         />
         <div className="controls">
-          <button onClick={() => setPath([opening.root])} title="Inizio (Home)">⏮</button>
-          <button onClick={back} title="Indietro (←)">◀</button>
-          <button onClick={() => candidates[0] && go(candidates[0])} title="Avanti, linea principale (→)">▶</button>
+          <button onClick={() => setPath([opening.root])} title="Inizio (Home)"><Icon name="first" /></button>
+          <button onClick={back} title="Indietro (←)"><Icon name="prev" /></button>
+          <button onClick={() => candidates[0] && go(candidates[0])} title="Avanti, linea principale (→)"><Icon name="next" /></button>
           <label className="toggle">
             <input type="checkbox" checked={hints} onChange={(e) => setHints(e.target.checked)} /> Frecce delle mosse
           </label>
           <button onClick={() => onOpenLab(path.slice(1).map((n) => n.san))} title="Prova mosse diverse da questa posizione con Stockfish">
-            🔬 Prova altre mosse da qui
+            <Icon name="lab" /> Prova altre mosse da qui
           </button>
           <button onClick={() => onSimulate(path.slice(1).map((n) => n.san))} title="Gioca una partita contro Stockfish da questa posizione">
-            🎮 Gioca da qui
+            <Icon name="sim" /> Gioca da qui
           </button>
         </div>
       </div>
@@ -96,7 +97,7 @@ export function Explore({ opening, onOpenLab, onSimulate }: Props) {
               <span>{candidateLabel(c)}</span>
             </button>
           ))}
-          {current.transposesTo && <p className="muted small">↪ Traspone in un'altra linea dell'albero.</p>}
+          {current.transposesTo && <p className="muted small"><Icon name="transpose" /> Traspone in un'altra linea dell'albero.</p>}
         </div>
         {candidates.length === 0 && <EngineTips fen={current.fen} onSimulate={() => onSimulate(path.slice(1).map((n) => n.san))} />}
       </div>
