@@ -251,6 +251,6 @@ src/
   components/      Board (react-chessboard), MoveList, CommentPanel, LineTree, OpeningPicker
 ```
 
-- `npm test` — test di parser, albero, SRS e validazione delle aperture
+- `npm test` — test di parser, albero, SRS e validazione delle aperture, più i test dei componenti (Allenamento e Ripasso, con una scacchiera finta in `src/test/fakeBoard.tsx`) e un test di architettura che vieta i cicli di import
 - `npm run typecheck` — controllo dei tipi TypeScript
 - Stockfish viene copiato da `node_modules/stockfish` in `public/engine/` (build lite) e `public/engine-full/` (build completa, ~80 MB, non nel repository) a ogni `npm install` (`scripts/copy-engine.mjs`). Licenza GPL: vedi `public/engine/COPYING-stockfish.txt`.
