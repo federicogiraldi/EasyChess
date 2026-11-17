@@ -78,9 +78,17 @@ export function applySettings(s: Settings = current) {
     m.dataset.original ??= m.content;
     m.content = s.theme === 'light' ? '#ffffff' : s.theme === 'dark' ? '#272420' : m.dataset.original;
   });
+  // "Nessuna" animazione spegne anche quelle dell'interfaccia (risposte, cambi di pagina).
+  if (s.animation === 'off') root.dataset.motion = 'off';
+  else delete root.dataset.motion;
   const board = BOARD_THEMES.find((t) => t.id === s.boardTheme) ?? BOARD_THEMES[0];
   root.style.setProperty('--sq-light', board.light);
   root.style.setProperty('--sq-dark', board.dark);
+}
+
+/** L'utente ha chiesto al sistema di ridurre il movimento. */
+export function reducedMotion(): boolean {
+  return typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 export function useSettings(): Settings {

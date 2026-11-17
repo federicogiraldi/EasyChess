@@ -6,7 +6,7 @@ import { useVariationPreview, VariationBar } from './VariationPreview';
 import { QualityIcon } from './QualityIcon';
 import type { SimQuality } from '../core/simulation';
 import { moveSound, playSound } from '../core/sound';
-import { ANIMATION_MS, useSettings } from '../core/settings';
+import { ANIMATION_MS, reducedMotion, useSettings } from '../core/settings';
 
 type ChessboardProps = Parameters<typeof Chessboard>[0];
 
@@ -164,7 +164,7 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
     position: fen,
     boardOrientation: orientation,
     boardWidth: width,
-    animationDuration: ANIMATION_MS[settings.animation],
+    animationDuration: reducedMotion() ? 0 : ANIMATION_MS[settings.animation],
     showBoardNotation: settings.coordinates,
     arePiecesDraggable: !!onMove,
     isDraggablePiece: ({ piece }) => !me || piece[0] === me,

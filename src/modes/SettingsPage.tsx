@@ -70,9 +70,10 @@ export function SettingsPage() {
               <input type="checkbox" checked={s.coordinates} onChange={(e) => set({ coordinates: e.target.checked })} />
             </label>
             <div className="setting">
-              <span className="setting-label">Animazione dei pezzi</span>
+              <span className="setting-label">Animazioni</span>
+              <span className="muted small">Pezzi che si muovono, risposte giuste e sbagliate, cambi di pagina. Con "Nessuna" restano ferme anche quelle dell'interfaccia.</span>
               <Choice
-                label="Animazione dei pezzi"
+                label="Animazioni"
                 value={s.animation}
                 onChange={(animation) => set({ animation })}
                 options={[

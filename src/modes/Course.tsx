@@ -185,7 +185,7 @@ export function Course({ opening, onDrillLine }: Props) {
             {step.text && <RichText text={step.text} />}
 
             {step.play.length > 0 && (
-              <div className={`feedback ${wrongSan ? 'wrong' : playing ? 'info' : 'ok'}`}>
+              <div key={wrongSan ?? (playing ? 'play' : 'ok')} className={`feedback ${wrongSan ? 'wrong' : playing ? 'info' : 'ok'}`}>
                 {wrongSan
                   ? <><Icon name="wrong" /> {wrongSan} non è la mossa giusta. La freccia verde ti mostra quella corretta: giocala.</>
                   : playing
@@ -210,7 +210,7 @@ export function Course({ opening, onDrillLine }: Props) {
                   </button>
                 ))}
                 {quizPick !== null && step.quiz.options[quizPick].explain && (
-                  <div className={`feedback ${step.quiz.options[quizPick].correct ? 'ok' : 'wrong'}`}>
+                  <div key={quizPick} className={`feedback ${step.quiz.options[quizPick].correct ? 'ok' : 'wrong'}`}>
                     {step.quiz.options[quizPick].explain}
                     {!step.quiz.options[quizPick].correct && ' Riprova.'}
                   </div>

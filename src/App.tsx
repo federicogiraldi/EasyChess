@@ -186,7 +186,7 @@ export default function App() {
           <Account />
         </header>
 
-        <main>
+        <main key={route ? `${route.openingId}-${route.mode}` : section} className="view">
           {section === 'settings' && !route ? (
             <SettingsPage />
           ) : today && !route ? (

@@ -36,7 +36,7 @@ export function TodayCard({ openings, onStart, onMistakes }: Props) {
         </span>
       </div>
 
-      <div className="today-goal">
+      <div className={`today-goal${reached ? " reached" : ""}`}>
         <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={goal} aria-valuenow={Math.min(done, goal)}>
           <div className="bar" style={{ width: `${width}%` }} />
         </div>

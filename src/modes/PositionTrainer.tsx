@@ -131,7 +131,7 @@ export function PositionTrainer(props: Props) {
           {mode !== 'quiz' && <span>{isNew ? 'Nuova' : 'Ripasso'}</span>}
           {mode === 'daily' && <span className="daily-opening">{opening.name}</span>}
         </div>
-        <div className={`feedback ${phase === 'ask' ? 'info' : phase === 'wrong' ? 'wrong' : 'ok'}`}>
+        <div key={phase + (wrongSan ?? '')} className={`feedback ${phase === 'ask' ? 'info' : phase === 'wrong' ? 'wrong' : 'ok'}`}>
           {phase === 'ask' && 'Trova la mossa del tuo repertorio.'}
           {phase === 'wrong' && <><Icon name="wrong" /> {wrongSan} non è nel repertorio. Giusta: {expected.map(moveLabel).join(' oppure ')} — giocala.</>}
           {phase === 'solved' && <><Icon name="check" /> {moveLabel(answer!)}</>}

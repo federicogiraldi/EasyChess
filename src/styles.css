@@ -89,7 +89,7 @@ button, .button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
   /* Tocco immediato (niente attesa del doppio tocco per lo zoom) e niente selezione del testo tenendo premuto */
   touch-action: manipulation;
   -webkit-user-select: none;
@@ -439,3 +439,40 @@ button:disabled { opacity: 0.5; cursor: default; }
 .spin { animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+
+/* Animazioni e feedback ------------------------------------------------------------------
+   Brevi e discrete; si spengono con "Riduci movimento" del sistema o con Animazioni: Nessuna. */
+.view { animation: view-in 0.22s ease-out; }
+@keyframes view-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.feedback { animation: fb-in 0.2s ease-out; }
+.feedback.ok { animation: fb-ok 0.32s ease-out; }
+.feedback.done { animation: fb-done 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.feedback.wrong { animation: fb-wrong 0.4s ease-in-out; }
+.feedback.done .icon, .feedback.ok .icon { animation: icon-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes fb-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+@keyframes fb-ok { 0% { opacity: 0; transform: scale(0.98); } 60% { opacity: 1; box-shadow: 0 0 0 4px color-mix(in srgb, var(--mine) 25%, transparent); } 100% { transform: none; box-shadow: 0 0 0 0 transparent; } }
+@keyframes fb-done { 0% { opacity: 0; transform: scale(0.94); } 70% { opacity: 1; box-shadow: 0 0 0 6px color-mix(in srgb, var(--mine) 22%, transparent); } 100% { transform: none; box-shadow: 0 0 0 0 transparent; } }
+@keyframes fb-wrong { 0%, 100% { transform: none; } 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+@keyframes icon-pop { from { transform: scale(0.3); } to { transform: scale(1); } }
+
+/* Scacchiera: le case colorate (ultima mossa, errori, selezione) cambiano colore con dolcezza */
+[data-boardid='easychess-board'] [data-square], [data-boardid='easychess-board'] [data-square] > div { transition: background-color 0.18s ease; }
+
+/* Schede della home e scorciatoie: si sollevano appena col mouse */
+@media (hover: hover) {
+  .opening-card, .shortcut, .continue-card { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s; }
+  .opening-card:hover, .shortcut:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12); }
+}
+button:active:not(:disabled), .button:active { transform: scale(0.97); }
+
+/* Obiettivo del giorno raggiunto: la barra si illumina una volta */
+.today-goal.reached .bar { animation: goal-glow 1.2s ease-out; }
+@keyframes goal-glow { 0% { filter: brightness(1); } 30% { filter: brightness(1.35); } 100% { filter: brightness(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+:root[data-motion='off'] *, :root[data-motion='off'] *::before, :root[data-motion='off'] *::after {
+  animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important;
+}
