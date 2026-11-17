@@ -1,0 +1,42 @@
+[Opening "Caro-Kann, Avanzata (Sistema Short)"]
+[Id "caro-kann-advance"]
+[Color "white"]
+[Description "Contro la Caro-Kann (1.e4 c6) il Bianco spinge 3.e5 e gioca il Sistema Short: Nf3, Be2 e arrocco veloce. Linee contro 5...c5, 5...Nd7, 5...Ne7 e 3...c5, con la trappola sul pedone b2. Sono le stesse posizioni del tuo corso Caro-Kann, viste dall'altra parte."]
+
+{ Nella Caro-Kann il Nero gioca 1...c6 e 2...d5, e porta fuori l'alfiere in f5 prima di ...e6. Con 3.e5 prendi spazio. Il Sistema Short è il modo più tranquillo di giocare l'Avanzata: niente g4 o h4, ma sviluppo rapido con Nf3, Be2 e arrocco, poi la spinta c4 per aprire il gioco al centro. }
+1. e4 c6 2. d4 d5 3. e5 { [%line Caro-Kann Avanzata: 3.e5] Il pedone prende spazio e toglie la casa f6 al cavallo g8. [%cal Ge4e5] }
+3... Bf5 { [%line Avanzata: 3...Bf5] La mossa tipica: l'alfiere esce prima di ...e6. }
+4. Nf3 { Sviluppo semplice. Il cavallo difende d4 e prepara l'arrocco. [%key Sistema Short: Nf3, Be2, arrocco e poi c4] } 4... e6 5. Be2 { L'alfiere va in e2: subito l'arrocco. }
+5... c5 { [%line Short: 5...c5] Il Nero attacca la base d4, come nella Francese. [%cal Rc5d4] }
+6. Be3 { L'alfiere difende d4. Ora se il Nero cambia, riprendi di cavallo. [%cal Ge3d4] } 6... cxd4 7. Nxd4 { Il cavallo in d4 è centralizzato e attacca l'alfiere f5. [%cal Gd4f5] }
+7... Ne7 8. O-O Nbc6 9. Bb5 { L'alfiere inchioda il cavallo c6, che attacca il tuo cavallo d4. [%cal Gb5c6] }
+9... a6 10. Bxc6+ { [%key Bxc6+: cambi il pezzo che attacca il tuo cavallo d4] } 10... bxc6 11. c4 { Attacchi il centro nero. Il Nero ha i pedoni c6 e a6 deboli. [%cal Gc4d5] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 cxd4 7. Nxd4 Ne7 8. O-O Nbc6 9. Bb5 a6 10. Bxc6+ Nxc6 { [%line Short: 10...Nxc6] } 11. Nxf5 exf5 12. c3 { Struttura chiara: il Nero ha pedoni doppiati in f7 e f5. Tu giochi Nd2-f3 e Bd4. } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Qb6 { [%line Short: 6...Qb6] La donna attacca b2. } 7. Nc3 { Sviluppo: il pedone b2 è un'esca. } 7... Nc6 8. O-O { Arrocco: il re è al sicuro e il pedone b2 resta un'esca. Se la donna lo prende, i tuoi pezzi la cacceranno con tempo (Na4, Rb1). } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Qb6 7. Nc3 Qxb2 { [%line Short: 7...Qxb2] Il Nero prende il pedone. }
+8. Qb1 { Proponi il cambio delle donne: dopo il cambio la tua torre arriva in b1 e attacca b7. [%cal Gb1b7] } 8... Qxb1+ 9. Rxb1 c4 10. Rxb7 { Pedone recuperato e torre attiva in settima traversa. } 10... Nc6 11. Nb5 { Minaccia Nc7+. [%cal Gb5c7] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Qb6 7. Nc3 Qxb2 8. Qb1 Qxb1+ 9. Rxb1 Nc6 { [%line Short: trappola 10...Bxc5?] } 10. dxc5 { Prendi il pedone c5 con il pedone d4. }
+10... Bxc5 { Il Nero riprende… } 11. Bxc5 { …ma in c5 l'alfiere nero non è difeso: lo prende il tuo alfiere e3 e il Nero non può riprendere. Pezzo in più. [%key Il pedone c5 era difeso dall'alfiere e3] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Nd7 { [%line Short: 6...Nd7] } 7. O-O Ne7 8. c4 { La spinta tipica del Sistema Short: attacchi d5 e apri il gioco, dove il tuo sviluppo è migliore. [%key c4: apri il centro quando sei più sviluppato] [%cal Gc4d5] }
+8... dxc4 9. Na3 { Il cavallo riprende in c4. Da c4 guarderà d6. [%cal Ga3c4] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Nd7 { [%line Short: 5...Nd7] Il Nero sviluppa senza fretta. } 6. O-O Ne7 7. Nbd2 { Il cavallo va in b3, da dove controlla c5 e d4. } 7... h6 { Prepara ...Bh7, una ritirata sicura per l'alfiere. } 8. Nb3 { Ora ...c5 è difficile: c5 è controllato dal cavallo b3. Piano: c3, a4 e Bd2. [%cal Gb3c5] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Nd7 6. O-O h6 { [%line Short: 6...h6] } 7. Nbd2 Ne7 { Traspone nella linea 5...Nd7. } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Ne7 { [%line Short: 5...Ne7] } 6. O-O c5 7. dxc5 { Prendi il pedone: il Nero dovrà spendere tempo per recuperarlo. }
+7... Nd7 8. Nd4 { Il cavallo centralizzato attacca l'alfiere f5 e lascia libero il pedone f per f4. [%cal Gd4f5] } 8... Bg6 9. Bg5 { L'alfiere attacca il cavallo e7: sei in vantaggio di sviluppo. [%cal Gg5e7] } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Ne7 6. O-O c5 7. dxc5 Nd7 8. Nd4 Nxe5 { [%line Short: 8...Nxe5] } 9. Bb5+ { Scacco: il Nero deve bloccare e tu completi lo sviluppo con tempo. } *
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Ne7 6. O-O c5 7. dxc5 Nec6 { [%line Short: 7...Nec6] } 8. Be3 { L'alfiere difende il pedone c5. } 8... Nd7 9. c4 { Come sempre nel Sistema Short: c4 per aprire il centro. } *
+
+1. e4 c6 2. d4 d5 3. e5 c5 { [%line Avanzata: 3...c5] Il Nero spende due tempi con il pedone c, ma attacca subito d4. } 4. dxc5 { Prendi: il Nero dovrà recuperare il pedone. }
+4... Nc6 5. Bb5 { Inchiodi il cavallo che vuole riprendere in e5 o c5. [%cal Gb5c6] } 5... e6 6. Be3 { Difendi il pedone c5. } *
+
+1. e4 c6 2. d4 d5 3. e5 c5 4. dxc5 e6 { [%line Avanzata: 3...c5 4...e6] } 5. Nf3 Bxc5 6. Bd3 { Sviluppo come nella Francese: Bd3, arrocco, e il pedone e5 tiene il Nero stretto. } *

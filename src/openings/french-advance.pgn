@@ -1,0 +1,35 @@
+[Opening "Francese, Variante d'Avanzata (3.e5)"]
+[Id "french-advance"]
+[Color "white"]
+[Description "Contro la Francese (1.e4 e6) il Bianco spinge 3.e5: spazio, catena di pedoni c3-d4-e5 e un piano chiaro. Linee contro 3...c5 con 5...Qb6 (6.a3 e b4), 5...Bd7 e 5...Nge7 (Na3-c2), contro 4...Qb6 e contro 3...b6, con l'idea chiave di difendere la base d4."]
+
+{ Nella Francese il Nero gioca 1...e6 e 2...d5. Con 3.e5 chiudi il centro e prendi spazio: il Nero attaccherà la tua catena di pedoni dalla base, con ...c5 contro d4 e talvolta ...f6 contro e5. Il tuo lavoro è semplice: tenere d4. Il pedone c3, il cavallo f3 e, quando serve, il cavallo che arriva in c2 lo difendono. }
+1. e4 e6 2. d4 d5 3. e5 { [%line Francese Avanzata: 3.e5] Il pedone avanza e prende spazio: il Nero ha meno case per i pezzi, soprattutto per il cavallo g8. [%key Catena c3-d4-e5: difendi la base d4] [%cal Ge4e5] }
+3... c5 { [%line Avanzata: 3...c5] La risposta naturale: il Nero attacca la base della catena, d4. [%cal Rc5d4] }
+4. c3 { Il pedone c3 sostiene d4: se il Nero cambia in d4, riprendi di pedone e la catena resta intatta. [%key 4.c3: dopo ...cxd4 riprendi di pedone] [%cal Gc3d4] }
+4... Nc6 { Un altro attacco su d4. } 5. Nf3 { E un altro difensore. [%cal Gf3d4] }
+5... Qb6 { [%line Avanzata: 5...Qb6] La linea principale: la donna attacca d4 e b2. Ora d4 è attaccato tre volte e difeso tre volte. [%cal Rb6d4,Rb6b2] }
+6. a3 { La mossa più semplice: prepara b4, che guadagna spazio sull'ala di donna e toglie al Nero l'idea ...cxd4 seguita da ...Bb4+. [%key 6.a3: prepara b4] [%cal Ga3a4,Gb2b4] }
+6... c4 { [%line Avanzata: 6...c4] Il Nero chiude l'ala di donna per impedire b4. } 7. Nbd2 { Il cavallo controlla c4 e b3; più avanti potrà andare in f1 e poi in g3 o e3. } 7... Na5 { Il cavallo sorveglia b3. }
+8. Rb1 { La torre sostiene b4 e toglie dalla diagonale della donna nera b2. [%cal Gb1b4] } 8... Bd7 9. Be2 Ne7 10. O-O { Il centro è chiuso: ora giochi sull'ala di re, dove hai più spazio (Re1, Nf1, g3, h4). [%key Centro chiuso: attacca sull'ala di re] } *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Qb6 6. a3 Nh6 { [%line Avanzata: 6...Nh6] Il cavallo va in f5 per attaccare d4. }
+7. b4 { Guadagni spazio e prepari Bb2 per difendere d4. } 7... cxd4 8. cxd4 Nf5 9. Bb2 { L'alfiere difende d4. [%cal Gb2d4] } 9... Be7 10. Bd3 { Sviluppo completo: arrocco e il centro è solido. Se ...Nh4, cambi i cavalli con Nxh4. } *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Qb6 6. a3 Bd7 { [%line Avanzata: 6...Bd7] } 7. b4 cxd4 8. cxd4 Rc8 { La torre sulla colonna c aperta. } 9. Bb2 Na5 10. Nbd2 { Il cavallo controlla c4 e b3: le case del cavallo nero. Arrocco, Bd3 e il centro resta tuo. [%cal Gd2c4,Gd2b3] } *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Qb6 6. a3 a5 { [%line Avanzata: 6...a5] Il Nero impedisce b4. } 7. Bd3 { Non serve più preparare b4: sviluppi l'alfiere sulla diagonale che punta verso h7. [%cal Gd3h7] } 7... Bd7 8. O-O *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Bd7 { [%line Avanzata: 5...Bd7] } 6. Be2 { Sviluppo semplice e arrocco. } 6... Nge7 7. Na3 { Il cavallo va in c2, da dove difende d4. [%key Manovra Na3-c2 per difendere d4] [%cal Ga3c2,Gc2d4] } 7... cxd4 8. cxd4 Nf5 9. Nc2 { Il pedone d4 è difeso dalla donna, dal cavallo f3 e ora anche dal cavallo c2. } *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Nge7 { [%line Avanzata: 5...Nge7] Il cavallo va in f5. } 6. Na3 { Come contro 5...Bd7: Na3 e poi Nc2. } 6... cxd4 7. cxd4 Nf5 8. Nc2 { Il pedone d4 è al sicuro. Piano: Bd3, arrocco e spazio. } *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Qb6 { [%line Avanzata: 4...Qb6] } 5. Nf3 Bd7 6. Be2 Bb5 { Il Nero vuole cambiare l'alfiere "cattivo", chiuso dai suoi pedoni. }
+7. c4 { Rifiuti il cambio: l'alfiere b5 viene attaccato e il pedone c4 attacca il centro nero. [%cal Gc4b5,Gc4d5] } *
+
+1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Qb6 5. Nf3 Nc6 { [%line Avanzata: 4...Qb6 5...Nc6] } 6. a3 { Traspone nella linea principale. } *
+
+1. e4 e6 2. d4 d5 3. e5 b6 { [%line Avanzata: 3...b6] Il Nero vuole cambiare l'alfiere camposcuro con ...Ba6. }
+4. c3 Qd7 5. Nf3 Ba6 6. Bxa6 Nxa6 7. O-O { Il cavallo nero in a6 è decentrato. Hai più spazio: piano con Nbd2, Re1 e Nf1-g3. } *
+
+1. e4 e6 2. d4 d5 3. e5 Ne7 { [%line Avanzata: 3...Ne7] } 4. Nf3 c5 5. c3 Nbc6 { Traspone nella linea 5...Nge7. } *
