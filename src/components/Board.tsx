@@ -10,7 +10,7 @@ import { ANIMATION_MS, reducedMotion, useSettings } from '../core/settings';
 
 type ChessboardProps = Parameters<typeof Chessboard>[0];
 
-interface Props {
+export interface BoardProps {
   fen: string;
   orientation: Side;
   /** Ritorna true se la mossa è accettata; se manca la scacchiera è solo da guardare. */
@@ -48,7 +48,7 @@ function moveBetween(prev: string, next: string) {
 
 const PREVIEW_ARROW = { good: 'rgba(21, 128, 61, 0.7)', bad: 'rgba(185, 28, 28, 0.7)' };
 
-export function Board(props: Props) {
+export function Board(props: BoardProps) {
   // Durante l'anteprima di una variante la scacchiera mostra quella al posto della partita (solo da guardare).
   const preview = useVariationPreview()?.state;
   let { fen, onMove, premoveColor, arrows = [], highlights = [], lastMove, marks = {}, badge } = props;
@@ -69,7 +69,7 @@ export function Board(props: Props) {
   return <BoardView fen={fen} orientation={orientation} onMove={onMove} premoveColor={premoveColor} arrows={arrows} highlights={highlights} lastMove={lastMove} marks={marks} badge={badge} previewing={!!preview} />;
 }
 
-function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highlights = [], lastMove, marks = {}, badge, previewing }: Props & { previewing: boolean }) {
+function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highlights = [], lastMove, marks = {}, badge, previewing }: BoardProps & { previewing: boolean }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [premove, setPremove] = useState<Premove | null>(null);
   const prevFen = useRef(fen);
