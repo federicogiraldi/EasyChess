@@ -1,5 +1,6 @@
 import { Chess } from 'chess.js';
 import { load, save } from './storage';
+import { addRatingPoint, type RatingPoint } from './dashboard';
 
 /** Un problema della banca (dal database pubblico di Lichess). */
 export interface Puzzle {
@@ -168,7 +169,12 @@ export function updateRating(stats: PuzzleStats, puzzleRating: number, win: bool
 export const DEFAULT_STATS: PuzzleStats = { rating: 1500, games: 0, solved: 0, failed: 0, streak: 0, bestStreak: 0 };
 
 export const loadStats = () => load<PuzzleStats>('puzzles:stats', DEFAULT_STATS);
-export const saveStats = (s: PuzzleStats) => save('puzzles:stats', s);
+export const loadRatingHistory = () => load<RatingPoint[]>('puzzles:history', []);
+/** Salva il punteggio e aggiunge il punto di oggi allo storico (pagina Progressi). */
+export const saveStats = (s: PuzzleStats) => {
+  save('puzzles:stats', s);
+  save('puzzles:history', addRatingPoint(loadRatingHistory(), s.rating, s.games));
+};
 export const loadSeen = () => new Set(load<string[]>('puzzles:seen', []));
 export const saveSeen = (s: Set<string>) => save('puzzles:seen', [...s]);
 export const loadMistakes = () => load<Mistake[]>('puzzles:mistakes', []);

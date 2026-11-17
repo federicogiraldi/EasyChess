@@ -17,6 +17,7 @@ import { Simulator } from './modes/Simulator';
 import { Analysis } from './modes/Analysis';
 import { Puzzles } from './modes/Puzzles';
 import { MateCourse } from './modes/MateCourse';
+import { ProgressPage } from './modes/Progress';
 import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
@@ -31,7 +32,7 @@ const MODES: { id: Mode; label: string }[] = [
   { id: 'lab', label: '🔬 Laboratorio' },
 ];
 
-type Section = 'openings' | 'mates' | 'puzzles' | 'analysis';
+type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress';
 
 /** Menu principale: ogni sezione ha la sua pagina, così la home resta dedicata alle aperture. */
 const SECTIONS: { id: Section; label: string }[] = [
@@ -39,6 +40,7 @@ const SECTIONS: { id: Section; label: string }[] = [
   { id: 'mates', label: '♚ Matti' },
   { id: 'puzzles', label: '🧩 Problemi' },
   { id: 'analysis', label: '📊 Analisi' },
+  { id: 'progress', label: '📈 Progressi' },
 ];
 
 const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, ''), s.source).id;
@@ -51,6 +53,7 @@ export default function App() {
   const analysis = section === 'analysis';
   const puzzles = section === 'puzzles';
   const mates = section === 'mates';
+  const progress = section === 'progress';
 
   const { openings, errors } = useMemo(() => loadOpenings([...builtinSources, ...imported]), [imported]);
   const opening = route && openings.find((o) => o.id === route.openingId);
@@ -154,7 +157,19 @@ export default function App() {
         </header>
 
         <main>
-          {mates && !route ? (
+          {progress && !route ? (
+            <ProgressPage
+              openings={openings}
+              onOpen={(openingId, mode) => {
+                setSection('openings');
+                setRoute({ openingId, mode });
+              }}
+              onSection={(sec) => {
+                setSection(sec);
+                window.scrollTo({ top: 0 });
+              }}
+            />
+          ) : mates && !route ? (
             <MateCourse />
           ) : puzzles && !route ? (
             <Puzzles />

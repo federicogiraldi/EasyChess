@@ -1,4 +1,5 @@
 import type { CardState } from './srs';
+import { mergeRatingHistory, type RatingPoint } from './dashboard';
 
 /**
  * Unione dei progressi di due dispositivi dello stesso account.
@@ -14,6 +15,7 @@ export function mergeValue(key: string, local: unknown, localAt: number, remote:
   if (key === 'cards') return mergeCards(local as Cards, remote as Cards);
   if (key === 'cards:resets') return maxPerKey(local as Record<string, number>, remote as Record<string, number>);
   if (key === 'puzzles:seen') return union(local as string[], remote as string[]);
+  if (key === 'puzzles:history') return mergeRatingHistory(local as RatingPoint[], remote as RatingPoint[]);
   if (key === 'puzzles:stats') {
     const l = local as { games: number };
     const r = remote as { games: number };
