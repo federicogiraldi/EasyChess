@@ -3,7 +3,7 @@ const PREFIX = 'easychess:';
 const META = '__meta';
 
 /** Chiavi che restano su questo dispositivo e non vanno sincronizzate. */
-const LOCAL_ONLY = new Set([META, 'installHintClosed']);
+const LOCAL_ONLY = new Set([META, 'installHintClosed', 'home:side']);
 
 export const isSyncedKey = (key: string) => !LOCAL_ONLY.has(key);
 

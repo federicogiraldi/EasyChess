@@ -7,7 +7,8 @@ import { load, save } from './core/storage';
 import { saveFile } from './core/device';
 import { InstallHint } from './components/InstallHint';
 import { Account } from './components/Account';
-import { OpeningPicker } from './components/OpeningPicker';
+import { ContinueCard, MODES, OpeningGrid, Shortcuts } from './components/Home';
+import { saveLastVisit } from './core/home';
 import { Explore } from './modes/Explore';
 import { Drill } from './modes/Drill';
 import { Review } from './modes/Review';
@@ -26,15 +27,6 @@ import { VariationPreviewProvider } from './components/VariationPreview';
 
 export type Mode = 'course' | 'explore' | 'drill' | 'review' | 'quiz' | 'lab' | 'sim';
 
-const MODES: { id: Mode; label: string; icon: IconName }[] = [
-  { id: 'course', label: 'Corso', icon: 'course' },
-  { id: 'explore', label: 'Esplora', icon: 'explore' },
-  { id: 'drill', label: 'Allenamento', icon: 'drill' },
-  { id: 'review', label: 'Ripasso', icon: 'review' },
-  { id: 'quiz', label: 'Quiz', icon: 'quiz' },
-  { id: 'sim', label: 'Simulatore', icon: 'sim' },
-  { id: 'lab', label: 'Laboratorio', icon: 'lab' },
-];
 
 /** 'today' (Ripasso di oggi) non ha una voce nel menu: ci si arriva dalla home. */
 type Section = 'openings' | 'mates' | 'puzzles' | 'analysis' | 'progress' | 'today' | 'settings';
@@ -49,6 +41,12 @@ const SECTIONS: { id: Section; label: string; icon: IconName }[] = [
 ];
 
 const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, ''), s.source).id;
+
+/** Saluto in base all'ora del giorno. */
+function greeting(now = new Date()): string {
+  const h = now.getHours();
+  return h < 5 ? 'Buonanotte' : h < 13 ? 'Buongiorno' : h < 18 ? 'Buon pomeriggio' : 'Buonasera';
+}
 
 export default function App() {
   const [imported, setImported] = useState<PgnSource[]>(() => load('imported', []));
@@ -80,6 +78,7 @@ export default function App() {
   useEffect(() => {
     document.querySelector('.tabs .active')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     window.scrollTo({ top: 0 });
+    if (route) saveLastVisit(route.openingId, route.mode);
   }, [route?.mode, route?.openingId]);
 
   const updateImported = (next: PgnSource[]) => {
@@ -240,65 +239,60 @@ export default function App() {
           ) : (
             <>
               <section className="hero">
-                <h1>Le tue aperture</h1>
+                <h1>{greeting()}</h1>
                 <p className="muted">
-                  Esplora le linee, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
+                  Impara le aperture con i corsi, allenati contro le risposte dell'avversario e ripassa con la ripetizione spaziata.
                 </p>
               </section>
               <InstallHint />
-              <TodayCard
-                openings={openings}
-                onStart={() => {
-                  setSection('today');
-                  window.scrollTo({ top: 0 });
-                }}
-                onMistakes={openMistakes}
-              />
               {message && (
                 <div className="toast" onClick={() => setMessage(null)}>
                   {message}
                 </div>
               )}
-              <OpeningPicker
+              <div className="home-top">
+                <TodayCard
+                  openings={openings}
+                  onStart={() => {
+                    setSection('today');
+                    window.scrollTo({ top: 0 });
+                  }}
+                  onMistakes={openMistakes}
+                />
+                <ContinueCard openings={openings} onOpen={(openingId, mode) => setRoute({ openingId, mode })} />
+              </div>
+              <OpeningGrid
                 openings={openings}
                 errors={errors}
                 onOpen={(openingId, mode) => setRoute({ openingId, mode })}
                 onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
               />
-              <section className="sim-card home-analysis">
-                <div>
-                  <h3><Icon name="puzzle" /> Problemi</h3>
-                  <p className="muted small">Quasi 100.000 problemi di tattica, senza limiti giornalieri e anche offline: col tuo punteggio, per tema e con il ripasso degli errori.</p>
-                </div>
-                <button className="primary" onClick={() => setSection('puzzles')}>
-                  Risolvi problemi
-                </button>
-              </section>
-              <section className="sim-card home-analysis">
-                <div>
-                  <h3><Icon name="analysis" /> Analisi delle tue partite</h3>
-                  <p className="muted small">Carica le partite da chess.com (o un PGN) e Stockfish le analizza, confrontandole con il tuo repertorio.</p>
-                </div>
-                <button className="primary" onClick={() => setSection('analysis')}>
-                  Analizza le mie partite
-                </button>
-              </section>
-              <section className="tools">
-                <label className="button">
-                  <Icon name="plus" /> Importa apertura (.pgn)
-                  {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
-                  <input type="file" onChange={importPgn} hidden />
-                </label>
-                <button onClick={exportProgress}><Icon name="save" /> Esporta progressi</button>
-                <label className="button">
-                  <Icon name="folder" /> Ripristina progressi
-                  <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
-                </label>
-              </section>
-              <p className="muted small hint">
-                Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
-                header <code>[Opening]</code>, <code>[Color]</code> e <code>[Description]</code>. Istruzioni complete nel README.
-              </p>
+              <Shortcuts
+                onSection={(sec) => {
+                  setSection(sec);
+                  setPuzzleStart(undefined);
+                  window.scrollTo({ top: 0 });
+                }}
+              />
+              <details className="home-tools">
+                <summary><Icon name="folder" /> Importa aperture e backup dei progressi</summary>
+                <section className="tools">
+                  <label className="button">
+                    <Icon name="plus" /> Importa apertura (.pgn)
+                    {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
+                    <input type="file" onChange={importPgn} hidden />
+                  </label>
+                  <button onClick={exportProgress}><Icon name="save" /> Esporta progressi</button>
+                  <label className="button">
+                    <Icon name="folder" /> Ripristina progressi
+                    <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
+                  </label>
+                </section>
+                <p className="muted small hint">
+                  Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
+                  header <code>[Opening]</code>, <code>[Color]</code> e <code>[Description]</code>. Istruzioni complete nel README.
+                </p>
+              </details>
             </>
           )}
         </main>
