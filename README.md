@@ -9,6 +9,7 @@ App locale per imparare le aperture di scacchi linea per linea. Repertorio inclu
 - **Attacco Indiano di Re** (col Bianco, 1.Nf3 o da 1.e4 con d3): 13 linee, corso di 7 lezioni;
 - **Gambetto di Donna** (col Bianco, 1.d4 d5 2.c4): 18 linee, corso di 6 lezioni;
 - **Gambetto Scozzese** (col Bianco, 1.e4 e5 2.Nf3 Nc6 3.d4 exd4 4.Bc4): 10 linee, corso di 5 lezioni;
+- **Partita Italiana – Giuoco Pianissimo** (col Bianco, 1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.c3 Nf6 5.d3, con le risposte a 3...Be7, 3...d6 e 3...Nd4): 22 linee, corso di 7 lezioni;
 - **Attacco Fried Liver** (col Bianco, Due Cavalli con 4.Ng5): 9 linee, corso di 6 lezioni.
 
 ## Online

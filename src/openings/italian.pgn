@@ -1,0 +1,95 @@
+[Opening "Partita Italiana (Giuoco Pianissimo)"]
+[Id "italian"]
+[Color "white"]
+[Description "1.e4 e5 2.Nf3 Nc6 3.Bc4 e, contro 3...Bc5, il sistema moderno con c3, d3, arrocco, h3, a4 e Re1: niente teoria a memoria, piani chiari e lenta pressione. Con le risposte alle altre terze mosse del Nero (3...Nf6, 3...Be7, 3...d6, 3...Nd4) e le trappole più frequenti."]
+
+{ La Partita Italiana è una delle aperture più antiche: l'alfiere va in c4 e punta su f7, il punto debole del Nero. Il Giuoco Pianissimo è il modo in cui la giocano oggi i migliori: invece di aprire subito il centro con d4, il Bianco costruisce con c3 e d3, arrocca e prepara la spinta d3-d4 solo quando è pronto. Poca teoria, tanti piani da capire. }
+1. e4 e5 2. Nf3 Nc6 3. Bc4 { [%line Italiana: 3.Bc4] L'alfiere punta su f7, difeso solo dal re. [%cal Gc4f7] }
+3... Bc5 { [%line Giuoco Piano: 3...Bc5] La risposta classica: anche l'alfiere nero punta sul punto debole del Bianco, f2. [%cal Rc5f2] }
+4. c3 { Prepara d4 e toglie la casa d4 al cavallo c6. Il pedone c3 dà anche all'alfiere c4 una ritirata in c2 o b3. [%key 4.c3: prepara d4 e controlla d4] [%cal Gc3d4] }
+4... Nf6 { Il Nero attacca e4 e sviluppa un altro pezzo. }
+5. d3 { Il Pianissimo: e4 è difeso per sempre e la spinta d3-d4 resta pronta per dopo. Il Bianco non ha fretta: prima arrocca e mette i pezzi nelle case giuste. [%key Pianissimo: c3 + d3, arrocco e solo dopo d4] [%cal Gd3e4] }
+5... d6 { [%line Pianissimo: 5...d6] Anche il Nero gioca con calma: difende e5 e apre la diagonale all'alfiere c8. }
+6. O-O { Prima di tutto il re al sicuro. }
+6... O-O 7. h3 { Toglie la casa g4 all'alfiere c8 e al cavallo f6: niente inchiodatura ...Bg4 e niente ...Ng4 contro f2. È una mossa che vedrai in quasi tutte le partite del Pianissimo. [%key h3: niente ...Bg4 e niente ...Ng4] [%csl Gg4] }
+7... a6 { Il Nero prepara la ritirata ...Ba7, così l'alfiere c5 non potrà essere cacciato da b4 e d4. }
+8. a4 { Guadagna spazio sul lato di donna e impedisce ...b5, che caccerebbe l'alfiere c4. Ora l'alfiere ha anche la casa a2. [%key a4: niente ...b5 e casa a2 per l'alfiere] [%cal Ga4b5] }
+8... Ba7 9. Re1 { La torre va in e1: difende e4 e si prepara per la spinta d3-d4, che aprirà la colonna e. [%cal Ge1e4] }
+9... h6 { Anche il Nero toglie la casa g5 al cavallo e all'alfiere bianchi. }
+10. Nbd2 { Il cavallo b1 non può andare in c3 (c'è il pedone), quindi fa un giro: d2, f1 e poi g3, vicino al re nero. [%key Il giro del cavallo: Nbd2-f1-g3] [%cal Gd2f1,Gf1g3] }
+10... Re8 11. Nf1 Be6 { Il Nero offre il cambio degli alfieri: il tuo alfiere c4 è il pezzo più pericoloso della tua posizione. }
+12. Bxe6 { Cambi tu: dopo ...Rxe6 la torre nera è in una casa scomoda. } 12... Rxe6 13. Ng3 { Il cavallo è arrivato: da g3 può saltare in f5, vicino al re nero. Piani tipici: Be3 per cambiare l'alfiere a7, Qc2 o Qb3, poi d3-d4 quando tutto è pronto. [%key Piano: Ng3-f5, Be3 e poi d4] [%cal Gg3f5,Gc1e3,Gd3d4] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d6 6. O-O a6 { [%line Pianissimo: 6...a6] Il Nero prepara subito ...Ba7. }
+7. a4 { Stessa idea: niente ...b5. } 7... Ba7 8. Re1 O-O 9. h3 { Traspone nella linea principale. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 a6 { [%line Pianissimo: 5...a6] } 6. O-O d6 { Traspone. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 O-O { [%line Pianissimo: 5...O-O] } 6. O-O d6 { Traspone. } *
+
+; ===================== ...Na5 E ...Ne7 =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d6 6. O-O O-O 7. h3 Na5 { [%line Pianissimo: 7...Na5] Il cavallo attacca l'alfiere c4 per cambiarlo. }
+8. Bb5 { L'alfiere evita il cambio. Ora il cavallo a5 è in pericolo: la minaccia è b4, e il cavallo non avrebbe più case (b3, c4 e c6 sono controllate). Per questo il Nero deve cacciare l'alfiere con ...a6 e ...b5, indebolendo il lato di donna. [%cal Gb2b4] }
+8... a6 9. Ba4 b5 10. Bc2 { L'alfiere arriva in c2: è una casa sicura e punta sempre verso il lato di re nero. Intanto il cavallo a5 è finito sul bordo, lontano dal centro. Piano: Nbd2, Re1, poi d4 o b4 per cacciare l'alfiere c5. [%key Contro ...Na5: Bb5, Ba4 e Bc2, il cavallo resta sul bordo] [%cal Gc2h7] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d6 6. O-O O-O 7. h3 Ne7 { [%line Pianissimo: 7...Ne7] Il cavallo va verso g6, ma per un momento lascia il centro. }
+8. d4 { È il momento della spinta: il cavallo non controlla più d4 e il Bianco occupa il centro con tempo sull'alfiere c5. [%key Quando il cavallo c6 lascia il centro, spingi d4] [%cal Gd3d4] }
+8... exd4 9. cxd4 Bb6 10. Nc3 { Hai il centro ideale con e4 e d4 e i pezzi pronti. Piano: Re1, Bg5 e la spinta e4-e5. [%cal Ge4e5] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d6 6. O-O O-O 7. h3 Be6 { [%line Pianissimo: 7...Be6] Il Nero offre subito il cambio degli alfieri. }
+8. Bxe6 fxe6 { Il Nero ha un pedone doppiato, ma la colonna f aperta per la torre. }
+9. b4 { Caccia l'alfiere c5 e guadagna spazio. Piano: a4, Nbd2 e Qb3 contro il pedone e6. [%key Contro i pedoni doppiati in e6: b4, a4 e pressione con Qb3] [%cal Gb4c5] } *
+
+; ===================== ...Bg4: L'INCHIODATURA =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d6 6. O-O Bg4 { [%line Pianissimo: 6...Bg4] Prima che tu giochi h3, l'alfiere inchioda il cavallo f3. }
+7. h3 { Chiedi subito all'alfiere cosa vuole fare. }
+7... Bh5 { Mantiene l'inchiodatura. } 8. Re1 O-O 9. Nbd2 { Il cavallo andrà in f1 e g3, dove caccerà l'alfiere h5. Più avanti potrai anche spingere g4. [%key Contro ...Bg4: h3, poi Nbd2-f1-g3 contro l'alfiere] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d6 6. O-O Bg4 7. h3 Bxf3 { [%line Pianissimo: 7...Bxf3] Il Nero cede la coppia degli alfieri. }
+8. Qxf3 { Riprendi con la donna: la struttura resta sana e la donna in f3 guarda f7. } 8... O-O 9. Nd2 { Il cavallo va in b3 o f1. Hai la coppia degli alfieri: il piano è aprire la posizione con d4 o con la spinta f2-f4. [%key Con la coppia degli alfieri, apri la posizione] } *
+
+; ===================== 5...d5?! E LA DONNA IN b3 =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d5 { [%line Pianissimo: 5...d5?!] Il Nero apre subito il centro, ma è troppo presto. }
+6. exd5 Nxd5 7. Qb3 { La donna attacca due volte: il cavallo d5 e il pedone f7. Il Nero non può difendere tutto. [%key Contro ...d5 presto: Qb3 attacca d5 e f7 insieme] [%cal Gb3d5,Gb3f7,Gc4f7] }
+7... Na5 { Il cavallo caccia la donna... } 8. Qb5+ { ...ma la donna dà scacco e attacca anche l'alfiere c5, che non è più difeso. È un attacco doppio. [%key Qb5+: scacco al re e attacco all'alfiere c5] [%cal Gb5c5,Gb5e8] }
+8... c6 9. Qxc5 { Hai un pezzo in più. Attenzione all'alfiere c4, attaccato dal cavallo a5: se ...Nxc4 riprendi con dxc4. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d5 6. exd5 Nxd5 7. Qb3 Nce7 { [%line 5...d5: 7...Nce7] Il cavallo difende d5 da e7... }
+8. Qb5+ { ...ma lascia l'alfiere c5 senza difesa: stesso attacco doppio. } 8... c6 9. Qxc5 { Un pezzo in più. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 d5 6. exd5 Nxd5 7. Qb3 Nf6 { [%line 5...d5: 7...Nf6] La difesa migliore: il cavallo torna indietro. }
+8. Bxf7+ { Prendi il pedone con scacco: il re nero perde l'arrocco. } 8... Kf8 9. O-O { Un pedone in più e il re nero bloccato al centro. L'alfiere f7 tornerà in c4 o b3. [%key 7...Nf6: Bxf7+ e un pedone in più] } *
+
+; ===================== 4...d6 E 4...Qe7 =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 d6 { [%line Giuoco Piano: 4...d6] } 5. d3 Nf6 { Traspone nel Pianissimo. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Qe7 { [%line Giuoco Piano: 4...Qe7] La donna difende e5: il Nero rinuncia a ...Nf6 per ora. }
+5. d4 { Senza la pressione su e4 puoi giocare subito d4: e4 non è attaccato. [%key Se il Nero non attacca e4, spingi subito d4] } 5... Bb6 6. O-O Nf6 7. Re1 d6 8. h3 { Hai il centro e più spazio. Piano: Na3-c2 o Nbd2, Be3 e a4 contro l'alfiere b6. } *
+
+; ===================== LE ALTRE TERZE MOSSE DEL NERO =====================
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 { [%line Due Cavalli: 3...Nf6] Il Nero contrattacca e4: è la Difesa dei Due Cavalli. }
+4. Ng5 { Il tuo repertorio qui è l'attacco diretto contro f7: tutte le linee sono nell'apertura Attacco Fried Liver. [%cal Gg5f7,Gc4f7] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Be7 { [%line Difesa Ungherese: 3...Be7] Una difesa molto prudente: l'alfiere protegge il lato di re ma è passivo. }
+4. d4 { Contro una difesa passiva prendi subito il centro. [%key Contro le difese passive: d4 subito] } 4... d6 { Il Nero tiene e5. }
+5. d5 { Il pedone avanza con tempo sul cavallo e blocca il centro: il Nero resta chiuso. } 5... Nb8 6. Bd3 { L'alfiere sta meglio in d3, dove difende e4; seguiranno c4, Nc3 e arrocco, con tanto spazio. [%cal Gc2c4] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Be7 4. d4 exd4 { [%line Difesa Ungherese: 4...exd4] } 5. Nxd4 Nf6 6. Nc3 O-O 7. O-O { Sviluppo completo e più spazio al centro: hai una posizione comoda. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 d6 { [%line Difesa con 3...d6] Solida ma passiva: l'alfiere f8 resta chiuso. }
+4. d4 { Anche qui: centro subito. } 4... exd4 5. Nxd4 Nf6 6. Nc3 Be7 7. O-O O-O { Hai più spazio e sviluppo comodo: Re1, Bf4 o Be3 e una posizione da giocare con calma. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 d6 4. d4 Bg4 { [%line 3...d6: 4...Bg4] Il Nero inchioda il cavallo f3. }
+5. h3 { Chiedi all'alfiere cosa vuole fare. }
+5... Bxf3 6. Qxf3 { La donna arriva in f3, puntata come l'alfiere c4 su f7. [%cal Gf3f7,Gc4f7] }
+6... exd4 { [%line 3...d6: trappola 6...exd4??] Una mossa naturale, ma un grave errore... }
+7. Qxf7# { Scacco matto: donna e alfiere insieme su f7. [%key Donna in f3 + alfiere c4: attenzione al matto in f7] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 d6 4. d4 Bg4 5. h3 Bxf3 6. Qxf3 Nf6 { [%line 3...d6: 6...Nf6] La difesa giusta: il cavallo si mette fra la donna e f7, così il matto non c'è più. }
+7. d5 { Il pedone caccia il cavallo e guadagna spazio. } 7... Nd4 8. Qd3 { La donna si ritira in d3 e attaccherà il cavallo d4 con c3. Hai la coppia degli alfieri e più spazio. [%cal Gc2c3] } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 d6 4. d4 Bg4 5. h3 Bh5 { [%line 3...d6: 5...Bh5] L'alfiere mantiene l'inchiodatura. }
+6. d5 { Il pedone caccia il cavallo con tempo. } 6... Nb8 7. g4 { Ora caccia anche l'alfiere: con il re ancora al centro puoi spingere i pedoni del lato di re. } 7... Bg6 8. Nc3 { Molto spazio e sviluppo rapido: hai un chiaro vantaggio. } *
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Nd4 { [%line Trappola Blackburne: 3...Nd4] Il cavallo va in d4 e lascia e5 senza difesa. È una trappola: se prendi con 4.Nxe5?? arriva ...Qg5! con un attacco fortissimo. }
+4. Nxd4 { Cambia il cavallo: semplice e forte. [%key Contro 3...Nd4: cambia con Nxd4, non prendere in e5] } 4... exd4 5. O-O { Hai un buon vantaggio di sviluppo e il pedone d4 nero è debole: lo attaccherai con c3 o Re1 e d3. } *
