@@ -5,6 +5,7 @@ import type { LoadError } from '../openings';
 import { exportCards, resetOpening, useProgress } from '../core/progress';
 import { pct, summarizeOpening, type OpeningSummary } from '../core/dashboard';
 import { groupOpenings, keyMoves, loadLastVisit, nextStep, since, type HomeMode } from '../core/home';
+import { mineIn } from '../core/onboarding';
 import { load, save } from '../core/storage';
 import { courseProgress } from '../modes/Course';
 
@@ -93,7 +94,7 @@ export function ContinueCard({ openings, onOpen }: ContinueProps) {
 
 // ---------------------------------------------------------------------------
 
-type SideFilter = 'all' | 'white' | 'black';
+type SideFilter = 'mine' | 'all' | 'white' | 'black';
 const FILTER_KEY = 'home:side';
 
 interface GridProps {
@@ -101,13 +102,20 @@ interface GridProps {
   errors: LoadError[];
   onOpen: (openingId: string, mode: HomeMode) => void;
   onRemoveImported: (openingId: string) => void;
+  /** Le aperture che l'utente gioca (scelte nella presentazione). */
+  mine: string[];
+  onChooseMine: () => void;
 }
 
-/** Le aperture, raggruppate per colore e prima mossa, con un filtro Bianco/Nero. */
-export function OpeningGrid({ openings, errors, onOpen, onRemoveImported }: GridProps) {
+/** Le aperture, raggruppate per colore e prima mossa, con un filtro Le mie / Tutte / Bianco / Nero. */
+export function OpeningGrid({ openings, errors, onOpen, onRemoveImported, mine, onChooseMine }: GridProps) {
   const summaries = useSummaries(openings);
-  const [filter, setFilter] = useState<SideFilter>(() => load<SideFilter>(FILTER_KEY, 'all'));
-  const groups = groupOpenings(openings).filter((g) => filter === 'all' || g.side === filter);
+  const myOpenings = mineIn(openings, mine);
+  const [stored, setFilter] = useState<SideFilter | null>(() => load<SideFilter | null>(FILTER_KEY, null));
+  // Senza una scelta salvata: le mie, se ne ho scelte; altrimenti tutte.
+  const filter: SideFilter = stored === 'mine' && !myOpenings.length ? 'all' : (stored ?? (myOpenings.length ? 'mine' : 'all'));
+  const shown = filter === 'mine' ? myOpenings : openings;
+  const groups = groupOpenings(shown).filter((g) => filter === 'all' || filter === 'mine' || g.side === filter);
   const count = (side: 'white' | 'black') => openings.filter((o) => o.color === side).length;
   const choose = (f: SideFilter) => {
     setFilter(f);
@@ -121,17 +129,22 @@ export function OpeningGrid({ openings, errors, onOpen, onRemoveImported }: Grid
         <div className="side-filter" role="group" aria-label="Mostra">
           {(
             [
+              ...(myOpenings.length ? [['mine', `Le mie (${myOpenings.length})`]] : []),
               ['all', `Tutte (${openings.length})`],
               ['white', `Bianco (${count('white')})`],
               ['black', `Nero (${count('black')})`],
             ] as [SideFilter, string][]
           ).map(([id, label]) => (
             <button key={id} className={filter === id ? 'active' : ''} aria-pressed={filter === id} onClick={() => choose(id)}>
-              {id !== 'all' && <Icon name={id} className={`icon-${id}`} />} {label}
+              {(id === 'white' || id === 'black') && <Icon name={id} className={`icon-${id}`} />}
+              {id === 'mine' && <Icon name="star" />} {label}
             </button>
           ))}
         </div>
       </div>
+      <button className="link choose-mine" onClick={onChooseMine}>
+        {myOpenings.length ? 'Cambia le aperture che giochi' : 'Scegli le aperture che giochi'}
+      </button>
 
       {groups.map((g) => (
         <div key={g.id} className="opening-group">
