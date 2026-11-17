@@ -32,7 +32,7 @@ jobs:
       - run: npm run build
       - name: Controllo dei file della PWA
         run: |
-          for f in index.html sw.js manifest.webmanifest engine/stockfish.js engine/stockfish.wasm icons/icon-192.png icons/icon-512.png icons/maskable-512.png; do
+          for f in index.html sw.js manifest.webmanifest engine/stockfish.js engine/stockfish.wasm engine-full/stockfish.js engine-full/stockfish-part-5.wasm icons/icon-192.png icons/icon-512.png icons/maskable-512.png; do
             test -s "dist/$f" || { echo "::error::manca dist/$f"; exit 1; }
           done
           grep -q 'href="./manifest.webmanifest"' dist/index.html || { echo "::error::il manifest deve avere un percorso relativo"; exit 1; }

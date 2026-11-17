@@ -3,3 +3,6 @@ dist
 
 # Mappa di graphify (si rigenera da sola)
 graphify-out/
+
+# Stockfish completo (~80 MB): lo copia scripts/copy-engine.mjs a ogni npm install
+public/engine-full/

@@ -38,13 +38,46 @@ export const ENGINE_ELO_MAX = 3190;
 const MATE = 100000;
 
 /**
- * Profondità di analisi, uguali su PC e telefono: sul telefono ci vuole qualche secondo in più,
- * ma i giudizi restano gli stessi (a profondità 12-14 alcune valutazioni cambiavano di segno).
- * ANALYSIS_DEPTH: spiegazione di una singola mossa ("Perché?", Laboratorio).
- * EVAL_DEPTH: valutazione di posizioni in serie (revisione delle partite, barra di valutazione, coach).
+ * Precisione dell'analisi, scelta nelle Impostazioni (vale solo per questo dispositivo).
+ * - analysis: spiegazione di una singola mossa ("Perché?", Laboratorio).
+ * - eval: valutazione di posizioni in serie (revisione delle partite, barra di valutazione, coach).
+ * - build: "lite" (rete neurale piccola, ~7 MB, in cache offline) o "full" (la rete completa di
+ *   Stockfish 17.1, ~80 MB scaricati la prima volta): a parità di profondità sbaglia molto meno.
+ * Le profondità sono uguali su PC e telefono: sul telefono ci vuole qualche secondo in più, ma i giudizi restano gli stessi.
  */
-export const ANALYSIS_DEPTH = 18;
-export const EVAL_DEPTH = 16;
+export type EngineLevel = 'fast' | 'balanced' | 'max';
+export const ENGINE_LEVELS: Record<EngineLevel, { analysis: number; eval: number; hash: number; build: 'lite' | 'full' }> = {
+  fast: { analysis: 14, eval: 12, hash: 16, build: 'lite' },
+  balanced: { analysis: 18, eval: 16, hash: 32, build: 'lite' },
+  max: { analysis: 20, eval: 18, hash: 64, build: 'full' },
+};
+const LEVEL_KEY = 'easychess:engineLevel';
+
+function readLevel(): EngineLevel {
+  try {
+    const v = localStorage.getItem(LEVEL_KEY);
+    return v === 'fast' || v === 'max' ? v : 'balanced';
+  } catch {
+    return 'balanced';
+  }
+}
+let level: EngineLevel = typeof localStorage === 'undefined' ? 'balanced' : readLevel();
+
+export const getEngineLevel = () => level;
+export const analysisDepth = () => ENGINE_LEVELS[level].analysis;
+export const evalDepth = () => ENGINE_LEVELS[level].eval;
+
+/** Cambia la precisione: il motore delle analisi si riavvia con la nuova build alla prossima richiesta. */
+export function setEngineLevel(next: EngineLevel) {
+  if (next === level) return;
+  level = next;
+  try {
+    localStorage.setItem(LEVEL_KEY, next);
+  } catch {
+    /* niente */
+  }
+  engine.configure(ENGINE_LEVELS[next].build, ENGINE_LEVELS[next].hash);
+}
 
 export interface EngineProgress {
   /** Profondità raggiunta dalla ricerca in corso e quella richiesta. */
@@ -63,6 +96,10 @@ interface Job {
 }
 
 export class Engine {
+  constructor(
+    private build: 'lite' | 'full' = 'lite',
+    private hash = 32,
+  ) {}
   private worker: Worker | null = null;
   private ready: Promise<void> | null = null;
   private queue: Job[] = [];
@@ -70,6 +107,11 @@ export class Engine {
   private current: Job | null = null;
   private cache = new Map<string, EngineLine[]>();
   private listeners = new Set<(p: EngineProgress | null) => void>();
+  /** La build completa non è partita su questo dispositivo: si usa quella leggera. */
+  failedFull = false;
+  get usingBuild() {
+    return this.build;
+  }
 
   /** Avanzamento dell'analisi in corso (null quando il motore è fermo). */
   onProgress(fn: (p: EngineProgress | null) => void): () => void {
@@ -81,11 +123,29 @@ export class Engine {
     for (const fn of this.listeners) fn(p);
   }
 
+  /** Cambia build e memoria: il worker attuale viene chiuso e la cache svuotata (i risultati cambierebbero). */
+  configure(build: 'lite' | 'full', hash: number) {
+    if (build === this.build && hash === this.hash) return;
+    this.cancelAll();
+    this.worker?.terminate();
+    this.worker = null;
+    this.ready = null;
+    this.cache.clear();
+    this.build = build;
+    this.hash = hash;
+  }
+
+  /** Avvia il motore subito (es. per scaricare la build completa dalle Impostazioni). */
+  warmup(): Promise<void> {
+    return this.start();
+  }
+
   private start(): Promise<void> {
     if (this.ready) return this.ready;
-    this.ready = new Promise((resolve, reject) => {
+    const build = this.build;
+    this.ready = new Promise<void>((resolve, reject) => {
       try {
-        this.worker = new Worker(`${import.meta.env.BASE_URL}engine/stockfish.js`);
+        this.worker = new Worker(`${import.meta.env.BASE_URL}${build === 'full' ? 'engine-full' : 'engine'}/stockfish.js`);
       } catch (e) {
         reject(e as Error);
         return;
@@ -93,7 +153,7 @@ export class Engine {
       const onMsg = (e: MessageEvent) => {
         if (String(e.data) === 'uciok') {
           // Più memoria per la tabella delle trasposizioni: ricerche profonde più rapide.
-          this.worker!.postMessage('setoption name Hash value 32');
+          this.worker!.postMessage(`setoption name Hash value ${this.hash}`);
           this.worker!.postMessage('isready');
         }
         if (String(e.data) === 'readyok') {
@@ -104,6 +164,18 @@ export class Engine {
       this.worker.addEventListener('message', onMsg);
       this.worker.addEventListener('error', () => reject(new Error('Impossibile avviare Stockfish.')));
       this.worker.postMessage('uci');
+    }).catch((e: Error) => {
+      // Se la build completa non parte (memoria, rete), si torna a quella leggera: meglio un'analisi che nessuna.
+      this.worker?.terminate();
+      this.worker = null;
+      this.ready = null;
+      if (build === 'full') {
+        this.build = 'lite';
+        this.hash = ENGINE_LEVELS.balanced.hash;
+        this.failedFull = true;
+        return this.start();
+      }
+      throw e;
     });
     return this.ready;
   }
@@ -162,7 +234,7 @@ export class Engine {
   private run({ fen, opts }: Job): Promise<SearchResult> {
     const w = this.worker!;
     const multiPv = opts.multiPv ?? 1;
-    const target = opts.depth ?? ANALYSIS_DEPTH;
+    const target = opts.depth ?? analysisDepth();
     this.emit({ depth: 0, target, queued: this.queue.length });
     const lines = new Map<number, EngineLine>();
     return new Promise((resolve) => {
@@ -201,8 +273,8 @@ export class Engine {
   }
 }
 
-/** Analisi a piena forza (giudizi, valutazioni, coach). */
-export const engine = new Engine();
+/** Analisi a piena forza (giudizi, valutazioni, coach), con la precisione scelta nelle Impostazioni. */
+export const engine = new Engine(ENGINE_LEVELS[level].build, ENGINE_LEVELS[level].hash);
 /** Avversario del Simulatore: worker separato, così la forza ridotta non tocca le analisi. */
 export const opponentEngine = new Engine();
 
