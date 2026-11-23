@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent } from 'react';
 import { Icon } from '../../components/Icon';
+import { FileButton } from '../../components/FileButton';
 import {
   archiveLabel,
   detectMyColor,
@@ -163,11 +164,10 @@ export function PgnImport({ onOpen }: { onOpen: (g: ImportedGame) => void }) {
         <button className="primary" onClick={() => read(text)} disabled={!text.trim()}>
           Analizza
         </button>
-        <label className="button">
+        {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili */}
+        <FileButton onFile={onFile}>
           <Icon name="folder" /> Apri file .pgn
-          {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili */}
-          <input type="file" onChange={onFile} hidden />
-        </label>
+        </FileButton>
       </div>
       {errors.map((e) => (
         <p key={e} className="error-text small">

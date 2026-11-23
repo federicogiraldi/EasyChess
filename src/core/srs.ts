@@ -15,6 +15,8 @@ export interface CardState {
 }
 
 const DAY = 24 * 60 * 60 * 1000;
+/** Tetto all'intervallo: una posizione torna comunque almeno una volta l'anno. */
+export const MAX_INTERVAL = 365;
 
 export function grade(prev: CardState | undefined, correct: boolean, now = Date.now()): CardState {
   const s: CardState = prev
@@ -24,8 +26,11 @@ export function grade(prev: CardState | undefined, correct: boolean, now = Date.
   s.at = now;
   if (correct) {
     s.correct++;
+    // Risposta giusta prima della scadenza (allenamento libero): conta nelle statistiche
+    // ma non allunga l'intervallo, altrimenti ripetere una linea la farebbe sparire per anni.
+    if (prev && now < prev.due) return s;
     s.reps++;
-    s.interval = s.reps === 1 ? 1 : s.reps === 2 ? 3 : Math.round(s.interval * s.ease);
+    s.interval = s.reps === 1 ? 1 : s.reps === 2 ? 3 : Math.min(MAX_INTERVAL, Math.round(s.interval * s.ease));
     s.ease = Math.min(3, s.ease + 0.05);
   } else {
     s.reps = 0;

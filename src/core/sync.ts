@@ -1,6 +1,6 @@
 import { createClient, type Session } from '@supabase/supabase-js';
 import { useSyncExternalStore } from 'react';
-import { applyResets, mergeValue } from './merge';
+import { applyResets, canonicalJson, mergeValue } from './merge';
 import { getStamps, isSyncedKey, load, localKeys, onSave, setStamp, write } from './storage';
 import { reloadCards } from './progress';
 import { reloadSettings } from './settings';
@@ -96,9 +96,9 @@ async function doSync(): Promise<boolean> {
         const resets = mergeValue('cards:resets', load('cards:resets', undefined), 0, remote.get('cards:resets')?.value, 0);
         if (resets) merged = applyResets(merged as never, resets as Record<string, number>);
       }
-      const json = JSON.stringify(merged);
-      const sameAsLocal = json === JSON.stringify(localValue);
-      const sameAsRemote = r !== undefined && json === JSON.stringify(r.value);
+      const json = canonicalJson(merged);
+      const sameAsLocal = json === canonicalJson(localValue);
+      const sameAsRemote = r !== undefined && json === canonicalJson(r.value);
       if (!sameAsLocal) {
         write(key, merged);
         changedLocal = true;

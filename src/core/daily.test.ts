@@ -20,7 +20,7 @@ describe('dailyQueue', () => {
     [ka[0]]: grade(undefined, true, NOW - 2 * DAY), // scaduta da 1 giorno
     [ka[1]]: grade(undefined, false, NOW - 3 * DAY), // scaduta da 3 giorni
     [kb[0]]: grade(undefined, true, NOW - 5 * DAY), // scaduta da 4 giorni
-    [ka[2]]: grade(grade(undefined, true, NOW - DAY), true, NOW - DAY), // non scaduta
+    [ka[2]]: grade(grade(undefined, true, NOW - 2 * DAY), true, NOW - DAY), // non scaduta
   };
 
   it('prima le scadute di tutte le aperture, dalla più vecchia', () => {

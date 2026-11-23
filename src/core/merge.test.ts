@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { applyResets, mergeCards, mergeValue } from './merge';
+import { applyResets, canonicalJson, mergeCards, mergeValue } from './merge';
 import type { CardState } from './srs';
 
 const card = (at: number | undefined, seen: number): CardState => ({ due: 0, interval: 1, ease: 2.5, reps: 1, lapses: 0, seen, correct: seen, at });
@@ -43,5 +43,15 @@ describe('mergeCards', () => {
   it('le aperture azzerate non tornano dall\'altro dispositivo', () => {
     const cards = { 'ck|1': card(100, 1), 'ck|2': card(300, 1), 'london|1': card(50, 1) };
     expect(Object.keys(applyResets(cards, { ck: 200 })).sort()).toEqual(['ck|2', 'london|1']);
+  });
+});
+
+describe('canonicalJson', () => {
+  it('non dipende dall\u2019ordine delle chiavi, a nessun livello', () => {
+    const a = { theme: 'dark', board: { size: 1, color: 'blu' }, list: [{ y: 1, x: 2 }] };
+    const b = { list: [{ x: 2, y: 1 }], board: { color: 'blu', size: 1 }, theme: 'dark' };
+    expect(canonicalJson(a)).toBe(canonicalJson(b));
+    expect(canonicalJson([2, 1])).not.toBe(canonicalJson([1, 2]));
+    expect(canonicalJson(undefined)).toBe(JSON.stringify(undefined));
   });
 });

@@ -3,11 +3,13 @@ import { Icon, type IconName } from './components/Icon';
 import { builtinSources, loadOpenings, type PgnSource } from './openings';
 import { parseOpening } from './core/pgnToTree';
 import { exportCards, replaceCards, useProgress } from './core/progress';
+import { parseBackup, sanitizeSources } from './core/backup';
 import { load, save } from './core/storage';
 import { saveFile } from './core/device';
 import { InstallHint } from './components/InstallHint';
 import { Account } from './components/Account';
 import { ContinueCard, MODES, OpeningGrid, Shortcuts } from './components/Home';
+import { FileButton } from './components/FileButton';
 import { loadLastVisit, saveLastVisit } from './core/home';
 import { Onboarding } from './components/Onboarding';
 import { isOnboardingDone, loadMyOpenings, needsOnboarding } from './core/onboarding';
@@ -43,7 +45,14 @@ const SECTIONS: { id: Section; label: string; icon: IconName }[] = [
   { id: 'progress', label: 'Progressi', icon: 'progress' },
 ];
 
-const idOf = (s: PgnSource) => parseOpening(s.pgn, s.file.replace(/\.pgn$/i, ''), s.source).id;
+/** Id dell'apertura di un file importato, o null se il file non si legge più. */
+const idOf = (s: PgnSource) => {
+  try {
+    return parseOpening(s.pgn, s.file.replace(/\.pgn$/i, ''), s.source).id;
+  } catch {
+    return null;
+  }
+};
 
 /** Saluto in base all'ora del giorno. */
 function greeting(now = new Date()): string {
@@ -52,7 +61,7 @@ function greeting(now = new Date()): string {
 }
 
 export default function App() {
-  const [imported, setImported] = useState<PgnSource[]>(() => load('imported', []));
+  const [imported, setImported] = useState<PgnSource[]>(() => sanitizeSources(load('imported', [])));
   const [route, setRoute] = useState<{ openingId: string; mode: Mode; labMoves?: string[]; drillLine?: string; simMoves?: string[] } | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [section, setSection] = useState<Section>('openings');
@@ -131,10 +140,9 @@ export default function App() {
     e.target.value = '';
     if (!file) return;
     try {
-      const data = JSON.parse(await file.text());
-      if (data.version !== 1 || typeof data.cards !== 'object') throw new Error('formato non riconosciuto');
+      const data = parseBackup(await file.text());
       replaceCards(data.cards);
-      if (Array.isArray(data.imported)) updateImported(data.imported);
+      if (data.imported) updateImported(data.imported);
       setMessage('Progressi ripristinati.');
     } catch (err) {
       setMessage(`Backup non valido: ${err instanceof Error ? err.message : err}`);
@@ -295,6 +303,7 @@ export default function App() {
                 errors={errors}
                 onOpen={(openingId, mode) => setRoute({ openingId, mode })}
                 onRemoveImported={(id) => updateImported(imported.filter((s) => idOf(s) !== id))}
+                onRemoveBroken={(file) => updateImported(imported.filter((s) => s.file !== file))}
                 mine={loadMyOpenings()}
                 onChooseMine={() => {
                   setReopenOnboarding(true);
@@ -311,16 +320,14 @@ export default function App() {
               <details className="home-tools">
                 <summary><Icon name="folder" /> Importa aperture e backup dei progressi</summary>
                 <section className="tools">
-                  <label className="button">
+                  {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
+                  <FileButton onFile={importPgn}>
                     <Icon name="plus" /> Importa apertura (.pgn)
-                    {/* niente "accept": su iPhone/iPad i .pgn risulterebbero non selezionabili; il contenuto viene comunque validato */}
-                    <input type="file" onChange={importPgn} hidden />
-                  </label>
+                  </FileButton>
                   <button onClick={exportProgress}><Icon name="save" /> Esporta progressi</button>
-                  <label className="button">
+                  <FileButton onFile={importProgress} accept=".json,application/json">
                     <Icon name="folder" /> Ripristina progressi
-                    <input type="file" accept=".json,application/json" onChange={importProgress} hidden />
-                  </label>
+                  </FileButton>
                 </section>
                 <p className="muted small hint">
                   Per aggiungere un'apertura in modo permanente salva un file <code>.pgn</code> in <code>src/openings/</code> con gli
