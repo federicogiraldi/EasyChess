@@ -16,10 +16,19 @@ export function onSave(l: Listener): () => void {
   return () => listeners.delete(l);
 }
 
+/** Un valore salvato è usabile solo se ha la stessa forma del valore di riserva (es. niente `null` al posto di un oggetto). */
+function sameShape(value: unknown, fallback: unknown): boolean {
+  if (fallback === null || fallback === undefined) return true;
+  if (value === null || value === undefined) return false;
+  return typeof value === typeof fallback && Array.isArray(value) === Array.isArray(fallback);
+}
+
 export function load<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(PREFIX + key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
+    if (!raw) return fallback;
+    const parsed: unknown = JSON.parse(raw);
+    return sameShape(parsed, fallback) ? (parsed as T) : fallback;
   } catch {
     return fallback;
   }

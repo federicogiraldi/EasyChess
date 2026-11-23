@@ -105,6 +105,8 @@ export class Engine {
   private queue: Job[] = [];
   private busy = false;
   private current: Job | null = null;
+  /** Interrompe l'avvio o la ricerca in corso sul worker attuale (serve quando il worker viene chiuso). */
+  private abort: (() => void) | null = null;
   private cache = new Map<string, EngineLine[]>();
   private listeners = new Set<(p: EngineProgress | null) => void>();
   /** La build completa non è partita su questo dispositivo: si usa quella leggera. */
@@ -127,6 +129,10 @@ export class Engine {
   configure(build: 'lite' | 'full', hash: number) {
     if (build === this.build && hash === this.hash) return;
     this.cancelAll();
+    // Il worker chiuso non risponderebbe più: chi aspettava "readyok" o "bestmove" va sbloccato,
+    // altrimenti la coda resta ferma per sempre.
+    this.abort?.();
+    this.abort = null;
     this.worker?.terminate();
     this.worker = null;
     this.ready = null;
@@ -143,7 +149,12 @@ export class Engine {
   private start(): Promise<void> {
     if (this.ready) return this.ready;
     const build = this.build;
+    let aborted = false;
     this.ready = new Promise<void>((resolve, reject) => {
+      this.abort = () => {
+        aborted = true;
+        reject(new Error('annullata'));
+      };
       try {
         this.worker = new Worker(`${import.meta.env.BASE_URL}${build === 'full' ? 'engine-full' : 'engine'}/stockfish.js`);
       } catch (e) {
@@ -158,6 +169,7 @@ export class Engine {
         }
         if (String(e.data) === 'readyok') {
           this.worker!.removeEventListener('message', onMsg);
+          this.abort = null;
           resolve();
         }
       };
@@ -165,6 +177,8 @@ export class Engine {
       this.worker.addEventListener('error', () => reject(new Error('Impossibile avviare Stockfish.')));
       this.worker.postMessage('uci');
     }).catch((e: Error) => {
+      // Avvio interrotto da configure(): lo stato è già stato azzerato (e magari c'è già un nuovo worker).
+      if (aborted) throw e;
       // Se la build completa non parte (memoria, rete), si torna a quella leggera: meglio un'analisi che nessuna.
       this.worker?.terminate();
       this.worker = null;
@@ -238,6 +252,10 @@ export class Engine {
     this.emit({ depth: 0, target, queued: this.queue.length });
     const lines = new Map<number, EngineLine>();
     return new Promise((resolve) => {
+      this.abort = () => {
+        w.removeEventListener('message', onMsg);
+        resolve({ lines: [], bestmove: undefined });
+      };
       const onMsg = (e: MessageEvent) => {
         const msg = String(e.data);
         if (msg.startsWith('info') && msg.includes(' pv ')) {
@@ -252,6 +270,7 @@ export class Engine {
           if (idx === 1) this.emit({ depth, target, queued: this.queue.length });
         } else if (msg.startsWith('bestmove')) {
           w.removeEventListener('message', onMsg);
+          this.abort = null;
           const best = msg.split(/\s+/)[1];
           resolve({
             lines: [...lines.entries()].sort((a, b) => a[0] - b[0]).map(([, l]) => l),

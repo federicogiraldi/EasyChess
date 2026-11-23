@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { parseOpening, PgnError } from './pgnToTree';
 import { cardPositions, formatPath, lineNameOf, nextMoves, pathFromRoot } from './tree';
-import { grade, isMastered } from './srs';
+import { grade, isMastered, MAX_INTERVAL } from './srs';
 
 const BLACK_PGN = `
 [Opening "Test Nero"]
@@ -70,6 +70,25 @@ describe('parseOpening', () => {
   });
 });
 
+describe('arrocco scritto con gli zeri', () => {
+  const sans = (pgn: string) => {
+    const out: string[] = [];
+    let n = parseOpening(pgn, 'z').root;
+    while (n.children.length) {
+      n = n.children[0];
+      out.push(n.san);
+    }
+    return out;
+  };
+
+  it('legge 0-0 e 0-0-0 come O-O e O-O-O', () => {
+    expect(sans('1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. 0-0 Nxe4 *')).toEqual(['e4', 'e5', 'Nf3', 'Nc6', 'Bc4', 'Nf6', 'O-O', 'Nxe4']);
+    expect(sans('1. d4 d5 2. Nc3 Nc6 3. Bf4 Bf5 4. Qd2 Qd7 5. 0-0-0+ 0-0-0 0-1')).toEqual([
+      'd4', 'd5', 'Nc3', 'Nc6', 'Bf4', 'Bf5', 'Qd2', 'Qd7', 'O-O-O', 'O-O-O',
+    ]);
+  });
+});
+
 describe('colore bianco', () => {
   it('le mosse del Bianco sono mie', () => {
     const op = parseOpening('[Color "white"]\n1. e4 e5 2. Nf3 *', 'w');
@@ -84,17 +103,34 @@ describe('colore bianco', () => {
 
 describe('srs', () => {
   it('allunga gli intervalli e azzera dopo un errore', () => {
-    const now = 0;
-    let s = grade(undefined, true, now);
+    let s = grade(undefined, true, 0);
     expect(s.interval).toBe(1);
-    s = grade(s, true, now);
+    s = grade(s, true, s.due);
     expect(s.interval).toBe(3);
     expect(isMastered(s)).toBe(true);
-    s = grade(s, true, now);
+    s = grade(s, true, s.due);
     expect(s.interval).toBeGreaterThan(3);
+    const now = s.due;
     s = grade(s, false, now);
     expect(s.interval).toBe(0);
     expect(s.due).toBe(now);
     expect(isMastered(s)).toBe(false);
+  });
+
+  it("una risposta giusta prima della scadenza non allunga l'intervallo", () => {
+    const first = grade(undefined, true, 0);
+    let s = first;
+    for (let i = 0; i < 20; i++) s = grade(s, true, 1000 * i);
+    expect(s.interval).toBe(first.interval);
+    expect(s.due).toBe(first.due);
+    expect(s.seen).toBe(21);
+    expect(s.correct).toBe(21);
+  });
+
+  it("l'intervallo ha un tetto", () => {
+    let s = grade(undefined, true, 0);
+    for (let i = 0; i < 40; i++) s = grade(s, true, s.due);
+    expect(s.interval).toBe(MAX_INTERVAL);
+    expect(Number.isFinite(new Date(s.due).getTime())).toBe(true);
   });
 });

@@ -64,3 +64,16 @@ function maxPerKey(a: Record<string, number>, b: Record<string, number>): Record
 function union<T>(a: T[], b: T[]): T[] {
   return [...new Set([...a, ...b])];
 }
+
+/**
+ * JSON con le chiavi degli oggetti in ordine alfabetico, a ogni livello.
+ * Serve a confrontare un valore locale con quello del cloud: Postgres (jsonb) può riordinare le chiavi,
+ * e un confronto testuale semplice vedrebbe una differenza a ogni sincronizzazione.
+ */
+export function canonicalJson(value: unknown): string {
+  return JSON.stringify(value, (_key, v: unknown) =>
+    v && typeof v === 'object' && !Array.isArray(v)
+      ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, (v as Record<string, unknown>)[k]]))
+      : v,
+  );
+}

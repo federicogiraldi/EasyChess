@@ -102,13 +102,15 @@ interface GridProps {
   errors: LoadError[];
   onOpen: (openingId: string, mode: HomeMode) => void;
   onRemoveImported: (openingId: string) => void;
+  /** Rimuove un file importato che non si riesce più a leggere. */
+  onRemoveBroken: (file: string) => void;
   /** Le aperture che l'utente gioca (scelte nella presentazione). */
   mine: string[];
   onChooseMine: () => void;
 }
 
 /** Le aperture, raggruppate per colore e prima mossa, con un filtro Le mie / Tutte / Bianco / Nero. */
-export function OpeningGrid({ openings, errors, onOpen, onRemoveImported, mine, onChooseMine }: GridProps) {
+export function OpeningGrid({ openings, errors, onOpen, onRemoveImported, onRemoveBroken, mine, onChooseMine }: GridProps) {
   const summaries = useSummaries(openings);
   const myOpenings = mineIn(openings, mine);
   const [stored, setFilter] = useState<SideFilter | null>(() => load<SideFilter | null>(FILTER_KEY, null));
@@ -164,7 +166,15 @@ export function OpeningGrid({ openings, errors, onOpen, onRemoveImported, mine, 
         <article key={e.file} className="opening-card error">
           <h2><Icon name="warning" /> {e.file}</h2>
           <p>{e.message}</p>
-          <p className="muted small">Correggi il file PGN e ricarica la pagina (oppure esegui npm run validate).</p>
+          {e.imported ? (
+            <footer className="card-footer">
+              <button className="link" onClick={() => confirm(`Rimuovere "${e.file}"?`) && onRemoveBroken(e.file)}>
+                Rimuovi apertura importata
+              </button>
+            </footer>
+          ) : (
+            <p className="muted small">Correggi il file PGN e ricarica la pagina (oppure esegui npm run validate).</p>
+          )}
         </article>
       ))}
     </section>

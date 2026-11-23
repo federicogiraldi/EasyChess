@@ -1,11 +1,12 @@
 import { useSyncExternalStore } from 'react';
 import { grade, type CardState } from './srs';
 import { load, save } from './storage';
+import { sanitizeCards } from './backup';
 import { bumpActivity } from './daily';
 import { playSound } from './sound';
 
 /** Stato SRS di tutte le card, condiviso fra le modalità e salvato in localStorage. */
-let cards: Record<string, CardState> = load('cards', {});
+let cards: Record<string, CardState> = sanitizeCards(load('cards', {}));
 let version = 0;
 const listeners = new Set<() => void>();
 
@@ -51,7 +52,7 @@ export function replaceCards(next: Record<string, CardState>) {
 
 /** Rilegge le schede salvate (arrivate da un altro dispositivo) senza risalvarle. */
 export function reloadCards() {
-  cards = load('cards', {});
+  cards = sanitizeCards(load('cards', {}));
   version++;
   listeners.forEach((l) => l());
 }

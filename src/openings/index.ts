@@ -15,6 +15,8 @@ const courses = new Map(Object.entries(courseFiles).map(([p, text]) => [p.replac
 export interface LoadError {
   file: string;
   message: string;
+  /** Vero se il file viene da un import dell'utente (si può rimuovere dall'app). */
+  imported?: boolean;
 }
 
 export interface PgnSource {
@@ -47,7 +49,11 @@ export function loadOpenings(sources: PgnSource[]): { openings: Opening[]; error
         }
       }
     } catch (e) {
-      errors.push({ file: s.file, message: e instanceof Error ? e.message : String(e) });
+      errors.push({
+        file: typeof s?.file === 'string' ? s.file : '?',
+        message: e instanceof Error ? e.message : String(e),
+        imported: s?.source === 'imported',
+      });
     }
   }
   return { openings, errors };

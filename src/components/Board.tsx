@@ -186,12 +186,67 @@ function BoardView({ fen, orientation, onMove, premoveColor, arrows = [], highli
         {premove && <div className="premove-hint">Pre-move {premove.from}→{premove.to} · clic per annullare</div>}
         {badge && <SquareBadge key={`${badge.square}-${badge.quality}-${fen}`} {...badge} width={width} orientation={orientation} />}
       </div>
+      {onMove && <KeyboardMove fen={fen} onMove={tryMove} />}
       {previewing && <VariationBar />}
     </>
   );
 }
 
-/** Prova a giocare from→to nella posizione e restituisce il SAN canonico, o null se illegale. */
+/** Legge una mossa scritta (SAN come "Nf3" o "O-O", oppure UCI come "g1f3") e restituisce le case di partenza e arrivo. */
+export function parseTypedMove(fen: string, text: string): { from: string; to: string } | null {
+  const t = text.trim().replace(/0/g, 'O');
+  if (!t) return null;
+  const chess = new Chess(fen);
+  const uci = t.toLowerCase().match(/^([a-h][1-8])-?([a-h][1-8])[qrbn]?$/);
+  const moves = chess.moves({ verbose: true });
+  if (uci) {
+    const m = moves.find((x) => x.from === uci[1] && x.to === uci[2]);
+    if (m) return { from: m.from, to: m.to };
+  }
+  const clean = (san: string) => san.replace(/[+#!?]/g, '');
+  const m = moves.find((x) => clean(x.san) === clean(t));
+  return m ? { from: m.from, to: m.to } : null;
+}
+
+/**
+ * Campo per giocare scrivendo la mossa: rende la scacchiera usabile da tastiera e screen reader.
+ * Resta nascosto finché non riceve il focus (Tab), così non ingombra chi usa mouse o touch.
+ */
+function KeyboardMove({ fen, onMove }: { fen: string; onMove: (from: string, to: string) => boolean }) {
+  const [text, setText] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const m = parseTypedMove(fen, text);
+    if (!m) {
+      setError(`"${text.trim()}" non è una mossa legale qui.`);
+      return;
+    }
+    onMove(m.from, m.to);
+    setText('');
+    setError(null);
+  };
+  return (
+    <form className="keyboard-move" onSubmit={submit}>
+      <label>
+        Scrivi la mossa (es. Nf3, O-O o g1f3)
+        <input
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+            setError(null);
+          }}
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+        />
+      </label>
+      <button type="submit">Gioca</button>
+      <p className="small error-text" role="status">{error}</p>
+    </form>
+  );
+}
+
 /** Posizione dell'icona: angolo in alto a destra della casa, un po' sporgente, sempre dentro la scacchiera. */
 function SquareBadge({ square, quality, width, orientation }: { square: string; quality: SimQuality; width: number; orientation: Side }) {
   const sq = width / 8;
